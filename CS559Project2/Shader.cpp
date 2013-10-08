@@ -1,36 +1,75 @@
-#include "Shader.h"
+/*	Perry Kivolowitz - University of Wisconsin - Madison 
+	Computer Sciences Department
+
+	A sample hello world like program demonstrating modern
+	OpenGL techniques. 
+
+	Created:	2/25/13
+	Updates:
+*/
+
+#include "shader.h"
 #include <assert.h>
-#include "Error.h"
-#include <sstream>
 
 using namespace std;
+using namespace glm;
+
+#define BAD_GL_VALUE GLuint(-1)
 
 Shader::Shader()
 {
-	this->vertex_shader_id = (GLuint) -1;
-	this->fragment_shader_id = (GLuint) -1;
-	this->program_id = (GLuint) -1;
-	this->modelview_matrix_handle = (GLuint) -1;
-	this->projection_matrix_handle = (GLuint) -1;
+	this->vertex_shader_id = BAD_GL_VALUE;
+	this->fragment_shader_id = BAD_GL_VALUE;
+	this->program_id = BAD_GL_VALUE;
+	this->modelview_matrix_handle = BAD_GL_VALUE;
+	this->projection_matrix_handle = BAD_GL_VALUE;
+	this->normal_matrix_handle = BAD_GL_VALUE;
+	this->size_handle = BAD_GL_VALUE;
 }
 
-void Shader::Activate()
+/*	This Shader() class implements or assumes a basic set of uniforms will be
+	provided to all shaders derived from it. These are listed below. 
+	Shader::CommonSetup() can be used by call derived classes to send the 
+	common values to the shader. Values unique to the derived class can be
+	loaded with the CustomShader() function.
+*/
+
+void Shader::CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm)
 {
-	assert(this->program_id != (GLuint) -1);
+	if (this->time_handle != BAD_GL_VALUE)
+		glUniform1f(this->time_handle, time);
+	this->GLReturnedError("Top::Draw - after time_handle");
+	if (this->size_handle != BAD_GL_VALUE)
+		glUniform2iv(this->size_handle, 1, size);
+	this->GLReturnedError("Top::Draw - after size_handle");
+	if (this->projection_matrix_handle != BAD_GL_VALUE)
+		glUniformMatrix4fv(this->projection_matrix_handle, 1, GL_FALSE, projection);
+	this->GLReturnedError("Top::Draw - after projection_matrix_handle");
+	if (this->modelview_matrix_handle != BAD_GL_VALUE)
+		glUniformMatrix4fv(this->modelview_matrix_handle, 1, GL_FALSE, modelview);
+	this->GLReturnedError("Top::Draw - after modelview_matrix_handle");
+	if (this->mvp_handle != BAD_GL_VALUE)
+		glUniformMatrix4fv(this->mvp_handle, 1, GL_FALSE, mvp);
+	this->GLReturnedError("Top::Draw - after mvp_handle");
+	if (this->normal_matrix_handle != BAD_GL_VALUE)
+		glUniformMatrix3fv(this->normal_matrix_handle, 1, GL_FALSE, nm);
+	this->GLReturnedError("Top::Draw - after normal_matrix_handle");
+}
+
+void Shader::Use()
+{
+	assert(this->program_id != BAD_GL_VALUE);
 	glUseProgram(this->program_id);
 }
 
-void Shader::Deactivate()
-{
-	assert(this->program_id != (GLuint) -1);
-	glUseProgram(0);
-}
+/*	The shader initialization code is lifted liberally from the GLSL 4.0 Cookbook.
+*/
 
 bool Shader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
 {
 	GLint check_value;
 
-	if (CheckGLErrors("Shader::Initialize()"))
+	if (GLReturnedError("Shader::Initialize - on entrance"))
 		return false;
 
 	this->vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
@@ -44,7 +83,7 @@ bool Shader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
 		return false;
 	}
 
-	if (CheckGLErrors("Shader::Initialize() middle"))
+	if (GLReturnedError("Shader::Initialize - after processing vertex shader"))
 		return false;
 
 	this->fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
@@ -62,25 +101,28 @@ bool Shader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
 	glAttachShader(this->program_id, this->vertex_shader_id);
 	glAttachShader(this->program_id, this->fragment_shader_id);
 	glLinkProgram(program_id);
-	GLint link_status;
-	glGetProgramiv(program_id, GL_LINK_STATUS, &link_status);
-	if(!link_status) {
-		char buf[256];
-		glGetProgramInfoLog(program_id,256,NULL,buf);
-		cout << "error linking: " << buf << endl;
-	}
 
 	glDeleteShader(vertex_shader_id);
 	glDeleteShader(fragment_shader_id);
-	
+
 	glUseProgram(this->program_id);
-	CheckGLErrors("Shader::Initialize() glUseProgram");
-//	this->modelview_matrix_handle = glGetUniformLocation(program_id, (const GLchar *) "modelview_matrix");
-//	this->projection_matrix_handle = glGetUniformLocation(program_id, (const GLchar *) "projection_matrix");
+
+	this->modelview_matrix_handle = glGetUniformLocation(this->program_id, (const GLchar *) "modelview_matrix");
+	this->projection_matrix_handle = glGetUniformLocation(this->program_id, (const GLchar *) "projection_matrix");
+	this->normal_matrix_handle = glGetUniformLocation(this->program_id, (const GLchar *) "normal_matrix");
+	this->mvp_handle = glGetUniformLocation(this->program_id, (const GLchar *) "mvp");
+	this->size_handle = glGetUniformLocation(this->program_id, (const GLchar *) "size");
+	this->time_handle = glGetUniformLocation(this->program_id, (const GLchar *) "time");
+
 	glUseProgram(0);
 
-	return !CheckGLErrors("Shader::Initialize() return");
+	return !GLReturnedError("Shader::Initialize - on exit");
 }
+
+void Shader::CustomSetup()
+{
+}
+
 
 void Shader::TakeDown()
 {
@@ -103,16 +145,19 @@ void Shader::TakeDown()
 		}
 		delete [] shader_list;
 	}
+
 	glDeleteProgram(this->program_id);
 	this->program_id = (GLuint) -1;
 }
 
-// This function is adapted from OpenGL 4.0 Shading Language Cookbook
-// by David Wolff.
+/*
+	This function is adapted from OpenGL 4.0 Shading Language Cookbook by David Wolff.
+*/
+
 bool Shader::LoadShader(const char * file_name, GLuint shader_id)
 {
 	assert(file_name != NULL);
-	if (CheckGLErrors("Shader::LoadShader() start"))
+	if (GLReturnedError("Shader::LoadShader - on entrance"))
 		return false;
 
 	FILE * file_handle = NULL;
@@ -132,11 +177,13 @@ bool Shader::LoadShader(const char * file_name, GLuint shader_id)
 	glShaderSource(shader_id, 1, (const char **) &buffer, NULL);
 	delete [] buffer;
 
-	return !CheckGLErrors("Shader::LoadShader() end");
+	return !GLReturnedError("Shader::LoadShader - on exit");
 }
 
-// This function is adapted from OpenGL 4.0 Shading Language Cookbook
-// by David Wolff.
+/*
+	This function is adapted from OpenGL 4.0 Shading Language Cookbook by David Wolff.
+*/
+
 stringstream Shader::GetShaderLog(GLuint shader_id)
 {
 	stringstream s;
@@ -155,7 +202,38 @@ stringstream Shader::GetShaderLog(GLuint shader_id)
 	return s;
 }
 
-
-Shader::~Shader(void)
+bool Shader::GLReturnedError(char * s)
 {
+	bool return_error = false;
+	GLenum glerror;
+
+	while ((glerror = glGetError()) != GL_NO_ERROR)
+	{
+		return_error = true;
+		cerr << s << ": " << gluErrorString(glerror) << endl;
+	}
+
+	return return_error;
+}
+
+BackgroundShader::BackgroundShader() : super()
+{
+	this->color_array_handle = BAD_GL_VALUE;
+}
+
+bool BackgroundShader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
+{
+	if (!super::Initialize(vertex_shader_file, fragment_shader_file))
+		return false;
+
+	this->Use();
+	this->color_array_handle = glGetUniformLocation(this->program_id, (const GLchar *) "color_array");
+	glUseProgram(0);
+//	assert(this->color_array_handle != BAD_GL_VALUE);
+	return true;
+}
+
+void BackgroundShader::CustomSetup(vec4 * color_array)
+{
+	glUniform4fv(this->color_array_handle, 4, (GLfloat *) color_array);
 }
