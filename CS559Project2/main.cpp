@@ -3,8 +3,17 @@ CS 559 - Computer Graphics - Project 2
 (c) Fall 2013 - Wesley Reardan and Emanuel Rosu
 
 Primary objectives
-1) Draw a triangle with modern GL (main.cpp)
+1) Draw a triangle with modern GL (main.cpp) DONE
 2) Convert P1 ship to modern GL (ship.cpp)
+	a) Create Mesh class
+		1) addSphere
+		2) addCylinder
+		3) addCube
+	b) Create Ship class
+		1) add Meshes to Ship
+		2) Draw ship
+		3) Ship Camera
+		4) 
 3) Create the Mars Sphere (mars.cpp)
 	a) Basic spherical model
 	b) Add altitude using mars.txt
@@ -35,20 +44,20 @@ void draw_square()
 	if(globals.shader.program_id == -1)
 		return;
 
-    GLfloat vertices[] = { 0.0f,  0.0f,  // Position 0
+    GLfloat vertices[] = { 0.0f,  0.0f, 0.0f,  // Position 0
         0.0f, 0.0f,				// TexCoord 0
-        0.0f, 1.0f,			// Position 1
+        0.0f, 1.0f, 0.0f,			// Position 1
         0.0f, 1.0f,				// TexCoord 1
-        1.0f, 1.0f,			// Position 2
+        1.0f, 1.0f, 0.0f,			// Position 2
         1.0f, 1.0f,				// TexCoord 2
-        1.0f, 0.0f,			// Position 3
+        1.0f, 0.0f, 0.0f,			// Position 3
         1.0f, 0.0f,				// TexCoord 3
     };
     GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
 
     globals.shader.Activate();
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), vertices);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), vertices);
     //glVertexAttribPointer ( 1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), &vertices[2] );
     glEnableVertexAttribArray ( 0 );
     //glActiveTexture ( GL_TEXTURE0 );
