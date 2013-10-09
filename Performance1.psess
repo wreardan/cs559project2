@@ -65,6 +65,9 @@
     <Report>
       <Path>CS559Project2131005.vsp</Path>
     </Report>
+    <Report>
+      <Path>CS559Project2131009.vsp</Path>
+    </Report>
   </Reports>
   <Launches>
     <Binary>

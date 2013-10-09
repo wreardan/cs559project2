@@ -21,10 +21,11 @@ public:
 	Shader stripes_model_space;
 	std::vector<Shader *> shaders;
 
-private:
+protected:
 	void BuildSphere(float radius, unsigned int sectors, unsigned int rings);
 	void BuildCylinder(float radius, float height, unsigned int sectors);
 	void BuildNormalVisualizationGeometry();
+
 	glm::vec4 colors[2];
 	std::vector<VertexAttributesPCNT> vertices;
 	typedef Object super;

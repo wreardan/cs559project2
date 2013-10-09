@@ -11,6 +11,9 @@ Mesh::Mesh(void) : Object()
 	this->colors[0] = darker_color;
 	this->colors[1] = lighter_color;
 	this->shader_index = 0;
+
+	BuildSphere(1.0f, 360, 180);
+	//BuildCylinder(1.0f, 1.0f, 20);
 }
 
 
@@ -60,13 +63,16 @@ void Mesh::BuildCylinder(float radius, float height, unsigned int sectors)
 	//Create Indices
 	vertex_indices.resize(2 * sectors * 6);
 	vector<unsigned int>::iterator i = vertex_indices.begin();
-	for(s = 0; s < sectors*2-3; s++) {
+	for(s = 0; s < sectors*2; s++) {
 		*i++ = s;
 		*i++ = (s+1);
 		*i++ = (s+2);
 		
 		*i++ = (s+1);
-		*i++ = (s+3);
+		if(s >= sectors*2-2)
+			*i++ = 0;
+		else
+			*i++ = (s+3);
 		*i++ = (s+2);
 	}
 }
@@ -95,7 +101,7 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 
 		vec3 normal = vec3(x, -y, z);
 
-		vec3 color = vec3(1.0f, 0.6f, 0.1f);
+		vec3 color = vec3(1.0f, 0.4f, 0.0f);
 		
 		vec2 tex = vec2(s*S, r*R);
 
@@ -119,14 +125,11 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 
 bool Mesh::Initialize(float size)
 {
-	if (this->GLReturnedError("Top::Initialize - on entry"))
+	if (this->GLReturnedError("Mesh::Initialize - on entry"))
 		return false;
 
 	if (!super::Initialize())
 		return false;
-
-	//BuildSphere(1.0f, 360, 180);
-	BuildCylinder(1.0f, 2.0f, 20);
 
 	if (!this->PostGLInitialize(&this->vertex_array_handle, &this->vertex_coordinate_handle, this->vertices.size() * sizeof(VertexAttributesPCNT), &this->vertices[0]))
 		return false;
@@ -194,7 +197,7 @@ void Mesh::Draw(const ivec2 & size)
 
 void Mesh::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, const float time)
 {
-	if (this->GLReturnedError("Top::Draw - on entry"))
+	if (this->GLReturnedError("Mesh::Draw - on entry"))
 		return;
 
 	glEnable(GL_DEPTH_TEST);
@@ -205,13 +208,13 @@ void Mesh::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, con
 	mat3 nm = inverse(transpose(mat3(modelview)));
 
 	this->shaders[this->shader_index]->Use();
-	this->GLReturnedError("Top::Draw - after use");
+	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(modelview), value_ptr(mvp), value_ptr(nm));
-	this->GLReturnedError("Top::Draw - after common setup");
+	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);
 	glDrawElements(GL_TRIANGLES , this->vertex_indices.size(), GL_UNSIGNED_INT , &this->vertex_indices[0]);
 	glBindVertexArray(0);
-	this->GLReturnedError("Top::Draw - after draw");
+	this->GLReturnedError("Mesh::Draw - after draw");
 	glUseProgram(0);
 
 	if (this->draw_normals)
@@ -224,6 +227,6 @@ void Mesh::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, con
 		glUseProgram(0);
 	}
 
-	if (this->GLReturnedError("Top::Draw - on exit"))
+	if (this->GLReturnedError("Mesh::Draw - on exit"))
 		return;
 }

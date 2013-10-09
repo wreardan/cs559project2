@@ -25,6 +25,7 @@
 #include "background.h"
 #include "top.h"
 #include "Mesh.h"
+#include "Mars.h"
 
 using namespace std;
 using namespace glm;
@@ -55,6 +56,11 @@ public:
 Background background;
 Top top;
 Mesh ship;
+#ifdef _DEBUG
+Mars mars("mars_low_rez.txt");
+#else
+Mars mars("mars.txt");
+#endif
 
 void DisplayInstructions()
 {
@@ -89,6 +95,7 @@ void CloseFunc()
 	background.TakeDown();
 	top.TakeDown();
 	ship.TakeDown();
+	mars.TakeDown();
 }
 
 void ReshapeFunc(int w, int h)
@@ -110,11 +117,13 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 's':
 		top.StepShader();
 		ship.StepShader();
+		mars.StepShader();
 		break;
 
 	case 'n':
 		top.EnableNormals(window.normals = !window.normals);
 		ship.EnableNormals(window.normals = !window.normals);
+		mars.EnableNormals(window.normals = !window.normals);
 		break;
 
 	case 'w':
@@ -176,8 +185,11 @@ void DisplayFunc()
 	mat4 modelview = lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
 	glPolygonMode(GL_FRONT_AND_BACK, window.wireframe ? GL_LINE : GL_FILL);
+	
 	//top.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-	ship.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+	//ship.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+	mars.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DisplayInstructions();
 	glFlush();
@@ -196,7 +208,7 @@ void TimerFunc(int value)
 int main(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
-	glutInitWindowSize(1280, 768);
+	glutInitWindowSize(1024, 768);
 	glutInitWindowPosition(0, 0);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
 
@@ -234,6 +246,8 @@ int main(int argc, char * argv[])
 		return 0;
 
 	if(!ship.Initialize((float)window.slices))
+		return 0;
+	if(!mars.Initialize((float)window.slices))
 		return 0;
 
 	glutMainLoop();

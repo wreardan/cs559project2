@@ -86,6 +86,7 @@
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mars.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Mars.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Mesh.h" />
@@ -103,6 +105,7 @@
     <ClInclude Include="vertexattributes.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="background_gradient.frag" />
     <None Include="background_gradient.vert" />
     <None Include="solid_shader.frag" />
@@ -111,6 +114,11 @@
     <None Include="stripe_model_space.vert" />
     <None Include="top_shader.frag" />
     <None Include="top_shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="mars.txt" />
+    <Text Include="mars_low_rez.txt" />
+    <Text Include="mars_med_rez.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
