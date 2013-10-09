@@ -24,6 +24,7 @@
 
 #include "background.h"
 #include "top.h"
+#include "Ship.h"
 
 using namespace std;
 using namespace glm;
@@ -53,6 +54,7 @@ public:
 
 Background background;
 Top top;
+Ship ship;
 
 void DisplayInstructions()
 {
@@ -86,6 +88,7 @@ void CloseFunc()
 	window.window_handle = -1;
 	background.TakeDown();
 	top.TakeDown();
+	ship.TakeDown();
 }
 
 void ReshapeFunc(int w, int h)
@@ -106,10 +109,12 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	{
 	case 's':
 		top.StepShader();
+		ship.StepShader();
 		break;
 
 	case 'n':
 		top.EnableNormals(window.normals = !window.normals);
+		ship.EnableNormals(window.normals = !window.normals);
 		break;
 
 	case 'w':
@@ -171,7 +176,8 @@ void DisplayFunc()
 	mat4 modelview = lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
 	glPolygonMode(GL_FRONT_AND_BACK, window.wireframe ? GL_LINE : GL_FILL);
-	top.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+	//top.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+	ship.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DisplayInstructions();
 	glFlush();
@@ -190,11 +196,11 @@ void TimerFunc(int value)
 int main(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
-	glutInitWindowSize(1024, 512);
+	glutInitWindowSize(1280, 768);
 	glutInitWindowPosition(0, 0);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
 
-	window.window_handle = glutCreateWindow("A More Sophisticated Modern Hello World");
+	window.window_handle = glutCreateWindow("CS 559 Project 2 Fall 2013");
 	glutReshapeFunc(ReshapeFunc);
 	glutCloseFunc(CloseFunc);
 	glutDisplayFunc(DisplayFunc);
@@ -203,9 +209,9 @@ int main(int argc, char * argv[])
 	glutTimerFunc(window.interval, TimerFunc, 0);
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
-	window.instructions.push_back("This program is an expanded  'Hello World'");
-	window.instructions.push_back("using modern OpenGL.");
-	window.instructions.push_back("");
+	window.instructions.push_back("CS 559 Project 2");
+	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
+	/*window.instructions.push_back("");
 	window.instructions.push_back("Perry Kivolowitz - For UW-Madison - CS 559");
 	window.instructions.push_back("");
 	window.instructions.push_back("UP / DN - changes slice count");
@@ -213,7 +219,7 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("p - toggles pause");
 	window.instructions.push_back("s - cycles shaders");
 	window.instructions.push_back("w - toggles wireframe");
-	window.instructions.push_back("x - exits");
+	window.instructions.push_back("x - exits");*/
 
 	if (glewInit() != GLEW_OK)
 	{
@@ -225,6 +231,9 @@ int main(int argc, char * argv[])
 		return 0;
 
 	if (!top.Initialize(window.slices))
+		return 0;
+
+	if(!ship.Initialize((float)window.slices))
 		return 0;
 
 	glutMainLoop();

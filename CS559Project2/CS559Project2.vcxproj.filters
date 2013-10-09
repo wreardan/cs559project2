@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Shaders">
-      <UniqueIdentifier>{5a0f0174-b997-4465-997b-6b03b8bb3763}</UniqueIdentifier>
+      <UniqueIdentifier>{eaba52b8-c15a-4991-8af1-b95e6f57b5c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +42,12 @@
     <ClCompile Include="vertexattributes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -65,33 +71,39 @@
     <ClInclude Include="vertexattributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.frag">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="basic.vert">
-      <Filter>Shaders</Filter>
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="basic.frag">
+      <Filter>Source Files</Filter>
     </None>
     <None Include="background_gradient.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="solid_shader.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="stripe_model_space.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="top_shader.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="background_gradient.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="solid_shader.frag">
+      <Filter>Shaders</Filter>
+    </None>
     <None Include="solid_shader.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="stripe_model_space.frag">
+      <Filter>Shaders</Filter>
+    </None>
     <None Include="stripe_model_space.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="top_shader.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="top_shader.vert">

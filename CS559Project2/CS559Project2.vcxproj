@@ -86,8 +86,10 @@
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="top.cpp" />
     <ClCompile Include="vertexattributes.cpp" />
   </ItemGroup>
@@ -95,8 +97,10 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Ship.h" />
     <ClInclude Include="top.h" />
     <ClInclude Include="vertexattributes.h" />
   </ItemGroup>

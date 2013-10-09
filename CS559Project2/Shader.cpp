@@ -102,6 +102,17 @@ bool Shader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
 	glAttachShader(this->program_id, this->fragment_shader_id);
 	glLinkProgram(program_id);
 
+	//Check for GL Shader Linking Errors
+	GLint link_status;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &link_status);
+	if(!link_status) {
+		char buf[4096];
+		glGetProgramInfoLog(program_id,4096,NULL,buf);
+		cout << "error linking shader: " << buf << endl;
+		return false;
+	}
+
+
 	glDeleteShader(vertex_shader_id);
 	glDeleteShader(fragment_shader_id);
 

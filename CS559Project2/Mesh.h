@@ -1,16 +1,16 @@
 #pragma once
 #include <vector>
 #include <glm/glm.hpp>
+#include "vertexattributes.h"
 class Mesh
 {
+protected:
+	std::vector<VertexAttributesPCNT> vertices;
+	std::vector<unsigned int> vertex_indices;
+
 public:
 	Mesh(void);
 	~Mesh(void);
-
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> texcoords;
-	std::vector<unsigned short> indices;
 
 	void AddSphere(float radius, unsigned int rings, unsigned int sectors);
 	//TODO:
