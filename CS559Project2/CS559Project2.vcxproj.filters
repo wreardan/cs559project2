@@ -45,9 +45,6 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ship.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -74,17 +71,8 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ship.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.vert">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="basic.frag">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="background_gradient.frag">
       <Filter>Shaders</Filter>
     </None>

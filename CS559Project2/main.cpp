@@ -24,7 +24,7 @@
 
 #include "background.h"
 #include "top.h"
-#include "Ship.h"
+#include "Mesh.h"
 
 using namespace std;
 using namespace glm;
@@ -54,7 +54,7 @@ public:
 
 Background background;
 Top top;
-Ship ship;
+Mesh ship;
 
 void DisplayInstructions()
 {
