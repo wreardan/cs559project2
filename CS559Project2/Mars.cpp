@@ -6,8 +6,7 @@
 #include <sstream>
 using namespace std;
 
-//Load Mars from Filename
-Mars::Mars(char * filename)
+void Mars::load_file(char * filename)
 {
 	const float scalar = 0.05f;	//scalar for mars depth data
 	//Load file, error if cannot open
@@ -49,6 +48,20 @@ Mars::Mars(char * filename)
 	}
 }
 
+//Load Mars from Filename
+Mars::Mars(char * filename)
+{
+	load_file(filename);
+}
+
+Mars::Mars(void)
+{
+#ifdef _DEBUG
+	load_file("mars_low_rez.txt");
+#else
+	load_file("mars.txt");
+#endif
+}
 
 Mars::~Mars(void)
 {

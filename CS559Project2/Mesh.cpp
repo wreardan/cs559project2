@@ -51,9 +51,9 @@ void Mesh::BuildCylinder(float radius, float height, unsigned int sectors)
 
 		vec3 vertex = vec3(x * radius, y * radius, z * radius);
 
-		vec3 normal = vec3(x, -y, z);
+		vec3 normal = vec3(x, y, z);
 
-		vec3 color = vec3(1.0f, 0.6f, 0.1f);
+		vec3 color = vec3(1.0f, 0.4f, 0.0f);
 		
 		vec2 tex = vec2(s*S, 0.0f);
 

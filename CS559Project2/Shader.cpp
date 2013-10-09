@@ -108,7 +108,7 @@ bool Shader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
 	if(!link_status) {
 		char buf[4096];
 		glGetProgramInfoLog(program_id,4096,NULL,buf);
-		cout << "error linking shader: " << buf << endl;
+		cout << "Shader::Initialize() error linking shader: " << buf << endl;
 		return false;
 	}
 

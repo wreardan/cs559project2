@@ -5,9 +5,11 @@ class Mars :
 {
 public:
 	Mars(char * filename);
+	Mars();
 	~Mars(void);
 
 protected:
 	typedef Mesh super;
+	void load_file(char * filename);
 };
 

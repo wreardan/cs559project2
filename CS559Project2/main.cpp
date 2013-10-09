@@ -26,6 +26,7 @@
 #include "top.h"
 #include "Mesh.h"
 #include "Mars.h"
+#include "Ship.h"
 
 using namespace std;
 using namespace glm;
@@ -40,6 +41,10 @@ public:
 		this->slices = 20;
 		this->interval = 1000 / 120;
 		this->window_handle = -1;
+		mode = 2;
+	}
+	~Window()
+	{
 	}
 
 	float time_last_pause_began;
@@ -51,16 +56,14 @@ public:
 	ivec2 size;
 	float window_aspect;
 	vector<string> instructions;
-} window;
+	int mode;
 
-Background background;
-Top top;
-Mesh ship;
-#ifdef _DEBUG
-Mars mars("mars_low_rez.txt");
-#else
-Mars mars("mars.txt");
-#endif
+	Background background;
+	Top top;
+	Mesh mesh;
+	Ship ship;
+	Mars mars;
+} window;
 
 void DisplayInstructions()
 {
@@ -92,10 +95,10 @@ void DisplayInstructions()
 void CloseFunc()
 {
 	window.window_handle = -1;
-	background.TakeDown();
-	top.TakeDown();
-	ship.TakeDown();
-	mars.TakeDown();
+	window.background.TakeDown();
+	window.top.TakeDown();
+	window.ship.TakeDown();
+	window.mars.TakeDown();
 }
 
 void ReshapeFunc(int w, int h)
@@ -114,22 +117,26 @@ void KeyboardFunc(unsigned char c, int x, int y)
 
 	switch (c)
 	{
+	case 'S':
 	case 's':
-		top.StepShader();
-		ship.StepShader();
-		mars.StepShader();
+		window.top.StepShader();
+		window.ship.StepShader();
+		window.mars.StepShader();
 		break;
-
+		
+	case 'N':
 	case 'n':
-		top.EnableNormals(window.normals = !window.normals);
-		ship.EnableNormals(window.normals = !window.normals);
-		mars.EnableNormals(window.normals = !window.normals);
+		window.top.EnableNormals(window.normals = !window.normals);
+		window.ship.EnableNormals(window.normals = !window.normals);
+		window.mars.EnableNormals(window.normals = !window.normals);
 		break;
-
+		
+	case 'W':
 	case 'w':
 		window.wireframe = !window.wireframe;
 		break;
-
+		
+	case 'P':
 	case 'p':
 		if (window.paused == true)
 		{
@@ -143,7 +150,8 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		}
 		window.paused = !window.paused;
 		break;
-
+		
+	case 'X':
 	case 'x':
 	case 27:
 		glutLeaveMainLoop();
@@ -157,18 +165,27 @@ void SpecialFunc(int c, int x, int y)
 	{
 	case GLUT_KEY_UP:
 		++window.slices;
-		top.TakeDown();
-		top.Initialize(window.slices);
+		window.top.TakeDown();
+		window.top.Initialize(window.slices);
 		break;
 
 	case GLUT_KEY_DOWN:
 		if (window.slices > 1)
 		{
 			--window.slices;
-			top.TakeDown();
-			top.Initialize(window.slices);
+			window.top.TakeDown();
+			window.top.Initialize(window.slices);
 		}
 		break;
+
+	case GLUT_KEY_F1:
+		window.mode++;
+		if(window.mode > 2)	//change to add more modes
+			window.mode = 0;
+		break;
+
+	default:
+		cout << "unhandled special key: " << c << endl;
 	}
 }
 
@@ -180,15 +197,28 @@ void DisplayFunc()
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, window.size.x, window.size.y);
-	background.Draw(window.size);
+	window.background.Draw(window.size);
 	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 10.0f);
 	mat4 modelview = lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
 	glPolygonMode(GL_FRONT_AND_BACK, window.wireframe ? GL_LINE : GL_FILL);
 	
-	//top.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-	//ship.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-	mars.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+	switch(window.mode)
+	{
+	case 0:
+		window.top.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		break;
+	case 1:
+		window.ship.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		break;
+	case 2:
+		window.mars.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		break;
+	default:
+		cout << "DisplayFunc() unsupported display mode: " << window.mode << endl;
+		window.mode = 0;
+		break;
+	}
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DisplayInstructions();
@@ -223,6 +253,10 @@ int main(int argc, char * argv[])
 
 	window.instructions.push_back("CS 559 Project 2");
 	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
+	window.instructions.push_back("F1 - Change Display Mode");
+	window.instructions.push_back("W - Wireframe Mode");
+	window.instructions.push_back("S - Cycle Shaders");
+	window.instructions.push_back("P - Pause");
 	/*window.instructions.push_back("");
 	window.instructions.push_back("Perry Kivolowitz - For UW-Madison - CS 559");
 	window.instructions.push_back("");
@@ -239,15 +273,15 @@ int main(int argc, char * argv[])
 		return 0;
 	}
 
-	if (!background.Initialize())
+	if (!window.background.Initialize())
 		return 0;
 
-	if (!top.Initialize(window.slices))
+	if (!window.top.Initialize(window.slices))
 		return 0;
 
-	if(!ship.Initialize((float)window.slices))
+	if(!window.ship.Initialize((float)window.slices))
 		return 0;
-	if(!mars.Initialize((float)window.slices))
+	if(!window.mars.Initialize((float)window.slices))
 		return 0;
 
 	glutMainLoop();
