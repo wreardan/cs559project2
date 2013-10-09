@@ -214,6 +214,9 @@ void DisplayFunc()
 	case 2:
 		window.mars.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
+	case 3:
+		window.mesh.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		break;
 	default:
 		cout << "DisplayFunc() unsupported display mode: " << window.mode << endl;
 		window.mode = 0;
@@ -257,15 +260,6 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("W - Wireframe Mode");
 	window.instructions.push_back("S - Cycle Shaders");
 	window.instructions.push_back("P - Pause");
-	/*window.instructions.push_back("");
-	window.instructions.push_back("Perry Kivolowitz - For UW-Madison - CS 559");
-	window.instructions.push_back("");
-	window.instructions.push_back("UP / DN - changes slice count");
-	window.instructions.push_back("n - toggles normals");
-	window.instructions.push_back("p - toggles pause");
-	window.instructions.push_back("s - cycles shaders");
-	window.instructions.push_back("w - toggles wireframe");
-	window.instructions.push_back("x - exits");*/
 
 	if (glewInit() != GLEW_OK)
 	{
