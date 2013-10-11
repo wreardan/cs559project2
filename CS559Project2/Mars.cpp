@@ -4,10 +4,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <GL/freeglut.h>
 using namespace std;
-
-#include <SOIL.h>
 
 void Mars::load_file(char * filename)
 {
@@ -49,19 +46,7 @@ void Mars::load_file(char * filename)
 			vertices[y*width + x].position *= depth;
 		}
 	}
-
-	//Load Texture File
-	/*int tex_width, tex_height;
-	unsigned char * image = SOIL_load_image("Mars_2k-050104.png", &tex_width, &tex_height, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_width, tex_height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	SOIL_free_image_data(image);*/
-	//http://www.lonesock.net/soil.html
-	unsigned char* image = SOIL_load_image("img.png", &width, &height, 0, SOIL_LOAD_RGB);
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	SOIL_free_image_data(image);
+	this->CalculateNormals();
 }
 
 //Load Mars from Filename

@@ -36,6 +36,23 @@ inline int PreviousSlice(int i, int slices)
 	return (i == 0) ? slices - 1 : i - 1;
 }
 
+//http://www.opengl.org/wiki/Calculating_a_Surface_Normal
+void Mesh::CalculateNormals() {
+	unsigned int i;
+	for (i = 0; i < (this->vertices.size() * 3) - 2 ; i++) {
+		vec3 u = this->vertices[this->vertex_indices[i+1]].position - this->vertices[this->vertex_indices[i]].position;
+		vec3 v = this->vertices[this->vertex_indices[i+2]].position - this->vertices[this->vertex_indices[i]].position;
+
+		vec3 normal;
+		normal.x = (u.y *  v.z) - (u.z * v.y);
+		normal.y = (u.z * v.x) - (u.x * v.z);
+		normal.z = (u.x * v.y) - (u.y * v.x);
+		
+		this->vertices[this->vertex_indices[i]].normal = normal;
+	}
+
+}
+
 void Mesh::BuildCylinder(float radius, float height, unsigned int sectors)
 {
 	const float PI = atan(1.0f)*4;
