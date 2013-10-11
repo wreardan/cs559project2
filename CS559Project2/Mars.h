@@ -11,5 +11,6 @@ public:
 protected:
 	typedef Mesh super;
 	void load_file(char * filename);
+	GLuint texture_id;
 };
 
