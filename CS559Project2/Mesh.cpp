@@ -39,7 +39,7 @@ inline int PreviousSlice(int i, int slices)
 //http://www.opengl.org/wiki/Calculating_a_Surface_Normal
 void Mesh::CalculateNormals() {
 	unsigned int i;
-	for (i = 0; i < (this->vertices.size() * 3) - 2 ; i++) {
+	for (i = 0; i < (this->vertices.size() * 3 - 2); i++) {
 		vec3 u = this->vertices[this->vertex_indices[i+1]].position - this->vertices[this->vertex_indices[i]].position;
 		vec3 v = this->vertices[this->vertex_indices[i+2]].position - this->vertices[this->vertex_indices[i]].position;
 
@@ -48,9 +48,9 @@ void Mesh::CalculateNormals() {
 		normal.y = (u.z * v.x) - (u.x * v.z);
 		normal.z = (u.x * v.y) - (u.y * v.x);
 		
+		normal.y *= -1;
 		this->vertices[this->vertex_indices[i]].normal = normal;
 	}
-
 }
 
 void Mesh::BuildCylinder(float radius, float height, unsigned int sectors)
@@ -128,7 +128,8 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 	//Create Indices
 	vertex_indices.resize(rings * sectors * 6);
 	vector<unsigned int>::iterator i = vertex_indices.begin();
-	for(r = 0; r < rings-1; r++) for(s = 0; s < sectors-1; s++) {
+	// NOTE: Isn't this off by one? Also, we may want to duplicate edge verts, or at least fake it, for "wrapping"?
+	for(r = 0; r < rings - 1; r++) for(s = 0; s < sectors - 1; s++) { 
 		*i++ = r * sectors + s;
 		*i++ = r * sectors + (s+1);
 		*i++ = (r+1) * sectors + (s+1);
@@ -136,8 +137,13 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 		*i++ = (r+1) * sectors + s;
 		*i++ = r * sectors + s;
 		*i++ = (r+1) * sectors + (s+1);
-		
 	}
+	*i++ = vertex_indices[0];
+	*i++ = vertex_indices[0];
+	*i++ = vertex_indices[0];
+	*i++ = vertex_indices[0];
+	*i++ = vertex_indices[0];
+	*i++ = vertex_indices[0];
 }
 
 bool Mesh::Initialize(float size)
@@ -219,8 +225,6 @@ void Mesh::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, con
 
 	glEnable(GL_DEPTH_TEST);
 
-	modelview = rotate(modelview, time * 30.0f, vec3(1.0f, 0.0f, 0.0f));
-	modelview = rotate(modelview, time * 120.0f, vec3(0.0f, 1.0f, 0.0f));
 	mat4 mvp = projection * modelview;
 	mat3 nm = inverse(transpose(mat3(modelview)));
 
