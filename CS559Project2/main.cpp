@@ -27,6 +27,7 @@
 #include "Mesh.h"
 #include "Mars.h"
 #include "Ship.h"
+#include "Camera.h"
 
 using namespace std;
 using namespace glm;
@@ -99,6 +100,7 @@ void CloseFunc()
 	window.top.TakeDown();
 	window.ship.TakeDown();
 	window.mars.TakeDown();
+	Camera::TakeDownCamera();
 }
 
 void ReshapeFunc(int w, int h)
@@ -198,8 +200,11 @@ void DisplayFunc()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, window.size.x, window.size.y);
 	window.background.Draw(window.size);
+	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
+	Camera::Update(time);
 	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 10.0f);
-	mat4 modelview = lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	mat4 modelview = Camera::GetView();
+	
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
 	glPolygonMode(GL_FRONT_AND_BACK, window.wireframe ? GL_LINE : GL_FILL);
 	
@@ -269,14 +274,15 @@ int main(int argc, char * argv[])
 
 	if (!window.background.Initialize())
 		return 0;
-
 	if (!window.top.Initialize(window.slices))
 		return 0;
-
 	if(!window.ship.Initialize((float)window.slices))
 		return 0;
 	if(!window.mars.Initialize((float)window.slices))
 		return 0;
+	if(!Camera::Initialize()) {
+		return 0;
+	}
 
 	glutMainLoop();
 }

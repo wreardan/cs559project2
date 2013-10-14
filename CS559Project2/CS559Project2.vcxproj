@@ -83,6 +83,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="background.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="main.cpp" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="background.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Mars.h" />
