@@ -37,19 +37,22 @@ inline int PreviousSlice(int i, int slices)
 }
 
 //http://www.opengl.org/wiki/Calculating_a_Surface_Normal
-void Mesh::CalculateNormals() {
-	unsigned int i;
-	for (i = 0; i < (this->vertices.size() * 3 - 2); i++) {
-		vec3 u = this->vertices[this->vertex_indices[i+1]].position - this->vertices[this->vertex_indices[i]].position;
-		vec3 v = this->vertices[this->vertex_indices[i+2]].position - this->vertices[this->vertex_indices[i]].position;
+void Mesh::CalculateSphereNormals(unsigned int sectors, unsigned int rings) {
+	unsigned int r, s, i;
+	vec3 p1, p2, p3, normal;
 
-		vec3 normal;
-		normal.x = (u.y *  v.z) - (u.z * v.y);
-		normal.y = (u.z * v.x) - (u.x * v.z);
-		normal.z = (u.x * v.y) - (u.y * v.x);
+	for(r = 0; r < rings; r++) {
+		for(s = 1; s < sectors*6-1; s++) {
+			i = r * sectors * 6 + s;
+			p1 = this->vertices[this->vertex_indices[i]].position;
+			p2 = this->vertices[this->vertex_indices[(i-1)]].position;
+			p3 = this->vertices[this->vertex_indices[(i+1)]].position;
+
+			normal = cross(p2 - p1, p3 - p1);
 		
-		normal.y *= -1;
-		this->vertices[this->vertex_indices[i]].normal = normal;
+			normal.y *= -1;
+			this->vertices[this->vertex_indices[i]].normal = normal;
+		}
 	}
 }
 
@@ -116,7 +119,7 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 
 		vec3 vertex = vec3(x * radius, y * radius, z * radius);
 
-		vec3 normal = vec3(x, -y, z);
+		vec3 normal = normalize(vertex);
 
 		vec3 color = vec3(1.0f, 0.4f, 0.0f);
 		
@@ -129,21 +132,26 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 	vertex_indices.resize(rings * sectors * 6);
 	vector<unsigned int>::iterator i = vertex_indices.begin();
 	// NOTE: Isn't this off by one? Also, we may want to duplicate edge verts, or at least fake it, for "wrapping"?
-	for(r = 0; r < rings - 1; r++) for(s = 0; s < sectors - 1; s++) { 
+	// FIXED: I think this is all fixed now -Wesley
+	for(r = 0; r < rings - 1; r++) {
+		for(s = 0; s < sectors - 2; s++) {
+			*i++ = r * sectors + s;
+			*i++ = r * sectors + (s+1);
+			*i++ = (r+1) * sectors + (s+1);
+		
+			*i++ = (r+1) * sectors + s;
+			*i++ = r * sectors + s;
+			*i++ = (r+1) * sectors + (s+1);
+		}
+		//'wrapping' the edge case
 		*i++ = r * sectors + s;
-		*i++ = r * sectors + (s+1);
-		*i++ = (r+1) * sectors + (s+1);
+		*i++ = r * sectors + 0;
+		*i++ = (r+1) * sectors + 0;
 		
 		*i++ = (r+1) * sectors + s;
 		*i++ = r * sectors + s;
-		*i++ = (r+1) * sectors + (s+1);
+		*i++ = (r+1) * sectors + 0;
 	}
-	*i++ = vertex_indices[0];
-	*i++ = vertex_indices[0];
-	*i++ = vertex_indices[0];
-	*i++ = vertex_indices[0];
-	*i++ = vertex_indices[0];
-	*i++ = vertex_indices[0];
 }
 
 bool Mesh::Initialize(float size)

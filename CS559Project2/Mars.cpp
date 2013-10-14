@@ -46,7 +46,7 @@ void Mars::load_file(char * filename)
 			vertices[y*width + x].position *= depth;
 		}
 	}
-	this->CalculateNormals();
+	this->CalculateSphereNormals(width, height);
 }
 
 //Load Mars from Filename
