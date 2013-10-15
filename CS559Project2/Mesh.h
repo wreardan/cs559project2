@@ -5,6 +5,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "object.h"
 #include "Shader.h"
+
+using namespace glm;
+
 class Mesh :
 	public Object
 {
@@ -17,6 +20,14 @@ public:
 	void CalculateSphereNormals(unsigned int sectors, unsigned int rings);
 	void StepShader();
 	void TakeDown();
+	vec3 GetIndexLeft(int index, int columns);
+	vec3 GetIndexRight(int index, int columns);
+	vec3 GetIndexUp(int index, int columns);
+	vec3 GetIndexDown(int index, int columns);
+	vec3 GetIndexUpLeft(int index, int columns);
+	vec3 GetIndexRightUp(int index, int columns);
+	vec3 GetIndexDownLeft(int index, int columns);
+	vec3 GetIndexDownRight(int index, int columns);
 	Shader shader;
 	Shader solid_color;
 	Shader stripes_model_space;

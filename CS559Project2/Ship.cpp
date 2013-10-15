@@ -1,5 +1,6 @@
 #include "Ship.h"
 
+float Shipangle = 0.0f;
 
 Ship::Ship(void)
 {

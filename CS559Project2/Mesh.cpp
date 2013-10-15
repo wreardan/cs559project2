@@ -39,21 +39,72 @@ inline int PreviousSlice(int i, int slices)
 //http://www.opengl.org/wiki/Calculating_a_Surface_Normal
 void Mesh::CalculateSphereNormals(unsigned int sectors, unsigned int rings) {
 	unsigned int r, s, i;
-	vec3 p1, p2, p3, normal;
-
-	for(r = 0; r < rings; r++) {
+	vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
+	unsigned int num_columns = sectors * 6;
+	for(r = 1; r < rings-1; r++) {
 		for(s = 1; s < sectors*6-1; s++) {
 			i = r * sectors * 6 + s;
-			p1 = this->vertices[this->vertex_indices[i]].position;
-			p2 = this->vertices[this->vertex_indices[(i-1)]].position;
-			p3 = this->vertices[this->vertex_indices[(i+1)]].position;
-
-			normal = cross(p2 - p1, p3 - p1);
-		
-			normal.y *= -1;
+			curr = this->vertices[this->vertex_indices[i]].position;
+			right = Mesh::GetIndexRight(i, num_columns); 
+			left = Mesh::GetIndexLeft(i, num_columns);
+			up = Mesh::GetIndexUp(i, num_columns);
+			down = Mesh::GetIndexDown(i, num_columns);
+			down_left = Mesh::GetIndexDownLeft(i, num_columns);
+			down_right = Mesh::GetIndexDownRight(i, num_columns);
+			up_left = Mesh::GetIndexUpLeft(i, num_columns);
+			up_right = Mesh::GetIndexRightUp(i, num_columns);
+			normal = (cross(curr - up, up_left - curr) + cross(curr - up_left, right - curr) + cross(curr - right, down - curr) 
+				+ cross(curr - down, down_left - curr) + cross(curr - down_left, left - curr) + cross(curr - left, up - curr));
+			normal.x = normal.x / 6;
+			normal.y = normal.y / 6;
+			normal.z = normal.z / 6;
+			if (dot(normal, normal) != 0) {
+				normal = glm::normalize(normal);
+			}
+			//normal.y *= -1;
 			this->vertices[this->vertex_indices[i]].normal = normal;
 		}
 	}
+}
+
+vec3 Mesh::GetIndexLeft(int index, int columns){
+	index = index - 1;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexRight(int index, int columns){
+	index = index + 1;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexUp(int index, int columns){
+	index = index - columns;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexDown(int index, int columns){
+	index = index + columns;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexUpLeft(int index, int columns){
+	index = (index - 1) - columns;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexRightUp(int index, int columns){
+	index = (index + 1) - columns;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexDownLeft(int index, int columns){
+	index = (index - 1) + columns;
+	return this->vertices[this->vertex_indices[index]].position;
+}
+
+vec3 Mesh::GetIndexDownRight(int index, int columns){
+	index = (index + 1) + columns;
+	return this->vertices[this->vertex_indices[index]].position;
 }
 
 void Mesh::BuildCylinder(float radius, float height, unsigned int sectors)
