@@ -9,6 +9,13 @@ public:
 	~Camera(void);
 
 //Global Variables
+	enum Type {
+		normal,
+		chase
+	};
+	Camera::Type _type;
+	static void SetCameraType(Camera::Type type);
+	static Camera::Type GetCameraType();
 	static glm::mat4 GetView();
 	static bool Initialize();
 	static void TakeDownCamera();

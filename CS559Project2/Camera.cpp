@@ -5,8 +5,11 @@
 using namespace glm;
 
 Camera::Camera() {
-	_viewMatrix = lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	_viewMatrix = mat4(1.0f);
+	_viewMatrix = translate(_viewMatrix, vec3(0.0f, 0.0f, -5.5f));
+	//lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	_lastFrameTime = 0.0f;
+	_type = Camera::Type::normal;
 }
 
 Camera::~Camera() {
@@ -23,6 +26,22 @@ bool Camera::Initialize() {
 		return true;
 	}
 	return false;
+}
+
+Camera::Type Camera::GetCameraType() {
+	return mainCamera->_type;
+}
+
+void Camera::SetCameraType(Camera::Type type) {
+	mainCamera->_viewMatrix = mat4(1.0f); //reset view matrix
+	if (type == Camera::Type::chase) {
+		mainCamera->_viewMatrix = rotate(mainCamera->_viewMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
+		mainCamera->_viewMatrix = translate(mainCamera->_viewMatrix, vec3(0.0f, 0.0f, -1.5f));
+		mainCamera->_type = type;
+	} else if (type == Camera::Type::normal) {
+		mainCamera->_viewMatrix = translate(mainCamera->_viewMatrix, vec3(0.0f, 0.0f, -5.5f));
+		mainCamera->_type = type;
+	}
 }
 
 mat4 Camera::GetView() {

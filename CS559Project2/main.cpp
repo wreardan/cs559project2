@@ -119,6 +119,10 @@ void KeyboardFunc(unsigned char c, int x, int y)
 
 	switch (c)
 	{
+	case 'V':
+	case 'v':
+		Camera::SetCameraType((Camera::GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
+		break;
 	case 'S':
 	case 's':
 		window.top.StepShader();
@@ -202,8 +206,8 @@ void DisplayFunc()
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
 	Camera::Update(time);
-	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 10.0f);
-	mat4 modelview = Camera::GetView();
+	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 1000.0f);
+	mat4 view = Camera::GetView();
 	
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
 	glPolygonMode(GL_FRONT_AND_BACK, window.wireframe ? GL_LINE : GL_FILL);
@@ -211,23 +215,22 @@ void DisplayFunc()
 	switch(window.mode)
 	{
 	case 0:
-		window.top.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.top.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 1:
-		window.ship.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
-		window.mars.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
-		window.mesh.Draw(projection, modelview, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mesh.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
 		cout << "DisplayFunc() unsupported display mode: " << window.mode << endl;
 		window.mode = 0;
 		break;
 	}
-
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DisplayInstructions();
 	glFlush();
