@@ -222,6 +222,7 @@ void DisplayFunc()
 		break;
 	case 2:
 		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
 		window.mesh.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
