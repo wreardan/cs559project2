@@ -122,7 +122,7 @@ void Mesh::BuildCylinder(float radius, float height, unsigned int sectors)
 
 		vec3 vertex = vec3(x * radius, y * radius, z * radius);
 
-		vec3 normal = vec3(x, y, z);
+		vec3 normal = normalize(vec3(x, y, z));
 
 		vec3 color = vec3(1.0f, 0.4f, 0.0f);
 		
@@ -186,22 +186,22 @@ void Mesh::BuildSphere(float radius, unsigned int sectors, unsigned int rings)
 	// FIXED: I think this is all fixed now -Wesley
 	for(r = 0; r < rings - 1; r++) {
 		for(s = 0; s < sectors - 2; s++) {
-			*i++ = r * sectors + s;
 			*i++ = r * sectors + (s+1);
-			*i++ = (r+1) * sectors + (s+1);
+			*i++ = (r) * sectors + (s);
+			*i++ = (r+1) * sectors + s;
 		
 			*i++ = (r+1) * sectors + s;
-			*i++ = r * sectors + s;
 			*i++ = (r+1) * sectors + (s+1);
+			*i++ = (r) * sectors + (s+1);
 		}
 		//'wrapping' the edge case
-		*i++ = r * sectors + s;
 		*i++ = r * sectors + 0;
-		*i++ = (r+1) * sectors + 0;
+		*i++ = r * sectors + s;
+		*i++ = (r+1) * sectors + s;
 		
 		*i++ = (r+1) * sectors + s;
-		*i++ = r * sectors + s;
 		*i++ = (r+1) * sectors + 0;
+		*i++ = (r) * sectors + 0;
 	}
 }
 

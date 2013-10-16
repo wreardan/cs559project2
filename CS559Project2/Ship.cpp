@@ -12,8 +12,7 @@ Ship::~Ship(void)
 }
 
 void Ship::BuildShip() {
-	this->BuildSphere(100.0f, 360, 180);
-	this->CalculateSphereNormals(360, 180);
+	this->BuildSphere(1.0f, 360, 180);
 }
 
 void Ship::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const float time)
