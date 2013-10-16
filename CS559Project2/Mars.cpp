@@ -8,7 +8,7 @@ using namespace std;
 
 void Mars::load_file(char * filename)
 {
-	const float scalar = 0.05f;	//scalar for mars depth data
+	const float scalar = 0.025f;	//scalar for mars depth data
 	//Load file, error if cannot open
 	string line;
 	stringstream line_stream;
@@ -41,7 +41,7 @@ void Mars::load_file(char * filename)
 		line_stream << line;
 		for(int x = 0; x < width; x++) {
 			line_stream >> depth;
-			depth = 1.0f - depth * scalar;
+			depth = 1.0f + depth * scalar;
 			assert(depth >= 0.0f && depth <= 1.0f);
 			vertices[y*width + x].position *= depth;
 		}

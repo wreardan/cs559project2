@@ -53,8 +53,15 @@ void Mesh::CalculateSphereNormals(unsigned int sectors, unsigned int rings) {
 			down_right = Mesh::GetIndexDownRight(i, num_columns);
 			up_left = Mesh::GetIndexUpLeft(i, num_columns);
 			up_right = Mesh::GetIndexRightUp(i, num_columns);
-			normal = (cross(curr - up, up_left - curr) + cross(curr - up_left, right - curr) + cross(curr - right, down - curr) 
-				+ cross(curr - down, down_left - curr) + cross(curr - down_left, left - curr) + cross(curr - left, up - curr));
+			vec3 a = cross(left - up, left - curr);
+			vec3 b = cross(up - up_right, up - curr);
+			vec3 c = cross(curr - up_right, curr - right);
+			vec3 d = cross(right - down, right - curr);
+			vec3 e = cross(down_left - curr, down_left - down);
+			vec3 f = cross(curr - down_left, curr - left);
+			normal = a + b + c + d + e + f;
+			//normal = (cross(left - curr, curr - up) + cross(up - curr, curr - up_right) + cross(up_right - curr, curr - right) 
+			//	+ cross(right - curr, curr - down) + cross(down - curr, curr - down_left) + cross(down_left - curr, curr - left));
 			normal.x = normal.x / 6;
 			normal.y = normal.y / 6;
 			normal.z = normal.z / 6;

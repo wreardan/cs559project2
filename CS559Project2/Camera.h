@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-#define k_mars_rotation_speed (10.0f)
+#define k_mars_rotation_speed (20.0f)
 class Camera
 {
 public:
