@@ -309,6 +309,10 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const fl
 	if (this->GLReturnedError("Mesh::Draw - on entry"))
 		return;
 
+	if(texture.il_handle !=  BAD_IL_VALUE) {
+		texture.Bind();
+	}
+
 	glEnable(GL_DEPTH_TEST);
 	mat4 model = glm::mat4(1.0f);
 	//model = scale(model, vec3(10, 10, 10));

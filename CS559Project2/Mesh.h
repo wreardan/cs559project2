@@ -33,7 +33,7 @@ public:
 	Shader shader;
 	Shader solid_color;
 	Shader stripes_model_space;
-	Shader texture_shader;
+	TextureShader texture_shader;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
 	void LoadTexture(char * texture_filename);
