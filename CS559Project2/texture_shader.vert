@@ -12,13 +12,13 @@ uniform mat3 normal_matrix;
 flat out vec3 color;
 out vec3 normal;
 out vec3 position;
-out vec2 texture;
+out vec2 texture_coord;
 
 void main()
 {
 	color = vertex_color;
 	normal = normalize(normal_matrix * vertex_normal);
 	position = vec3(modelview_matrix * vec4(vertex_position,1.0));
-	texture = vertex_texture;
+	texture_coord = vertex_texture;
 	gl_Position = mvp * vec4(vertex_position, 1.0);
 }

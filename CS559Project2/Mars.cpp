@@ -10,7 +10,7 @@ bool Mars::Initialize(float size)
 {
 	super::Initialize(size);
 
-	LoadTexture("Mars_2k-050104.png");
+	LoadTexture("Mars.png");
 
 	return true;
 }

@@ -2,10 +2,12 @@
 
 layout (location = 0) out vec4 FragColor;
 
+uniform sampler2D s_texture;
+
 flat in vec3 color;
 in vec3 position;
 in vec3 normal;
-in vec2 texture;
+in vec2 texture_coord;
 
 const float shininess = 100.0f;
 const vec3 light_position = vec3(10.0, 10.0, -20.0);
@@ -28,5 +30,6 @@ vec3 ads( )
 
 void main()
 {
-	FragColor = vec4(ads(), 1.0);
+    vec4 t_color = texture2D(s_texture, texture_coord);
+	FragColor = vec4(ads(), 1.0) * t_color;
 }

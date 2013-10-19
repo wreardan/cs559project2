@@ -248,3 +248,26 @@ void BackgroundShader::CustomSetup(vec4 * color_array)
 {
 	glUniform4fv(this->color_array_handle, 4, (GLfloat *) color_array);
 }
+
+
+TextureShader::TextureShader() : super()
+{
+	this->texture_sampler = BAD_GL_VALUE;
+}
+
+bool TextureShader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
+{
+	if (!super::Initialize(vertex_shader_file, fragment_shader_file))
+		return false;
+
+	this->Use();
+	this->texture_sampler = glGetUniformLocation(this->program_id, (const GLchar *) "color_array");
+	glUseProgram(0);
+//	assert(this->color_array_handle != BAD_GL_VALUE);
+	return true;
+}
+
+void TextureShader::CustomSetup()
+{
+	glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
+}

@@ -56,3 +56,19 @@ protected:
 private:
 	typedef Shader super;
 };
+
+
+class TextureShader : public Shader
+{
+public:
+	TextureShader();
+	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
+	virtual void CustomSetup();
+
+protected:
+	GLuint texture_sampler;
+
+private:
+	typedef Shader super;
+};
+
