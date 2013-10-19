@@ -206,7 +206,7 @@ void DisplayFunc()
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
 	Camera::Update(time);
-	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 1000.0f);
+	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
 	mat4 view = Camera::GetView();
 	
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
@@ -218,11 +218,11 @@ void DisplayFunc()
 		window.top.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 1:
-		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		//window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
 		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		//window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
 		window.mesh.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
@@ -280,8 +280,8 @@ int main(int argc, char * argv[])
 		return 0;
 	if (!window.top.Initialize(window.slices))
 		return 0;
-	if(!window.ship.Initialize((float)window.slices))
-		return 0;
+	//if(!window.ship.Initialize((float)window.slices))
+		//return 0;
 	if(!window.mars.Initialize((float)window.slices))
 		return 0;
 	if(!Camera::Initialize()) {

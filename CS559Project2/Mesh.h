@@ -20,22 +20,23 @@ public:
 	void CalculateSphereNormals(unsigned int sectors, unsigned int rings);
 	void StepShader();
 	void TakeDown();
-	vec3 GetIndexLeft(int index, int columns);
-	vec3 GetIndexRight(int index, int columns);
-	vec3 GetIndexUp(int index, int columns);
-	vec3 GetIndexDown(int index, int columns);
-	vec3 GetIndexUpLeft(int index, int columns);
-	vec3 GetIndexRightUp(int index, int columns);
-	vec3 GetIndexDownLeft(int index, int columns);
-	vec3 GetIndexDownRight(int index, int columns);
+	void NormalsHelper(int index, int sectors);
+	vec3 GetIndexLeft(int index, int columns, int r, int c);
+	vec3 GetIndexRight(int index, int columns, int r, int c);
+	vec3 GetIndexUp(int index, int columns, int r, int c);
+	vec3 GetIndexDown(int index, int columns, int r, int c, int rows);
+	vec3 GetIndexUpLeft(int index, int columns, int r, int c);
+	vec3 GetIndexRightUp(int index, int columns, int r, int c);
+	vec3 GetIndexDownLeft(int index, int columns, int r, int c, int rows);
+	vec3 GetIndexDownRight(int index, int columns, int r, int c, int rows);
 	Shader shader;
 	Shader solid_color;
 	Shader stripes_model_space;
 	std::vector<Shader *> shaders;
 
 protected:
-	void BuildSphere(float radius, unsigned int sectors, unsigned int rings);
-	void BuildCylinder(float radius, float height, unsigned int sectors);
+	void BuildMesh(unsigned int columns, unsigned int rows);
+	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
 	void BuildNormalVisualizationGeometry();
 
 	glm::vec4 colors[2];

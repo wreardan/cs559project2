@@ -1,7 +1,10 @@
 #pragma once
 #include "mesh.h"
+#include "Sphere.h"
+#include "Cylinder.h"
+
 class Mars :
-	public Mesh
+	public Sphere
 {
 public:
 	Mars(char * filename);

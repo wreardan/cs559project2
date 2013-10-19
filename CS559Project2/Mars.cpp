@@ -32,9 +32,13 @@ void Mars::load_file(char * filename)
 	}
 	
 	//Create Mesh
-	this->BuildSphere(1.0f, width, height);
+	this->BuildMesh(width, height);
+	//Wrap Into Sphere
+	this->BuildPrimitive(10.0f, width, height);
+
 
 	//Modify Mesh Vertices
+	int index = 0;
 	for(int y = 0; y < height; y++) {
 		getline(file, line);
 		line_stream.clear();
@@ -42,10 +46,12 @@ void Mars::load_file(char * filename)
 		for(int x = 0; x < width; x++) {
 			line_stream >> depth;
 			depth = 1.0f + depth * scalar;
-			assert(depth >= 0.0f && depth <= 1.0f);
-			vertices[y*width + x].position *= depth;
+			assert(depth >= 0.0f && depth <= 2.0f);
+			vertices[index].position *= depth;
+			index++;
 		}
 	}
+	
 	this->CalculateSphereNormals(width, height);
 }
 
