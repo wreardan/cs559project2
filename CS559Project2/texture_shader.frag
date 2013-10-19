@@ -5,6 +5,7 @@ layout (location = 0) out vec4 FragColor;
 flat in vec3 color;
 in vec3 position;
 in vec3 normal;
+in vec2 texture;
 
 const float shininess = 100.0f;
 const vec3 light_position = vec3(10.0, 10.0, -20.0);
