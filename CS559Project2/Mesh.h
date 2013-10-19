@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "object.h"
 #include "Shader.h"
+#include "ilcontainer.h"
 
 using namespace glm;
 
@@ -32,7 +33,10 @@ public:
 	Shader shader;
 	Shader solid_color;
 	Shader stripes_model_space;
+	Shader texture_shader;
 	std::vector<Shader *> shaders;
+	ILContainer texture;
+	void LoadTexture(char * texture_filename);
 
 protected:
 	void BuildMesh(unsigned int columns, unsigned int rows);
@@ -41,7 +45,9 @@ protected:
 
 	glm::vec4 colors[2];
 	std::vector<VertexAttributesPCNT> vertices;
-	typedef Object super;
 	int shader_index;
+
+private:
+	typedef Object super;
 };
 

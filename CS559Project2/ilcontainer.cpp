@@ -9,7 +9,7 @@ bool ILContainer::Initialize(const char * file_name)
 	if ((this->il_handle = ilGenImage()) == BAD_IL_VALUE)
 		return false;
 	ilBindImage(this->il_handle);
-	if (!ilLoadImage(file_name))
+	if (!ilLoadImage((const ILstring) file_name))
 		return false;
 
 	glGenTextures(1, &this->il_texture_handle);

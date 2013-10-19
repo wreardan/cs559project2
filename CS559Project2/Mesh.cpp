@@ -1,8 +1,14 @@
 #include "Mesh.h"
+#include <IL/il.h>
 
 using namespace std;
 using namespace glm;
 
+
+void Mesh::LoadTexture(char * texture_filename)
+{
+	texture.Initialize(texture_filename);
+}
 
 Mesh::Mesh(void) : Object()
 {
@@ -10,7 +16,7 @@ Mesh::Mesh(void) : Object()
 	vec4 darker_color = vec4(vec3(lighter_color) * 2.0f / 3.0f, 1.0f);
 	this->colors[0] = darker_color;
 	this->colors[1] = lighter_color;
-	this->shader_index = 0;
+	this->shader_index = 3;
 }
 
 
@@ -182,7 +188,7 @@ void Mesh::BuildMesh(unsigned int columns, unsigned int rows)
 
 			vec3 color = vec3(1.0f, 0.4f, 0.0f);
 		
-			vec2 tex = vec2(s*S, r*R);
+			vec2 tex = vec2(float(s) / (columns-1), float(r) / (rows-1));
 
 			this->vertices.push_back(VertexAttributesPCNT(vertex, color, normal, tex));
 		}
@@ -268,9 +274,13 @@ bool Mesh::Initialize(float size)
 	if (!this->stripes_model_space.Initialize("stripe_model_space.vert", "stripe_model_space.frag"))
 		return false;
 
+	if (!this->texture_shader.Initialize("texture_shader.vert", "texture_shader.frag"))
+		return false;
+
 	this->shaders.push_back(&this->shader);
 	this->shaders.push_back(&this->solid_color);
 	this->shaders.push_back(&this->stripes_model_space);
+	this->shaders.push_back(&this->texture_shader);
 
 	if (this->GLReturnedError("Background::Initialize - on exit"))
 		return false;
@@ -283,6 +293,7 @@ void Mesh::TakeDown()
 	this->vertices.clear();
 	this->shader.TakeDown();
 	this->solid_color.TakeDown();
+	this->texture_shader.TakeDown();
 	super::TakeDown();
 }
 

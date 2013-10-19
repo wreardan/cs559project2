@@ -263,6 +263,8 @@ int main(int argc, char * argv[])
 	glutTimerFunc(window.interval, TimerFunc, 0);
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
+	ilInit();
+
 	window.instructions.push_back("CS 559 Project 2");
 	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
 	window.instructions.push_back("F1 - Change Display Mode");

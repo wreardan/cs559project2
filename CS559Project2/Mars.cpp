@@ -6,6 +6,16 @@
 #include <sstream>
 using namespace std;
 
+bool Mars::Initialize(float size)
+{
+	super::Initialize(size);
+
+	LoadTexture("Mars_2k-050104.png");
+
+	return true;
+}
+
+
 void Mars::load_file(char * filename)
 {
 	const float scalar = 0.025f;	//scalar for mars depth data
@@ -56,7 +66,7 @@ void Mars::load_file(char * filename)
 }
 
 //Load Mars from Filename
-Mars::Mars(char * filename)
+Mars::Mars(char * filename) : super()
 {
 	load_file(filename);
 }
@@ -67,6 +77,7 @@ Mars::Mars(void)
 	load_file("mars_low_rez.txt");
 #else
 	load_file("mars.txt");
+	
 #endif
 }
 
