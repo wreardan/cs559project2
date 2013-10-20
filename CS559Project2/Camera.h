@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #define k_mars_rotation_speed (20.0f)
 class Camera
@@ -22,6 +23,7 @@ public:
 	static void Update(float time);
 	glm::mat4 _viewMatrix;
 	float _lastFrameTime;	
+	glm::quat rotation_quat;
 };
 
 static Camera *mainCamera;

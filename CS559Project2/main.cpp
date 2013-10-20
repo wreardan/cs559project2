@@ -42,7 +42,7 @@ public:
 		this->slices = 20;
 		this->interval = 1000 / 120;
 		this->window_handle = -1;
-		mode = 2;
+		mode = 1;
 	}
 	~Window()
 	{
@@ -126,14 +126,12 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 'S':
 	case 's':
 		window.top.StepShader();
-		window.ship.StepShader();
 		window.mars.StepShader();
 		break;
 		
 	case 'N':
 	case 'n':
 		window.top.EnableNormals(window.normals = !window.normals);
-		window.ship.EnableNormals(window.normals = !window.normals);
 		window.mars.EnableNormals(window.normals = !window.normals);
 		break;
 		
@@ -215,17 +213,28 @@ void DisplayFunc()
 	switch(window.mode)
 	{
 	case 0:
-		window.top.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		/*Just your newly improved spaceship slowly turning so we can admire your mesh
+		construction and lighting correctness. With or without a starfield.*/
+		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 1:
-		//window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		/*Just Mars, slowly spinning as per the sample prototype I provide. With or without a starfield.*/
+		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
+		/*First person view flying over the surface of Mars. It is NOT necessary but would be bonus
+		to be able to steer (bonus hint). With or without steering, the starfield must “correctly”
+		turn with your motion.*/
 		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		//window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
-		window.mesh.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		/*Third person view flying over the surface of Mars from a “chase camera.” The camera
+		should follow along with your spaceship. It is NOT necessary to be able to alter the
+		position of the chase camera relative to the spaceship (bonus hint). Again, a “correctly”
+		turning starfield is required.*/
+		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
 		cout << "DisplayFunc() unsupported display mode: " << window.mode << endl;
@@ -282,8 +291,8 @@ int main(int argc, char * argv[])
 		return 0;
 	if (!window.top.Initialize(window.slices))
 		return 0;
-	//if(!window.ship.Initialize((float)window.slices))
-		//return 0;
+	if(!window.ship.Initialize())
+		return 0;
 	if(!window.mars.Initialize((float)window.slices))
 		return 0;
 	if(!Camera::Initialize()) {

@@ -261,13 +261,18 @@ bool TextureShader::Initialize(char * vertex_shader_file, char * fragment_shader
 		return false;
 
 	this->Use();
-	this->texture_sampler = glGetUniformLocation(this->program_id, (const GLchar *) "color_array");
+	this->texture_sampler = glGetUniformLocation(this->program_id, (const GLchar *) "s_texture");
+	this->light_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "light_position");
+	this->GLReturnedError("TextureShader::Initialize - after light_position_handle");
 	glUseProgram(0);
 //	assert(this->color_array_handle != BAD_GL_VALUE);
 	return true;
 }
 
-void TextureShader::CustomSetup()
+void TextureShader::CustomSetup(vec3 & light_position)
 {
-	glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
+	this->light_position = light_position;
+	//glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
+	glUniform3fv(this->light_position_handle, 1, value_ptr(light_position));
+	this->GLReturnedError("TextureShader::CustomSetup - after light_position");
 }

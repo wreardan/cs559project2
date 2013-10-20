@@ -2,6 +2,7 @@
 
 layout (location = 0) out vec4 FragColor;
 
+uniform vec3 light_position;
 uniform sampler2D s_texture;
 
 flat in vec3 color;
@@ -10,7 +11,6 @@ in vec3 normal;
 in vec2 texture_coord;
 
 const float shininess = 100.0f;
-const vec3 light_position = vec3(10.0, 10.0, -20.0);
 
 vec3 ads( )
 {

@@ -63,10 +63,12 @@ class TextureShader : public Shader
 public:
 	TextureShader();
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
-	virtual void CustomSetup();
+	virtual void CustomSetup(glm::vec3 & light_position);
 
 protected:
 	GLuint texture_sampler;
+	GLuint light_position_handle;
+	glm::vec3 light_position;
 
 private:
 	typedef Shader super;

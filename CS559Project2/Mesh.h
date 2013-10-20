@@ -21,6 +21,21 @@ public:
 	void CalculateSphereNormals(unsigned int sectors, unsigned int rings);
 	void StepShader();
 	void TakeDown();
+	void LoadTexture(char * texture_filename);
+	void BuildMesh(unsigned int columns, unsigned int rows);
+	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
+	void BuildNormalVisualizationGeometry();
+	
+	int shader_index;
+	Shader shader;
+	Shader solid_color;
+	Shader stripes_model_space;
+	TextureShader texture_shader;
+	std::vector<Shader *> shaders;
+	ILContainer texture;
+
+protected:
+	
 	void NormalsHelper(int index, int sectors);
 	vec3 GetIndexLeft(int index, int columns, int r, int c);
 	vec3 GetIndexRight(int index, int columns, int r, int c);
@@ -30,22 +45,9 @@ public:
 	vec3 GetIndexRightUp(int index, int columns, int r, int c);
 	vec3 GetIndexDownLeft(int index, int columns, int r, int c, int rows);
 	vec3 GetIndexDownRight(int index, int columns, int r, int c, int rows);
-	Shader shader;
-	Shader solid_color;
-	Shader stripes_model_space;
-	TextureShader texture_shader;
-	std::vector<Shader *> shaders;
-	ILContainer texture;
-	void LoadTexture(char * texture_filename);
-
-protected:
-	void BuildMesh(unsigned int columns, unsigned int rows);
-	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
-	void BuildNormalVisualizationGeometry();
 
 	glm::vec4 colors[2];
 	std::vector<VertexAttributesPCNT> vertices;
-	int shader_index;
 
 private:
 	typedef Object super;

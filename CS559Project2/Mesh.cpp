@@ -322,6 +322,11 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const fl
 	this->shaders[this->shader_index]->Use();
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
+
+	vec3 light_pos = vec3(-200.0f, 200.0f, 200.0f);
+	light_pos = nm * light_pos;
+	this->texture_shader.CustomSetup(light_pos);
+
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);
 	glDrawElements(GL_TRIANGLES , this->vertex_indices.size(), GL_UNSIGNED_INT , &this->vertex_indices[0]);
