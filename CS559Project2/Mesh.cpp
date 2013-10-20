@@ -323,7 +323,7 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const fl
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
-	vec3 light_pos = vec3(-200.0f, 200.0f, 200.0f);
+	vec3 light_pos = vec3(-20.0f, 20.0f, 20.0f);
 	light_pos = nm * light_pos;
 	this->texture_shader.CustomSetup(light_pos);
 

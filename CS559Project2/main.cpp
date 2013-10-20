@@ -39,10 +39,11 @@ public:
 	{
 		this->time_last_pause_began = this->total_time_paused = 0;
 		this->normals = this->wireframe = this->paused = false;
+		this->wireframe = true;
 		this->slices = 20;
 		this->interval = 1000 / 120;
 		this->window_handle = -1;
-		mode = 1;
+		mode = 0;
 	}
 	~Window()
 	{
@@ -127,6 +128,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 's':
 		window.top.StepShader();
 		window.mars.StepShader();
+		window.ship.StepShader();
 		break;
 		
 	case 'N':

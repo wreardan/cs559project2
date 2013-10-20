@@ -7,7 +7,7 @@ using namespace glm;
 
 Camera::Camera() {
 	_viewMatrix = mat4(1.0f);
-	_viewMatrix = translate(_viewMatrix, vec3(0.0f, 0.0f, -50.0f));
+	_viewMatrix = translate(_viewMatrix, vec3(0.0f, 0.0f, -150.0f));
 	//lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	_lastFrameTime = 0.0f;
 	_type = Camera::Type::normal;
