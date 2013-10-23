@@ -39,11 +39,11 @@ public:
 	{
 		this->time_last_pause_began = this->total_time_paused = 0;
 		this->normals = this->wireframe = this->paused = false;
-		this->wireframe = true;
+		this->wireframe = false;
 		this->slices = 20;
 		this->interval = 1000 / 120;
 		this->window_handle = -1;
-		mode = 0;
+		mode = 3;
 	}
 	~Window()
 	{
@@ -65,6 +65,7 @@ public:
 	Mesh mesh;
 	Ship ship;
 	Mars mars;
+	Camera camera;
 } window;
 
 void DisplayInstructions()
@@ -101,7 +102,6 @@ void CloseFunc()
 	window.top.TakeDown();
 	window.ship.TakeDown();
 	window.mars.TakeDown();
-	Camera::TakeDownCamera();
 }
 
 void ReshapeFunc(int w, int h)
@@ -122,7 +122,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	{
 	case 'V':
 	case 'v':
-		Camera::SetCameraType((Camera::GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
+		window.camera.SetCameraType((window.camera.GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
 		break;
 	case 'S':
 	case 's':
@@ -186,7 +186,7 @@ void SpecialFunc(int c, int x, int y)
 
 	case GLUT_KEY_F1:
 		window.mode++;
-		if(window.mode > 2)	//change to add more modes
+		if(window.mode > 3)	//change to add more modes
 			window.mode = 0;
 		break;
 
@@ -205,9 +205,10 @@ void DisplayFunc()
 	glViewport(0, 0, window.size.x, window.size.y);
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
-	Camera::Update(time);
+	window.camera.Update(time);
 	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
-	mat4 view = Camera::GetView();
+	mat4 view = window.camera.GetView();
+	mat4 temp;
 	
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
 	glPolygonMode(GL_FRONT_AND_BACK, window.wireframe ? GL_LINE : GL_FILL);
@@ -217,29 +218,37 @@ void DisplayFunc()
 	case 0:
 		/*Just your newly improved spaceship slowly turning so we can admire your mesh
 		construction and lighting correctness. With or without a starfield.*/
+		window.camera.type = Camera::normal;
+		window.camera.scalar = 2.0f;
+		window.camera.rotation_speed = 20.0f;
 		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 1:
 		/*Just Mars, slowly spinning as per the sample prototype I provide. With or without a starfield.*/
+		window.camera.type = Camera::normal;
+		window.camera.scalar = 12.0f;
+		window.camera.rotation_speed = 10.0f;
 		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
 		/*First person view flying over the surface of Mars. It is NOT necessary but would be bonus
 		to be able to steer (bonus hint). With or without steering, the starfield must “correctly”
 		turn with your motion.*/
+		window.camera.type = Camera::chase;
 		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		//window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
 		/*Third person view flying over the surface of Mars from a “chase camera.” The camera
 		should follow along with your spaceship. It is NOT necessary to be able to alter the
 		position of the chase camera relative to the spaceship (bonus hint). Again, a “correctly”
 		turning starfield is required.*/
+		window.camera.type = Camera::chase;
 		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		temp = translate(mat4(1.0f), vec3(-2.0f, -2.0f, 0.0f));
+		window.ship.Draw(projection, temp, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
-		cout << "DisplayFunc() unsupported display mode: " << window.mode << endl;
+		cerr << "DisplayFunc() unsupported display mode: " << window.mode << endl;
 		window.mode = 0;
 		break;
 	}
@@ -282,6 +291,7 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("W - Wireframe Mode");
 	window.instructions.push_back("S - Cycle Shaders");
 	window.instructions.push_back("P - Pause");
+	window.instructions.push_back("V - Change Camera Mode");
 
 	if (glewInit() != GLEW_OK)
 	{
@@ -297,7 +307,7 @@ int main(int argc, char * argv[])
 		return 0;
 	if(!window.mars.Initialize((float)window.slices))
 		return 0;
-	if(!Camera::Initialize()) {
+	if(!window.camera.Initialize()) {
 		return 0;
 	}
 

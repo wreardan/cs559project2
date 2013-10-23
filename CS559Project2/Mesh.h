@@ -25,6 +25,7 @@ public:
 	void BuildMesh(unsigned int columns, unsigned int rows);
 	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
 	void BuildNormalVisualizationGeometry();
+	void SetLightPosition(vec3 & light_position);
 	
 	int shader_index;
 	Shader shader;
@@ -48,6 +49,7 @@ protected:
 
 	glm::vec4 colors[2];
 	std::vector<VertexAttributesPCNT> vertices;
+	glm::vec3 light_position;
 
 private:
 	typedef Object super;

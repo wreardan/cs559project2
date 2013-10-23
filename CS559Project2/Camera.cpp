@@ -1,58 +1,68 @@
 #include "Camera.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/quaternion.hpp>
+
+
+#define PI (3.14159f)
 
 using namespace glm;
 
 Camera::Camera() {
-	_viewMatrix = mat4(1.0f);
-	_viewMatrix = translate(_viewMatrix, vec3(0.0f, 0.0f, -150.0f));
-	//lookAt(vec3(0.0f, 0.0f, 5.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-	_lastFrameTime = 0.0f;
-	_type = Camera::Type::normal;
-	//_viewMatrix = rotate(_viewMatrix, 30.0f, vec3(0, 1, 0));
+	scalar = 12.0f;
+	rotation_speed = 10.0f;
 }
 
 Camera::~Camera() {
 }
 
 void Camera::TakeDownCamera() {
-	delete mainCamera;
 }
 
 bool Camera::Initialize() {
-	if (mainCamera == NULL) {
-		Camera *mainCam = new Camera();
-		mainCamera = mainCam;
-		return true;
-	}
-	return false;
+	return true;
 }
 
 Camera::Type Camera::GetCameraType() {
-	return mainCamera->_type;
+	return type;
 }
 
 void Camera::SetCameraType(Camera::Type type) {
-	mainCamera->_viewMatrix = mat4(1.0f); //reset view matrix
-	if (type == Camera::Type::chase) {
-		mainCamera->_viewMatrix = rotate(mainCamera->_viewMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
-		mainCamera->_viewMatrix = translate(mainCamera->_viewMatrix, vec3(0.0f, 0.0f, -1.5f));
-		mainCamera->_type = type;
-	} else if (type == Camera::Type::normal) {
-		mainCamera->_viewMatrix = translate(mainCamera->_viewMatrix, vec3(0.0f, 0.0f, -5.5f));
-		mainCamera->_type = type;
-	}
+	this->type = type;
 }
 
 mat4 Camera::GetView() {
-	return mainCamera->_viewMatrix;
+	return viewMatrix;
 }
 
 void Camera::Update(float time) {
-	float deltaTime = time - mainCamera->_lastFrameTime;
-	float rotAngle = k_mars_rotation_speed * deltaTime;
-	mainCamera->_viewMatrix = rotate(mainCamera->_viewMatrix, rotAngle, vec3(0, 1, 0));
-	mainCamera->_lastFrameTime = time;
+
+	float deltaTime = time - lastFrameTime;
+	float rotAngle = time*rotation_speed;
+
+	mat4 rotx = rotate(mat4(1.0f), rotAngle, vec3(1.0f, 0.0f, 0.0f));
+	mat4 roty = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 1.0f, 0.0f));
+	mat4 rotz = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 0.0f, 1.0f));
+	
+	switch(type)
+	{
+	case Type::chase:
+		position = vec3(roty * rotx * vec4(0.0f, 0.0f, -scalar, 1.0f));
+		facing = vec3(roty * rotx * vec4(0.0f, scalar*1.5, 0.0f, 1.0f));
+		up = vec3(roty * rotx * vec4(0.0f, 0.0f, -1.0f, 1.0f));
+		break;
+	case Type::normal:
+		position = vec3(roty * rotx * vec4(0.0f, 0.0f, -4.0f*scalar, 1.0f));
+		facing = vec3(0.0f, 0.0f, 0.0f);
+		up = vec3(0.0f, 1.0f, 0.0f);
+		break;
+	default:
+		assert(false);
+		break;
+	}
+
+	//position = vec3(rotationMatrix * vec4(position, 1.0f));
+
+	viewMatrix = lookAt(position, facing, up);
+
+	lastFrameTime = time;
 }

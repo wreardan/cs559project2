@@ -19,7 +19,7 @@ void Ship::StepShader()
 void Ship::BuildPrimitive() {
 	sphere.BuildMesh(20, 20);
 	sphere.BuildPrimitive(2.0f, 20, 20);
-	sphere.shader_index = 0;
+	sphere.shader_index = 3;
 }
 
 
@@ -79,6 +79,7 @@ void Ship::DrawWing(const mat4 & projection, mat4 & view, const ivec2 & size, co
 void Ship::Draw(const mat4 & projection, mat4 & view, const ivec2 & size, const float time)
 {
 	mat4 mv = view;
+	mv = scale(mv, vec3(0.05f, 0.05f, 0.05f));
 	//sphere.Draw(projection, mv, size, time);
 	//mv = translate(mv, vec3(5.0f, 0.0f, 0.0f));
 	//mv = scale(mv, vec3(1.0f, 5.0f, 1.0f));

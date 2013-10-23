@@ -1,29 +1,35 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
-#define k_mars_rotation_speed (20.0f)
 class Camera
 {
+protected:
+	glm::mat4 viewMatrix;
+	glm::vec3 position;
+	glm::vec3 facing;
+	glm::vec3 up;
+
 public:
 	Camera();
 	~Camera(void);
 
-//Global Variables
+//Public Variables
 	enum Type {
 		normal,
 		chase
 	};
-	Camera::Type _type;
-	static void SetCameraType(Camera::Type type);
-	static Camera::Type GetCameraType();
-	static glm::mat4 GetView();
-	static bool Initialize();
-	static void TakeDownCamera();
-	static void Update(float time);
-	glm::mat4 _viewMatrix;
-	float _lastFrameTime;	
-	glm::quat rotation_quat;
-};
+	float scalar;
+	float rotation_speed;
+	Camera::Type type;
 
-static Camera *mainCamera;
+	//Methods
+	void SetCameraType(Camera::Type type);
+	Camera::Type GetCameraType();
+	glm::mat4 GetView();
+	bool Initialize();
+	void TakeDownCamera();
+	void Update(float time);
+	float lastFrameTime;
+};
