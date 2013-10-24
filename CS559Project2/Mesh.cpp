@@ -39,16 +39,31 @@ inline int PreviousSlice(int i, int slices)
 	return (i == 0) ? slices - 1 : i - 1;
 }
 
+void Mesh::BuildNormalVisualizationGeometry(int index)
+{
+	const float normal_scalar = 0.125f;
+	index+=3;
+	if(index >= vertices.size())
+		return;
+	for (int j = 1; j <= 3; ++j)
+	{
+		this->normal_vertices.push_back(VertexAttributesP(this->vertices[index - j].position));
+		this->normal_vertices.push_back(VertexAttributesP(this->vertices[index - j].position + this->vertices[index - j].normal * normal_scalar));
+		this->normal_indices.push_back(this->normal_vertices.size() - 2);
+		this->normal_indices.push_back(this->normal_vertices.size() - 1);
+	}
+}
+
 //http://www.opengl.org/wiki/Calculating_a_Surface_Normal
 void Mesh::CalculateSphereNormals(unsigned int columns, unsigned int rows) {
 	unsigned int r, s, i;
         vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
         unsigned int num_columns = columns;
 		int index = 0;
-        for(r = 0; r < rows - 1; r++) {
+        for(r = 0; r < rows; r++) {
 			for(s = 0; s < columns; s++) {
 				//account for last column
-				if (s == columns - 1) {
+				if (s == columns-1) {
 					this->vertices[index].normal = this->vertices[index - 1].normal;
 					index++;
 				} else {
@@ -76,6 +91,7 @@ void Mesh::CalculateSphereNormals(unsigned int columns, unsigned int rows) {
 							normal = glm::normalize(normal);
 					}
 					this->vertices[index].normal = normal;
+					BuildNormalVisualizationGeometry(index);
 					index++;
 				}
             }
@@ -120,7 +136,7 @@ vec3 Mesh::GetIndexUp(int index, int columns, int r, int s){
 
 vec3 Mesh::GetIndexDown(int index, int columns, int r, int s, int rows){
 	index = index + columns;
-	if ((((index - s) / columns) > rows)) {
+	if ((((index - s) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -150,10 +166,10 @@ vec3 Mesh::GetIndexRightUp(int index, int columns, int r, int s){
 
 vec3 Mesh::GetIndexDownLeft(int index, int columns, int r, int s, int rows){
 	index = (index - 1) + columns;
-	if (index - (r * columns) < 0) {
+	if (index - (r * columns) <= 0) {
 		index = index + 1;
 	}
-	if ((((index - s) / columns) > rows)) {
+	if ((((index - s) / columns) >= rows-1)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -164,7 +180,7 @@ vec3 Mesh::GetIndexDownRight(int index, int columns, int r, int s, int rows){
 	if ((index - (r * columns) >= columns)) {
 		index = columns - 1;
 	}
-	if ((((index - s) / columns) > rows)) {
+	if ((((index - s) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;

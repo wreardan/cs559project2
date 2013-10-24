@@ -24,7 +24,6 @@ public:
 	void LoadTexture(char * texture_filename);
 	void BuildMesh(unsigned int columns, unsigned int rows);
 	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
-	void BuildNormalVisualizationGeometry();
 	void SetLightPosition(vec3 & light_position);
 	
 	int shader_index;
@@ -38,6 +37,7 @@ public:
 protected:
 	
 	void NormalsHelper(int index, int sectors);
+	void BuildNormalVisualizationGeometry(int index);
 	vec3 GetIndexLeft(int index, int columns, int r, int c);
 	vec3 GetIndexRight(int index, int columns, int r, int c);
 	vec3 GetIndexUp(int index, int columns, int r, int c);

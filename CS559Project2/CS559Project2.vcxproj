@@ -88,6 +88,7 @@
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ilcontainer.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mars.cpp" />
     <ClCompile Include="object.cpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="top.cpp" />
     <ClCompile Include="vertexattributes.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="background.h" />
@@ -105,6 +107,7 @@
     <ClInclude Include="Error.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ilcontainer.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Mars.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="Shader.h" />
@@ -113,6 +116,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="top.h" />
     <ClInclude Include="vertexattributes.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

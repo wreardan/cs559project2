@@ -22,51 +22,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "background.h"
-#include "top.h"
-#include "Mesh.h"
-#include "Mars.h"
-#include "Ship.h"
-#include "Camera.h"
+#include "Window.h"
 
 using namespace std;
 using namespace glm;
 
-class Window
-{
-public:
-	Window()
-	{
-		this->time_last_pause_began = this->total_time_paused = 0;
-		this->normals = this->wireframe = this->paused = false;
-		this->wireframe = false;
-		this->slices = 20;
-		this->interval = 1000 / 120;
-		this->window_handle = -1;
-		mode = 3;
-	}
-	~Window()
-	{
-	}
-
-	float time_last_pause_began;
-	float total_time_paused;
-	bool paused , wireframe, normals;
-	int window_handle;
-	int interval;
-	int slices;
-	ivec2 size;
-	float window_aspect;
-	vector<string> instructions;
-	int mode;
-
-	Background background;
-	Top top;
-	Mesh mesh;
-	Ship ship;
-	Mars mars;
-	Camera camera;
-} window;
+Window window;
 
 void DisplayInstructions()
 {
@@ -134,7 +95,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 'N':
 	case 'n':
 		window.top.EnableNormals(window.normals = !window.normals);
-		window.mars.EnableNormals(window.normals = !window.normals);
+		window.mars.EnableNormals(window.normals);
 		break;
 		
 	case 'W':
