@@ -39,58 +39,73 @@ inline int PreviousSlice(int i, int slices)
 	return (i == 0) ? slices - 1 : i - 1;
 }
 
+void Mesh::BuildNormalVisualizationGeometry(int index)
+{
+	const float normal_scalar = 0.125f;
+	index+=3;
+	if(index >= vertices.size())
+		return;
+	for (int j = 1; j <= 3; ++j)
+	{
+		this->normal_vertices.push_back(VertexAttributesP(this->vertices[index - j].position));
+		this->normal_vertices.push_back(VertexAttributesP(this->vertices[index - j].position + this->vertices[index - j].normal * normal_scalar));
+		this->normal_indices.push_back(this->normal_vertices.size() - 2);
+		this->normal_indices.push_back(this->normal_vertices.size() - 1);
+	}
+}
+
 //http://www.opengl.org/wiki/Calculating_a_Surface_Normal
-void Mesh::CalculateSphereNormals(unsigned int columns, unsigned int rows) {
+void Mesh::CalculateNormals(unsigned int columns, unsigned int rows) {
+	normal_indices.clear();
+	normal_vertices.clear();
 	unsigned int r, s, i;
-        vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
-        unsigned int num_columns = columns;
-		int index = 0;
-        for(r = 0; r < rows - 1; r++) {
-			for(s = 0; s < columns; s++) {
-				//account for last column
-				if (s == columns - 1) {
-					this->vertices[index].normal = this->vertices[index - 1].normal;
-					index++;
-				} else {
-					i = index;
-					curr = this->vertices[index].position;
-					right = Mesh::GetIndexRight(i, num_columns, r, s); 
-					left = Mesh::GetIndexLeft(i, num_columns, r, s);
-					up = Mesh::GetIndexUp(i, num_columns, r, s);
-					down = Mesh::GetIndexDown(i, num_columns, r, s, rows);
-					down_left = Mesh::GetIndexDownLeft(i, num_columns, r, s, rows);
-					down_right = Mesh::GetIndexDownRight(i, num_columns, r, s, rows);
-					up_left = Mesh::GetIndexUpLeft(i, num_columns, r, s);
-					up_right = Mesh::GetIndexRightUp(i, num_columns, r, s);
-					vec3 a = cross(left - curr, left - up);
-					vec3 b = cross(up - curr, up - up_right);
-					vec3 c = cross(curr - right, curr - up_right);
-					vec3 d = cross(right - curr, right - down);
-					vec3 e = cross(down_left - down, down_left - curr);
-					vec3 f = cross(curr - left, curr - down_left);
-					normal = a + b + c + d + e + f;
-					normal.x = normal.x / 6;
-					normal.y = normal.y / 6;
-					normal.z = normal.z / 6;
-					if (dot(normal, normal) != 0) {
-							normal = glm::normalize(normal);
-					}
-					this->vertices[index].normal = normal;
-					index++;
+    vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
+    unsigned int num_columns = columns;
+	int index = columns;
+    for(r = 1; r < rows-1; r++) {
+		for(s = 0; s < columns; s++) {
+			//account for last column
+			if (s == columns-1) {
+				this->vertices[index].normal = this->vertices[index - 1].normal;
+				index++;
+			} else {
+				i = index;
+				curr = this->vertices[index].position;
+				right = Mesh::GetIndexRight(i, num_columns, r, s); 
+				left = Mesh::GetIndexLeft(i, num_columns, r, s);
+				up = Mesh::GetIndexUp(i, num_columns, r, s);
+				down = Mesh::GetIndexDown(i, num_columns, r, s, rows);
+				down_left = Mesh::GetIndexDownLeft(i, num_columns, r, s, rows);
+				down_right = Mesh::GetIndexDownRight(i, num_columns, r, s, rows);
+				up_left = Mesh::GetIndexUpLeft(i, num_columns, r, s);
+				up_right = Mesh::GetIndexRightUp(i, num_columns, r, s);
+				vec3 a = cross(left - curr, left - up);
+				vec3 b = cross(up - curr, up - up_right);
+				vec3 c = cross(curr - right, curr - up_right);
+				vec3 d = cross(right - curr, right - down);
+				vec3 e = cross(down_left - down, down_left - curr);
+				vec3 f = cross(curr - left, curr - down_left);
+				normal = (a + b + c + d + e + f) / 6.0f;
+				if (dot(normal, normal) != 0) {
+						normal = glm::normalize(normal);
 				}
-            }
-       }
-	   // account for zeroeth column
-	   for(r = 0; r < rows - 1; r++) {
-			for(s = 0; s < 1; s++) {
-				index = r * columns + s;
-				int cheat = r * columns + columns - 1;
-				if (s == 0) {
-					this->vertices[index].normal = this->vertices[cheat].normal;
-					index++;
-				}
+				this->vertices[index].normal = normal;
+				BuildNormalVisualizationGeometry(index);
+				index++;
 			}
-	   }
+        }
+    }
+	// account for zeroeth column
+	for(r = 0; r < rows - 1; r++) {
+		for(s = 0; s < 1; s++) {
+			index = r * columns + s;
+			int cheat = r * columns + columns - 1;
+			if (s == 0) {
+				this->vertices[index].normal = this->vertices[cheat].normal;
+				index++;
+			}
+		}
+	}
 }
 
 
@@ -120,7 +135,7 @@ vec3 Mesh::GetIndexUp(int index, int columns, int r, int s){
 
 vec3 Mesh::GetIndexDown(int index, int columns, int r, int s, int rows){
 	index = index + columns;
-	if ((((index - s) / columns) > rows)) {
+	if ((((index - s) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -150,10 +165,10 @@ vec3 Mesh::GetIndexRightUp(int index, int columns, int r, int s){
 
 vec3 Mesh::GetIndexDownLeft(int index, int columns, int r, int s, int rows){
 	index = (index - 1) + columns;
-	if (index - (r * columns) < 0) {
+	if (index - (r * columns) <= 0) {
 		index = index + 1;
 	}
-	if ((((index - s) / columns) > rows)) {
+	if ((((index - s) / columns) >= rows-1)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -164,7 +179,7 @@ vec3 Mesh::GetIndexDownRight(int index, int columns, int r, int s, int rows){
 	if ((index - (r * columns) >= columns)) {
 		index = columns - 1;
 	}
-	if ((((index - s) / columns) > rows)) {
+	if ((((index - s) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -326,7 +341,7 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const fl
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
-	vec3 light_pos = vec3(0.0f, 0.0f, 0.0f);
+	vec3 light_pos = vec3(0.0f, 0.0f, -20.0f);
 	light_pos = nm * light_pos;
 	if(shader_index == 3)
 		this->texture_shader.CustomSetup(light_pos);

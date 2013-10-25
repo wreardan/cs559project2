@@ -62,7 +62,7 @@ void Mars::load_file(char * filename)
 		}
 	}
 	
-	this->CalculateSphereNormals(width, height);
+	this->CalculateNormals(width, height);
 }
 
 //Load Mars from Filename

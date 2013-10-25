@@ -19,7 +19,13 @@ void Ship::StepShader()
 void Ship::BuildPrimitive() {
 	sphere.BuildMesh(20, 20);
 	sphere.BuildPrimitive(2.0f, 20, 20);
+	sphere.CalculateNormals(20, 20);
 	sphere.shader_index = 3;
+}
+
+void Ship::EnableNormals(bool dn) {
+	this->draw_normals = dn;
+	sphere.EnableNormals(dn);
 }
 
 

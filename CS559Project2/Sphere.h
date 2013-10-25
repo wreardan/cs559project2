@@ -7,6 +7,7 @@ public:
 	Sphere();
 	~Sphere(void);
 	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
+	void CalculateNormals(unsigned int columns, unsigned int rows);
 
 protected:
 	typedef Mesh super;
