@@ -118,6 +118,7 @@
     <None Include="..\README.md" />
     <None Include="background_gradient.frag" />
     <None Include="background_gradient.vert" />
+    <None Include="ClassDiagram.cd" />
     <None Include="solid_shader.frag" />
     <None Include="solid_shader.vert" />
     <None Include="stripe_model_space.frag" />
