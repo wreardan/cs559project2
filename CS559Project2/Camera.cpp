@@ -9,7 +9,7 @@ using namespace glm;
 
 Camera::Camera() {
 	scalar = 12.0f;
-	rotation_speed = 10.0f;
+	rotation_speed = 20.0f;
 }
 
 Camera::~Camera() {

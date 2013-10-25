@@ -19,23 +19,3 @@ Globals::Globals(void)
 Globals::~Globals(void)
 {
 }
-
-//Draw X, Y, Z Plane Lines
-//jacked parts from http://cs.lmu.edu/~ray/notes/openglexamples/
-//modified to show both positive and negative axis in slightly different colors
-void Globals::drawPlanes()
-{
-	glBegin(GL_LINES);
-		//Positive Axis
-		glColor3f(1, 0, 0); glVertex3f(0, 0, 0); glVertex3f(100, 0, 0);
-		glColor3f(0, 1, 0); glVertex3f(0, 0, 0); glVertex3f(0, 100, 0);
-		glColor3f(0, 0, 1); glVertex3f(0, 0, 0); glVertex3f(0, 0, 100);
-		//Negative Axis
-		glColor3f(0.2f, 0, 0); glVertex3f(0, 0, 0); glVertex3f(-100, 0, 0);
-		glColor3f(0, 0.2f, 0); glVertex3f(0, 0, 0); glVertex3f(0, -100, 0);
-		glColor3f(0, 0, 0.2f); glVertex3f(0, 0, 0); glVertex3f(0, 0, -100);
-		glEnd();
-
-	glBegin(GL_LINES);
-	glEnd();
-}

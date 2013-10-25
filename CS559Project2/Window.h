@@ -11,19 +11,8 @@
 class Window
 {
 public:
-	Window()
-	{
-		this->time_last_pause_began = this->total_time_paused = 0;
-		this->normals = this->wireframe = this->paused = false;
-		this->wireframe = false;
-		this->slices = 20;
-		this->interval = 1000 / 120;
-		this->window_handle = -1;
-		mode = 3;
-	}
-	~Window()
-	{
-	}
+	Window();
+	~Window();
 
 	float time_last_pause_began;
 	float total_time_paused;
@@ -42,4 +31,6 @@ public:
 	Ship ship;
 	Mars mars;
 	Camera camera;
+	bool draw_planes;		//should we draw x,y,z axis or not?
+	void drawPlanes();
 };

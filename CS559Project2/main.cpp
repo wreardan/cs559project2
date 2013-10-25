@@ -96,11 +96,17 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 'n':
 		window.top.EnableNormals(window.normals = !window.normals);
 		window.mars.EnableNormals(window.normals);
+		window.ship.EnableNormals(window.normals);
 		break;
 		
 	case 'W':
 	case 'w':
 		window.wireframe = !window.wireframe;
+		break;
+
+	case 'o':
+	case 'O':
+		window.draw_planes = !window.draw_planes;
 		break;
 		
 	case 'P':
@@ -215,6 +221,8 @@ void DisplayFunc()
 	}
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DisplayInstructions();
+	if(window.draw_planes)
+		window.drawPlanes();
 	glFlush();
 }
 

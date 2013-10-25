@@ -55,58 +55,57 @@ void Mesh::BuildNormalVisualizationGeometry(int index)
 }
 
 //http://www.opengl.org/wiki/Calculating_a_Surface_Normal
-void Mesh::CalculateSphereNormals(unsigned int columns, unsigned int rows) {
+void Mesh::CalculateNormals(unsigned int columns, unsigned int rows) {
+	normal_indices.clear();
+	normal_vertices.clear();
 	unsigned int r, s, i;
-        vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
-        unsigned int num_columns = columns;
-		int index = 0;
-        for(r = 0; r < rows; r++) {
-			for(s = 0; s < columns; s++) {
-				//account for last column
-				if (s == columns-1) {
-					this->vertices[index].normal = this->vertices[index - 1].normal;
-					index++;
-				} else {
-					i = index;
-					curr = this->vertices[index].position;
-					right = Mesh::GetIndexRight(i, num_columns, r, s); 
-					left = Mesh::GetIndexLeft(i, num_columns, r, s);
-					up = Mesh::GetIndexUp(i, num_columns, r, s);
-					down = Mesh::GetIndexDown(i, num_columns, r, s, rows);
-					down_left = Mesh::GetIndexDownLeft(i, num_columns, r, s, rows);
-					down_right = Mesh::GetIndexDownRight(i, num_columns, r, s, rows);
-					up_left = Mesh::GetIndexUpLeft(i, num_columns, r, s);
-					up_right = Mesh::GetIndexRightUp(i, num_columns, r, s);
-					vec3 a = cross(left - curr, left - up);
-					vec3 b = cross(up - curr, up - up_right);
-					vec3 c = cross(curr - right, curr - up_right);
-					vec3 d = cross(right - curr, right - down);
-					vec3 e = cross(down_left - down, down_left - curr);
-					vec3 f = cross(curr - left, curr - down_left);
-					normal = a + b + c + d + e + f;
-					normal.x = normal.x / 6;
-					normal.y = normal.y / 6;
-					normal.z = normal.z / 6;
-					if (dot(normal, normal) != 0) {
-							normal = glm::normalize(normal);
-					}
-					this->vertices[index].normal = normal;
-					BuildNormalVisualizationGeometry(index);
-					index++;
+    vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
+    unsigned int num_columns = columns;
+	int index = columns;
+    for(r = 1; r < rows-1; r++) {
+		for(s = 0; s < columns; s++) {
+			//account for last column
+			if (s == columns-1) {
+				this->vertices[index].normal = this->vertices[index - 1].normal;
+				index++;
+			} else {
+				i = index;
+				curr = this->vertices[index].position;
+				right = Mesh::GetIndexRight(i, num_columns, r, s); 
+				left = Mesh::GetIndexLeft(i, num_columns, r, s);
+				up = Mesh::GetIndexUp(i, num_columns, r, s);
+				down = Mesh::GetIndexDown(i, num_columns, r, s, rows);
+				down_left = Mesh::GetIndexDownLeft(i, num_columns, r, s, rows);
+				down_right = Mesh::GetIndexDownRight(i, num_columns, r, s, rows);
+				up_left = Mesh::GetIndexUpLeft(i, num_columns, r, s);
+				up_right = Mesh::GetIndexRightUp(i, num_columns, r, s);
+				vec3 a = cross(left - curr, left - up);
+				vec3 b = cross(up - curr, up - up_right);
+				vec3 c = cross(curr - right, curr - up_right);
+				vec3 d = cross(right - curr, right - down);
+				vec3 e = cross(down_left - down, down_left - curr);
+				vec3 f = cross(curr - left, curr - down_left);
+				normal = (a + b + c + d + e + f) / 6.0f;
+				if (dot(normal, normal) != 0) {
+						normal = glm::normalize(normal);
 				}
-            }
-       }
-	   // account for zeroeth column
-	   for(r = 0; r < rows - 1; r++) {
-			for(s = 0; s < 1; s++) {
-				index = r * columns + s;
-				int cheat = r * columns + columns - 1;
-				if (s == 0) {
-					this->vertices[index].normal = this->vertices[cheat].normal;
-					index++;
-				}
+				this->vertices[index].normal = normal;
+				BuildNormalVisualizationGeometry(index);
+				index++;
 			}
-	   }
+        }
+    }
+	// account for zeroeth column
+	for(r = 0; r < rows - 1; r++) {
+		for(s = 0; s < 1; s++) {
+			index = r * columns + s;
+			int cheat = r * columns + columns - 1;
+			if (s == 0) {
+				this->vertices[index].normal = this->vertices[cheat].normal;
+				index++;
+			}
+		}
+	}
 }
 
 
@@ -342,7 +341,7 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const fl
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
-	vec3 light_pos = vec3(0.0f, 0.0f, 0.0f);
+	vec3 light_pos = vec3(0.0f, 0.0f, -20.0f);
 	light_pos = nm * light_pos;
 	if(shader_index == 3)
 		this->texture_shader.CustomSetup(light_pos);
