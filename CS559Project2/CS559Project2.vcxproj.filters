@@ -154,7 +154,6 @@
     <None Include="texture_shader.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mars.txt">
