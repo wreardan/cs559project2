@@ -18,5 +18,9 @@ class Lights
 {
 public:
 	Lights();
+	void Add(Light & light);
+
 	std::vector<Light> lights;
+	glm::mat4 cameraMatrix;
+	glm::vec3 GetPosition(int i);
 };

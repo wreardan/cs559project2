@@ -341,10 +341,8 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
-	vec3 light_pos = vec3(0.0f, 0.0f, -50.0f);
-	light_pos = nm * light_pos;
 	if(shader_index == 3)
-		this->texture_shader.CustomSetup(light_pos);
+		this->texture_shader.CustomSetup(lights.GetPosition(0));
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

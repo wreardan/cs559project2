@@ -41,10 +41,10 @@ void Sphere::CalculateNormals(unsigned int columns, unsigned int rows)
 	//top pointing up/down
 	for(s = 0; s < columns; s++) {
 		index = s;
-		vertices[index].normal = vec3(0.0f, 1.0f, 0.0f);
+		vertices[index].normal = vec3(0.0f, -1.0f, 0.0f);
 		BuildNormalVisualizationGeometry(index);
 		index = (rows-1)*columns + s;
-		vertices[index].normal = vec3(0.0f, -1.0f, 0.0f);
+		vertices[index].normal = vec3(0.0f, 1.0f, 0.0f);
 		BuildNormalVisualizationGeometry(index);
 	}
 }
