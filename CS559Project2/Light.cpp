@@ -19,3 +19,8 @@ glm::vec3 Light::GetPosition()
 {
 	return position;
 }
+
+//Light(s)
+Lights::Lights()
+{
+}

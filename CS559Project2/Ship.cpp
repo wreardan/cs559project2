@@ -41,19 +41,19 @@ void Ship::TakeDown()
 	sphere.TakeDown();
 }
 
-void Ship::DrawChassis(const mat4 & projection, mat4 & view, const ivec2 & size, const float time)
+void Ship::DrawChassis(const mat4 & projection, mat4 & view, const ivec2 & size, Lights & lights, const float time)
 {
 	mat4 temp;
 
 	//Main Chassis
 	temp = scale(view, vec3(1.0f, 10.0f, 1.0f));
-	sphere.Draw(projection, temp, size, time);
+	sphere.Draw(projection, temp, size, lights, time);
 
 	view = translate(view, vec3(0.0f, -16.0f, 0.0f));
 }
 
 
-void Ship::DrawWing(const mat4 & projection, mat4 & view, const ivec2 & size, const float time, int wing_number)
+void Ship::DrawWing(const mat4 & projection, mat4 & view, const ivec2 & size, Lights & lights, const float time, int wing_number)
 {
 	//Rotate to the correct angle
 	if(wing_number == 0 || wing_number == 2)
@@ -66,23 +66,23 @@ void Ship::DrawWing(const mat4 & projection, mat4 & view, const ivec2 & size, co
 	//Draw engine (Cylinder + Sphere)
 	temp = translate(temp, vec3(2.0f, 0.0f, 0.0f));
 	temp = scale(temp, vec3(1.5f, 3.0f, 1.5f));
-	sphere.Draw(projection, temp, size, time);
+	sphere.Draw(projection, temp, size, lights, time);
 
 	//Draw Wing (Cylinder/Cube)
 	temp = translate(view, vec3(7.5f, 0.0f, 0.0f));
 	temp = scale(temp, vec3(5.0f, 3.0f, 0.5f));
-	sphere.Draw(projection, temp, size, time);
+	sphere.Draw(projection, temp, size, lights, time);
 
 	//Draw Weapon (Cylinder + Cylinder)
 	temp = translate(view, vec3(15.0f, 0.0f, 0.0f));
 	temp = scale(temp, vec3(1.0f, 3.0f, 1.0f));
-	sphere.Draw(projection, temp, size, time);
+	sphere.Draw(projection, temp, size, lights, time);
 	temp = translate(temp, vec3(0.0f, 2.0f, 0.0f));
 	temp = scale(temp, vec3(0.5f, 2.0f, 0.5f));
-	sphere.Draw(projection, temp, size, time);
+	sphere.Draw(projection, temp, size, lights, time);
 }
 
-void Ship::Draw(const mat4 & projection, mat4 & view, const ivec2 & size, const float time)
+void Ship::Draw(const mat4 & projection, mat4 & view, const ivec2 & size, Lights & lights, const float time)
 {
 	mat4 mv = view;
 	mv = scale(mv, vec3(0.05f, 0.05f, 0.05f));
@@ -92,9 +92,9 @@ void Ship::Draw(const mat4 & projection, mat4 & view, const ivec2 & size, const 
 	//mat3 nm = inverse(transpose(mat3(view*model)));
 
 	//Draw Chassis
-	DrawChassis(projection, mv, size, time);
+	DrawChassis(projection, mv, size, lights, time);
 
 	//Draw Wings
 	for(int wing_number = 0; wing_number < 4; wing_number++)
-		DrawWing(projection, mv, size, time, wing_number);
+		DrawWing(projection, mv, size, lights, time, wing_number);
 }

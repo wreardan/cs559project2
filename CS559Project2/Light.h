@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <vector>
 
 class Light
 {
@@ -13,3 +14,9 @@ public:
 	~Light(void);
 };
 
+class Lights
+{
+public:
+	Lights();
+	std::vector<Light> lights;
+};

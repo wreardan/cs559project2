@@ -193,7 +193,7 @@ void Top::Draw(const ivec2 & size)
 	bytes.
 */
 
-void Top::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, const float time)
+void Top::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, Lights & lights, const float time)
 {
 	if (this->GLReturnedError("Top::Draw - on entry"))
 		return;

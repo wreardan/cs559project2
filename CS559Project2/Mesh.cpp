@@ -168,7 +168,7 @@ vec3 Mesh::GetIndexDownLeft(int index, int columns, int r, int s, int rows){
 	if (index - (r * columns) <= 0) {
 		index = index + 1;
 	}
-	if ((((index - s) / columns) >= rows-1)) {
+	if ((((index - s) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -322,7 +322,7 @@ void Mesh::SetLightPosition(vec3 & light_position)
 	this->light_position = light_position;
 }
 
-void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const float time)
+void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights & lights,  const float time)
 {
 	if (this->GLReturnedError("Mesh::Draw - on entry"))
 		return;
@@ -341,7 +341,7 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, const fl
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
-	vec3 light_pos = vec3(0.0f, 0.0f, -20.0f);
+	vec3 light_pos = vec3(0.0f, 0.0f, -50.0f);
 	light_pos = nm * light_pos;
 	if(shader_index == 3)
 		this->texture_shader.CustomSetup(light_pos);

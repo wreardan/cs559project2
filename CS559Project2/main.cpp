@@ -188,21 +188,21 @@ void DisplayFunc()
 		window.camera.type = Camera::normal;
 		window.camera.scalar = 2.0f;
 		window.camera.rotation_speed = 20.0f;
-		window.ship.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 1:
 		/*Just Mars, slowly spinning as per the sample prototype I provide. With or without a starfield.*/
 		window.camera.type = Camera::normal;
 		window.camera.scalar = 12.0f;
 		window.camera.rotation_speed = 10.0f;
-		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
 		/*First person view flying over the surface of Mars. It is NOT necessary but would be bonus
 		to be able to steer (bonus hint). With or without steering, the starfield must “correctly”
 		turn with your motion.*/
 		window.camera.type = Camera::chase;
-		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
 		/*Third person view flying over the surface of Mars from a “chase camera.” The camera
@@ -210,9 +210,9 @@ void DisplayFunc()
 		position of the chase camera relative to the spaceship (bonus hint). Again, a “correctly”
 		turning starfield is required.*/
 		window.camera.type = Camera::chase;
-		window.mars.Draw(projection, view, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		temp = translate(mat4(1.0f), vec3(-2.0f, -2.0f, 0.0f));
-		window.ship.Draw(projection, temp, window.size, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
 		cerr << "DisplayFunc() unsupported display mode: " << window.mode << endl;

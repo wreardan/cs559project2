@@ -17,7 +17,7 @@ public:
 	~Mesh(void);
 	bool Initialize(float size);
 	virtual void Draw(const glm::ivec2 & size);
-	virtual void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, const float time = 0);
+	virtual void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, Lights & lights, const float time = 0);
 	void CalculateNormals(unsigned int sectors, unsigned int rings);
 	void StepShader();
 	void TakeDown();

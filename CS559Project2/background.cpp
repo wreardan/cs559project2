@@ -86,7 +86,7 @@ void Background::Draw(const ivec2 & size)
 		return;
 }
 
-void Background::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, const float time)
+void Background::Draw(const mat4 & projection, mat4 modelview, const ivec2 & size, Lights & lights, const float time)
 {
 	assert(false);
 }

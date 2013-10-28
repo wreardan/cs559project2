@@ -2,13 +2,6 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Mars" Collapsed="true">
     <Position X="2.75" Y="4.75" Width="1.5" />
-    <NestedTypes>
-      <Typedef Name="Mars::super" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Mars.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Typedef>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAABAAAAAAACAAAAAAAAAACAAAA=</HashCode>
       <FileName>Mars.h</FileName>
@@ -17,14 +10,14 @@
   <Class Name="Mesh" Collapsed="true">
     <Position X="3.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BASEAABgAAEAAwBCAABDAOAAiAEYBgCAARACAUAAAAA=</HashCode>
+      <HashCode>BASEAABgAAEAAwBCAABDAOAAiAEYBgCAARAAAUAAIAA=</HashCode>
       <FileName>Mesh.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Sphere" Collapsed="true">
     <Position X="2.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BABAAAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAIAAA=</HashCode>
+      <HashCode>BABAAAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAIIAA=</HashCode>
       <FileName>Sphere.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -36,51 +29,51 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Shader" Collapsed="true">
-    <Position X="6.5" Y="4.5" Width="1.5" />
+    <Position X="8" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QICAAAAAAABBgYAAAAABAAABAAAMBAAAABAAQAAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ILContainer" Collapsed="true">
-    <Position X="13.5" Y="0.5" Width="1.5" />
+    <Position X="9.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAgMQQAYAAACAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>ilcontainer.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TextureShader" Collapsed="true">
-    <Position X="5.25" Y="5.75" Width="1.5" />
+    <Position X="6.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACACBAAQAIAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BackgroundShader" Collapsed="true">
-    <Position X="7.5" Y="5.75" Width="1.5" />
+    <Position X="9" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAADAAQAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Window" Collapsed="true">
-    <Position X="13.5" Y="1.5" Width="1.5" />
+    <Position X="9.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAgAABBCAAIABAAiAAQABAAAAiIAICgAAIAI=</HashCode>
-      <FileName>main.cpp</FileName>
+      <HashCode>AIAAAAIAAgAABBCAAIABAAiAAQABAAAAiIAICgCAIAI=</HashCode>
+      <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VertexAttributesPCNT" Collapsed="true">
-    <Position X="11.75" Y="1.5" Width="1.5" />
+    <Position X="8" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAIAgAAEAAAACAAAAAAAAAAAA=</HashCode>
       <FileName>vertexattributes.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ship" Collapsed="true">
-    <Position X="10" Y="1.5" Width="1.5" />
+    <Position X="6.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BACAAAAAAEAABwBAIAAAAAAACQCAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BACAAAAAAEAABwBAIAAAAAAACQCAAAAAAAAAAAIAAAQ=</HashCode>
       <FileName>Ship.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -92,7 +85,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Camera" Collapsed="true">
-    <Position X="10" Y="0.5" Width="1.5" />
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQKAJAIAAAAAQAAQAAAIgAAAAAJAAAAQAABAggAAAA=</HashCode>
       <FileName>Camera.h</FileName>
@@ -106,7 +99,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Globals" Collapsed="true">
-    <Position X="11.75" Y="0.5" Width="1.5" />
+    <Position X="8" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAICAAAQAAAAAAAAAAAAAAAAAAAAAAAICECAIAI=</HashCode>
       <FileName>Globals.h</FileName>

@@ -22,7 +22,7 @@ public:
 	Top();
 	bool Initialize(int slices);
 	virtual void Draw(const glm::ivec2 & size);
-	virtual void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, const float time = 0);
+	virtual void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, Lights & lights, const float time = 0);
 	void StepShader();
 	void TakeDown();
 	Shader shader;
