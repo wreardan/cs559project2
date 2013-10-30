@@ -157,6 +157,14 @@ void SpecialFunc(int c, int x, int y)
 			window.mode = 0;
 		break;
 
+	case GLUT_KEY_LEFT:
+		window.camera.x_offset += 0.1f;
+		break;
+
+	case GLUT_KEY_RIGHT:
+		window.camera.x_offset -= 0.1f;
+		break;
+
 	default:
 		cout << "unhandled special key: " << c << endl;
 	}

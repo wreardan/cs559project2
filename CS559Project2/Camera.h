@@ -23,6 +23,7 @@ public:
 	float scalar;
 	float rotation_speed;
 	Camera::Type type;
+	float x_offset;
 
 	//Methods
 	void SetCameraType(Camera::Type type);
