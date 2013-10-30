@@ -137,18 +137,13 @@ void SpecialFunc(int c, int x, int y)
 	switch (c)
 	{
 	case GLUT_KEY_UP:
-		++window.slices;
-		window.top.TakeDown();
-		window.top.Initialize(window.slices);
+		if(window.camera.up_down < 2.5f)
+			window.camera.up_down += 0.01f;
 		break;
 
 	case GLUT_KEY_DOWN:
-		if (window.slices > 1)
-		{
-			--window.slices;
-			window.top.TakeDown();
-			window.top.Initialize(window.slices);
-		}
+		if(window.camera.up_down > 0.5f)
+			window.camera.up_down -= 0.01f;
 		break;
 
 	case GLUT_KEY_F1:

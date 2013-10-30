@@ -85,8 +85,6 @@
     <ClCompile Include="background.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cylinder.cpp" />
-    <ClCompile Include="Error.cpp" />
-    <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ilcontainer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -104,8 +102,6 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cylinder.h" />
-    <ClInclude Include="Error.h" />
-    <ClInclude Include="Globals.h" />
     <ClInclude Include="ilcontainer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mars.h" />

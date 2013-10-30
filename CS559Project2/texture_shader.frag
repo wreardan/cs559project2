@@ -10,7 +10,7 @@ in vec3 position;
 in vec3 normal;
 in vec2 texture_coord;
 
-const float shininess = 100.0f;
+const float shininess = 10.0f;
 
 vec3 ads( )
 {

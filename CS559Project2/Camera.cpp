@@ -12,6 +12,7 @@ Camera::Camera() {
 	rotation_speed = 20.0f;
 	Initialize();
 	x_offset = 0.0f;
+	up_down = 1.5f;
 }
 
 Camera::~Camera() {
@@ -54,7 +55,7 @@ void Camera::Update(float time) {
 	{
 	case Type::chase:
 		position = vec3(rotx * roty * rotz * vec4(0.0f, 0.0f, -scalar, 1.0f));
-		facing = vec3(rotx * roty * rotz * vec4(0.0f, scalar*1.5, 0.0f, 1.0f));
+		facing = vec3(rotx * roty * rotz * vec4(0.0f, scalar*up_down, 0.0f, 1.0f));
 		up = vec3(rotx * roty * rotz * vec4(0.0f, 0.0f, -1.0f, 1.0f));
 		viewMatrix = lookAt(position, facing, up);
 		break;

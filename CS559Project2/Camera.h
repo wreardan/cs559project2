@@ -24,6 +24,7 @@ public:
 	float rotation_speed;
 	Camera::Type type;
 	float x_offset;
+	float up_down;
 
 	//Methods
 	void SetCameraType(Camera::Type type);

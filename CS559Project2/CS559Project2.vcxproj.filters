@@ -21,13 +21,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Globals.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="background.cpp">
@@ -71,13 +65,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="background.h">
