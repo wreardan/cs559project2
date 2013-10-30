@@ -158,11 +158,11 @@ void SpecialFunc(int c, int x, int y)
 		break;
 
 	case GLUT_KEY_LEFT:
-		window.camera.x_offset += 0.1f;
+		window.camera.x_offset -= 1.0f;
 		break;
 
 	case GLUT_KEY_RIGHT:
-		window.camera.x_offset -= 0.1f;
+		window.camera.x_offset += 1.0f;
 		break;
 
 	default:

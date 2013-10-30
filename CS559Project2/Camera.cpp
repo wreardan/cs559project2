@@ -46,16 +46,16 @@ void Camera::Update(float time) {
 	float rotAngle = time*rotation_speed;
 	mat4 rotx, roty, rotz;
 
-	rotz = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 0.0f, 1.0f));
+	rotz = rotate(mat4(1.0f), x_offset, vec3(0.0f, 0.0f, 1.0f));
 	roty = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 1.0f, 0.0f));
 	rotx = rotate(mat4(1.0f), rotAngle, vec3(1.0f, 0.0f, 0.0f));
 	
 	switch(type)
 	{
 	case Type::chase:
-		position = vec3(roty * rotx * vec4(0.0f, 0.0f, -scalar, 1.0f));
-		facing = vec3(roty * rotx * vec4(0.0f, scalar*1.5, 0.0f, 1.0f));
-		up = vec3(roty * rotx * vec4(0.0f, 0.0f, -1.0f, 1.0f));
+		position = vec3(rotx * roty * rotz * vec4(0.0f, 0.0f, -scalar, 1.0f));
+		facing = vec3(rotx * roty * rotz * vec4(0.0f, scalar*1.5, 0.0f, 1.0f));
+		up = vec3(rotx * roty * rotz * vec4(0.0f, 0.0f, -1.0f, 1.0f));
 		viewMatrix = lookAt(position, facing, up);
 		break;
 	case Type::normal:
