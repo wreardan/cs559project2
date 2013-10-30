@@ -10,6 +10,7 @@ using namespace glm;
 Camera::Camera() {
 	scalar = 12.0f;
 	rotation_speed = 20.0f;
+	Initialize();
 }
 
 Camera::~Camera() {
@@ -19,6 +20,10 @@ void Camera::TakeDownCamera() {
 }
 
 bool Camera::Initialize() {
+	facing = vec3(0.0f, 0.0f, 0.0f);
+	up = vec3(0.0f, 1.0f, 0.0f);
+	position = vec3(0.0f, 0.0f, -4.0f*scalar);
+	viewMatrix = lookAt(position, facing, up);
 	return true;
 }
 
@@ -50,18 +55,19 @@ void Camera::Update(float time) {
 		position = vec3(roty * rotx * vec4(0.0f, 0.0f, -scalar, 1.0f));
 		facing = vec3(roty * rotx * vec4(0.0f, scalar*1.5, 0.0f, 1.0f));
 		up = vec3(roty * rotx * vec4(0.0f, 0.0f, -1.0f, 1.0f));
+		viewMatrix = lookAt(position, facing, up);
 		break;
 	case Type::normal:
-		position = vec3(roty * rotx * vec4(0.0f, 0.0f, -4.0f*scalar, 1.0f));
-		facing = vec3(0.0f, 0.0f, 0.0f);
-		up = vec3(0.0f, 1.0f, 0.0f);
+		if(up != vec3(0.0f, 1.0f, 0.0f)) {
+			Initialize();
+		}
+		rotAngle = deltaTime * rotation_speed * 1.0f;
+		viewMatrix = rotate(viewMatrix, rotAngle, vec3(0.0f, 1.0f, 0.0f));
 		break;
 	default:
 		assert(false);
 		break;
 	}
-
-	viewMatrix = lookAt(position, facing, up);
 
 	lastFrameTime = time;
 }

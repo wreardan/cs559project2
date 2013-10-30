@@ -193,9 +193,12 @@ void DisplayFunc()
 		break;
 	case 1:
 		/*Just Mars, slowly spinning as per the sample prototype I provide. With or without a starfield.*/
-		window.camera.type = Camera::normal;
-		window.camera.scalar = 12.0f;
-		window.camera.rotation_speed = 10.0f;
+		if(window.camera.scalar < 12.0f) {
+			window.camera.type = Camera::normal;
+			window.camera.scalar = 12.0f;
+			window.camera.rotation_speed = 10.0f;
+			window.camera.Initialize();
+		}
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
@@ -203,6 +206,7 @@ void DisplayFunc()
 		to be able to steer (bonus hint). With or without steering, the starfield must “correctly”
 		turn with your motion.*/
 		window.camera.type = Camera::chase;
+		window.camera.rotation_speed = 10.0f;
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
