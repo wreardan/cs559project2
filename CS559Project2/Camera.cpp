@@ -38,10 +38,11 @@ void Camera::Update(float time) {
 
 	float deltaTime = time - lastFrameTime;
 	float rotAngle = time*rotation_speed;
+	mat4 rotx, roty, rotz;
 
-	mat4 rotx = rotate(mat4(1.0f), rotAngle, vec3(1.0f, 0.0f, 0.0f));
-	mat4 roty = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 1.0f, 0.0f));
-	mat4 rotz = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 0.0f, 1.0f));
+	rotz = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 0.0f, 1.0f));
+	roty = rotate(mat4(1.0f), 0.0f, vec3(0.0f, 1.0f, 0.0f));
+	rotx = rotate(mat4(1.0f), rotAngle, vec3(1.0f, 0.0f, 0.0f));
 	
 	switch(type)
 	{
@@ -59,8 +60,6 @@ void Camera::Update(float time) {
 		assert(false);
 		break;
 	}
-
-	//position = vec3(rotationMatrix * vec4(position, 1.0f));
 
 	viewMatrix = lookAt(position, facing, up);
 

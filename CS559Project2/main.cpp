@@ -212,7 +212,9 @@ void DisplayFunc()
 		turning starfield is required.*/
 		window.camera.type = Camera::chase;
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		temp = translate(mat4(1.0f), vec3(-2.0f, -2.0f, 0.0f));
+		temp = translate(mat4(1.0f), vec3(0.0f, 1.0f, -10.0f));
+		temp = rotate(temp, -90.0f, vec3(1.0f, 0.0f, 0.0f));
+		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
