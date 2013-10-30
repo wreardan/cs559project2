@@ -289,7 +289,7 @@ int main(int argc, char * argv[])
 		return 0;
 	if(!window.ship.Initialize())
 		return 0;
-	if(!window.mars.Initialize((float)window.slices))
+	if(!window.mars.Initialize((float)window.slices, argv[1], "mars.jpg"))
 		return 0;
 	if(!window.camera.Initialize()) {
 		return 0;

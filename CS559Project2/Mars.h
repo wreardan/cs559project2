@@ -7,10 +7,9 @@ class Mars :
 	public Sphere
 {
 public:
-	Mars(char * filename);
 	Mars();
 	~Mars(void);
-	bool Initialize(float size);
+	bool Initialize(float size, char * mars_filename, char * mars_texture_filename);
 
 protected:
 	typedef Sphere super;

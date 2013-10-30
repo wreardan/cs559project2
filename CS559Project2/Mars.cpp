@@ -3,14 +3,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 using namespace std;
 
-bool Mars::Initialize(float size)
+bool Mars::Initialize(float size, char * mars_filename, char * mars_texture_filename)
 {
+	load_file(mars_filename);
+
 	super::Initialize(size);
 
-	LoadTexture("mars.jpg");
+	LoadTexture(mars_texture_filename);
 
 	return true;
 }
@@ -20,8 +21,6 @@ void Mars::load_file(char * filename)
 {
 	const float scalar = 0.025f;	//scalar for mars depth data
 	//Load file, error if cannot open
-	string line;
-	stringstream line_stream;
 	ifstream file(filename);
 	float depth;
 
@@ -34,10 +33,8 @@ void Mars::load_file(char * filename)
 	}
 	else {
 		//Read first line with longitude and latitude information
-		getline(file, line);
-		line_stream << line;
-		line_stream >> width;
-		line_stream >> height;
+		file >> width;
+		file >> height;
 		cout << "width: " << width << ", height: " << height << endl;
 	}
 	
@@ -50,13 +47,10 @@ void Mars::load_file(char * filename)
 	//Modify Mesh Vertices
 	int index = 0;
 	for(int y = 0; y < height; y++) {
-		getline(file, line);
-		line_stream.clear();
-		line_stream << line;
 		for(int x = 0; x < width; x++) {
-			line_stream >> depth;
+			file >> depth;
 			depth = 1.0f + depth * scalar;
-			assert(depth >= 0.0f && depth <= 2.0f);
+			//assert(depth >= 0.0f && depth <= 2.0f);
 			vertices[index].position *= depth;
 			index++;
 		}
@@ -65,20 +59,8 @@ void Mars::load_file(char * filename)
 	this->CalculateNormals(width, height);
 }
 
-//Load Mars from Filename
-Mars::Mars(char * filename) : super()
-{
-	load_file(filename);
-}
-
 Mars::Mars(void)
 {
-#ifdef _DEBUG
-	load_file("mars_low_rez.txt");
-#else
-	load_file("mars.txt");
-	
-#endif
 }
 
 Mars::~Mars(void)

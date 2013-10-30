@@ -54,7 +54,7 @@ void Camera::Update(float time) {
 	{
 	case Type::chase:
 		position = vec3(roty * rotx * vec4(0.0f, 0.0f, -scalar, 1.0f));
-		facing = vec3(roty * rotx * vec4(x_offset, scalar*1.5, 0.0f, 1.0f));
+		facing = vec3(roty * rotx * vec4(0.0f, scalar*1.5, 0.0f, 1.0f));
 		up = vec3(roty * rotx * vec4(0.0f, 0.0f, -1.0f, 1.0f));
 		viewMatrix = lookAt(position, facing, up);
 		break;
