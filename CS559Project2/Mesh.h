@@ -20,11 +20,11 @@ public:
 	virtual void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, Lights & lights, const float time = 0);
 	void CalculateNormals(unsigned int sectors, unsigned int rings);
 	void StepShader();
+	void StepBackShader();
 	void TakeDown();
 	void LoadTexture(char * texture_filename);
 	void BuildMesh(unsigned int columns, unsigned int rows);
 	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
-	void SetLightPosition(vec3 & light_position);
 	
 	int shader_index;
 	Shader shader;

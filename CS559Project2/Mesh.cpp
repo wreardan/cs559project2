@@ -29,6 +29,13 @@ void Mesh::StepShader()
 	this->shader_index = ++this->shader_index % this->shaders.size();
 }
 
+void Mesh::StepBackShader()
+{
+	this->shader_index = --this->shader_index;
+	if(shader_index < 0)
+		shader_index = shaders.size() - 1;
+}
+
 inline int ColorIndex(int i, int slices)
 {
 	return (i / (slices / 4)) % 2;
@@ -315,11 +322,6 @@ void Mesh::TakeDown()
 void Mesh::Draw(const ivec2 & size)
 {
 	assert(false);
-}
-
-void Mesh::SetLightPosition(vec3 & light_position)
-{
-	this->light_position = light_position;
 }
 
 void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights & lights,  const float time)

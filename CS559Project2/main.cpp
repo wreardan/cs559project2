@@ -86,6 +86,10 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		window.camera.SetCameraType((window.camera.GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
 		break;
 	case 'S':
+		window.top.StepShader();
+		window.mars.StepBackShader();
+		window.ship.StepShader();
+		break;
 	case 's':
 		window.top.StepShader();
 		window.mars.StepShader();
@@ -142,7 +146,7 @@ void SpecialFunc(int c, int x, int y)
 		break;
 
 	case GLUT_KEY_DOWN:
-		if(window.camera.up_down > 0.5f)
+		if(window.camera.up_down > 0.0f)
 			window.camera.up_down -= 0.01f;
 		break;
 
@@ -219,7 +223,7 @@ void DisplayFunc()
 		turning starfield is required.*/
 		window.camera.type = Camera::chase;
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		temp = translate(mat4(1.0f), vec3(0.0f, 1.0f, -10.0f));
+		temp = translate(mat4(1.0f), vec3(0.0f, 0.5f, -6.0f));
 		temp = rotate(temp, -90.0f, vec3(1.0f, 0.0f, 0.0f));
 		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
