@@ -16,6 +16,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Light.h"
+
 class Shader
 {
 public:
@@ -63,12 +65,28 @@ class TextureShader : public Shader
 public:
 	TextureShader();
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
-	virtual void CustomSetup(glm::vec3 & light_position);
+	virtual void CustomSetup(glm::vec4 & light_position);
 
 protected:
 	GLuint texture_sampler;
 	GLuint light_position_handle;
-	glm::vec3 light_position;
+	glm::vec4 light_position;
+
+private:
+	typedef Shader super;
+};
+
+
+class SpotlightShader : public Shader
+{
+public:
+	SpotlightShader();
+	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
+	virtual void CustomSetup(Lights & lights);
+
+protected:
+	GLuint texture_sampler;
+	GLuint light_position_handle;
 
 private:
 	typedef Shader super;

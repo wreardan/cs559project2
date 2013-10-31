@@ -68,8 +68,8 @@ void Mesh::CalculateNormals(unsigned int columns, unsigned int rows) {
 	unsigned int r, s, i;
     vec3 curr, right, left, up, down, down_left, down_right, up_left, up_right, normal;
     unsigned int num_columns = columns;
-	int index = columns;
-    for(r = 1; r < rows-1; r++) {
+	int index = 0;
+    for(r = 0; r < rows; r++) {
 		for(s = 0; s < columns; s++) {
 			//account for last column
 			if (s == columns-1) {
@@ -97,6 +97,7 @@ void Mesh::CalculateNormals(unsigned int columns, unsigned int rows) {
 						normal = glm::normalize(normal);
 				}
 				this->vertices[index].normal = normal;
+				//if(r != 0 && r != rows-1)
 				BuildNormalVisualizationGeometry(index);
 				index++;
 			}
@@ -175,7 +176,7 @@ vec3 Mesh::GetIndexDownLeft(int index, int columns, int r, int s, int rows){
 	if (index - (r * columns) <= 0) {
 		index = index + 1;
 	}
-	if ((((index - s) / columns) >= rows)) {
+	if ((((index - s + 1) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;
@@ -186,7 +187,7 @@ vec3 Mesh::GetIndexDownRight(int index, int columns, int r, int s, int rows){
 	if ((index - (r * columns) >= columns)) {
 		index = columns - 1;
 	}
-	if ((((index - s) / columns) >= rows)) {
+	if ((((index - s + 1) / columns) >= rows)) {
 		index = index - columns;
 	}
 	return this->vertices[index].position;

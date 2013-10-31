@@ -16,7 +16,7 @@ void Sphere::BuildPrimitive(float radius, unsigned int columns, unsigned int row
 			float const x = cos(2 * M_PI * c * S) * sin( M_PI * r * R );
 			float const y = sin( -M_PI_2 + M_PI * r * R );
 			float const z = sin(2*M_PI * c * S) * sin( M_PI * r * R );
-			float col_g;
+			/*float col_g;	GAHHHHHHHHHHHHHHHHHHHHHHHH
 			float col_r;
 			if (r != 0) {
 				col_g =  0;
@@ -24,10 +24,10 @@ void Sphere::BuildPrimitive(float radius, unsigned int columns, unsigned int row
 			} else {
 				col_g = 1;
 				col_r = 0;
-			}
+			}*/
 			circlePos = vec3(x * radius, y * radius, z * radius);
 			this->vertices[index].position = circlePos;
-			this->vertices[index].color = vec3(col_r, col_g, 0.0f);
+			this->vertices[index].color = vec3(1.0f, 0.0f, 0.0f);
 			index++;
 		}
 	}

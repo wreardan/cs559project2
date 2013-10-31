@@ -12,12 +12,12 @@ Light::~Light(void)
 {
 }
 
-void Light::SetPosition(glm::vec3 & position)
+void Light::SetPosition(glm::vec4 & position)
 {
 	this->position = position;
 }
 
-glm::vec3 Light::GetPosition()
+glm::vec4 Light::GetPosition()
 {
 	return position;
 }
@@ -33,8 +33,8 @@ void Lights::Add(Light & light)
 	this->lights.push_back(light);
 }
 
-glm::vec3 Lights::GetPosition(int i)
+glm::vec4 Lights::GetPosition(int i)
 {
-	vec3 pos = vec3(cameraMatrix * vec4(lights[i].GetPosition(), 1.0f));
+	vec4 pos = cameraMatrix * lights[i].GetPosition();
 	return pos;
 }

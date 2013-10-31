@@ -269,10 +269,37 @@ bool TextureShader::Initialize(char * vertex_shader_file, char * fragment_shader
 	return true;
 }
 
-void TextureShader::CustomSetup(vec3 & light_position)
+void TextureShader::CustomSetup(vec4 & light_position)
 {
 	this->light_position = light_position;
 	//glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
 	glUniform3fv(this->light_position_handle, 1, value_ptr(light_position));
+	this->GLReturnedError("TextureShader::CustomSetup - after light_position");
+}
+
+
+SpotlightShader::SpotlightShader() : super()
+{
+	this->texture_sampler = BAD_GL_VALUE;
+}
+
+bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
+{
+	if (!super::Initialize(vertex_shader_file, fragment_shader_file))
+		return false;
+
+	this->Use();
+	this->texture_sampler = glGetUniformLocation(this->program_id, (const GLchar *) "s_texture");
+	this->light_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "light_position");
+	this->GLReturnedError("TextureShader::Initialize - after light_position_handle");
+	glUseProgram(0);
+//	assert(this->color_array_handle != BAD_GL_VALUE);
+	return true;
+}
+
+void SpotlightShader::CustomSetup(Lights & lights)
+{
+	//glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
+	glUniform4fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(1)));
 	this->GLReturnedError("TextureShader::CustomSetup - after light_position");
 }

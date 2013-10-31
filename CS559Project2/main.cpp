@@ -294,7 +294,7 @@ int main(int argc, char * argv[])
 		return 0;
 	}
 	Light light;
-	light.SetPosition(vec3(0.0f, 0.0f, 50.0f));
+	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
 	window.lights.Add(light);
 
 	glutMainLoop();
