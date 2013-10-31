@@ -6,11 +6,11 @@
 class Light
 {
 protected:
-	glm::vec3 position;
+	glm::vec4 position;
 public:
 	Light(void);
-	void SetPosition(glm::vec3 & position);
-	glm::vec3 GetPosition();
+	void SetPosition(glm::vec4 & position);
+	glm::vec4 GetPosition();
 	~Light(void);
 };
 
@@ -22,5 +22,5 @@ public:
 
 	std::vector<Light> lights;
 	glm::mat4 cameraMatrix;
-	glm::vec3 GetPosition(int i);
+	glm::vec4 GetPosition(int i);
 };

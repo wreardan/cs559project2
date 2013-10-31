@@ -149,6 +149,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="spotlight_shader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="spotlight_shader.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mars.txt">
