@@ -31,6 +31,7 @@ public:
 	Shader solid_color;
 	Shader stripes_model_space;
 	TextureShader texture_shader;
+	SpotlightShader spotlight_shader;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
 

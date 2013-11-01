@@ -88,6 +88,18 @@ protected:
 	GLuint texture_sampler;
 	GLuint light_position_handle;
 
+	GLuint spotlight_intensity_handle;
+	GLuint spotlight_exponent_handle;
+	GLuint spotlight_cutoff_handle;
+
+	GLuint spotlight_position_handle;
+	GLuint spotlight_direction_handle;
+	
+	GLuint kd_handle;
+	GLuint ks_handle;
+	GLuint ka_handle;
+	GLuint shininess_handle;
+
 private:
 	typedef Shader super;
 };

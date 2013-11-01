@@ -290,8 +290,30 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 
 	this->Use();
 	this->texture_sampler = glGetUniformLocation(this->program_id, (const GLchar *) "s_texture");
-	this->light_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "light_position");
-	this->GLReturnedError("TextureShader::Initialize - after light_position_handle");
+
+	spotlight_intensity_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.intesity");
+	glUniform3fv(this->spotlight_intensity_handle, 1, value_ptr(vec3(0.9f,0.9f,0.9f)));
+
+	spotlight_exponent_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.exponent");
+	glUniform1f(this->spotlight_exponent_handle, 30.0f);
+
+	spotlight_cutoff_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.cutoff");
+	glUniform1f(this->spotlight_cutoff_handle, 5.0f);
+
+	kd_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Kd");
+	glUniform3fv(this->kd_handle, 1, value_ptr(vec3(0.9f, 0.5f, 0.3f)));
+	ks_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Ks");
+	glUniform3fv(this->ks_handle, 1, value_ptr(vec3(0.95f, 0.95f, 0.95f)));
+	ka_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Ka");
+	glUniform3fv(this->ka_handle, 1, value_ptr(vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f)));
+	shininess_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Shininess");
+	glUniform1f(this->shininess_handle, 100.0f);
+
+	spotlight_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.position");
+	spotlight_direction_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.direction");
+	light_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "light_position");
+
+	this->GLReturnedError("SpotlightShader::Initialize - after light_position_handle");
 	glUseProgram(0);
 //	assert(this->color_array_handle != BAD_GL_VALUE);
 	return true;
@@ -299,7 +321,9 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 
 void SpotlightShader::CustomSetup(Lights & lights)
 {
-	//glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
-	glUniform4fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(1)));
-	this->GLReturnedError("TextureShader::CustomSetup - after light_position");
+	glUniform4fv(this->spotlight_position_handle, 1, value_ptr(lights.GetRawPosition(1)));
+	glUniform3fv(this->spotlight_direction_handle, 1, value_ptr(lights.GetRawDirection(1)));
+	glUniform3fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(0)));
+
+	this->GLReturnedError("SpotlightShader::CustomSetup - after spotlight_position_handle,spotlight_direction_handle");
 }

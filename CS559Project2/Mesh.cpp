@@ -16,7 +16,7 @@ Mesh::Mesh(void) : Object()
 	vec4 darker_color = vec4(vec3(lighter_color) * 2.0f / 3.0f, 1.0f);
 	this->colors[0] = darker_color;
 	this->colors[1] = lighter_color;
-	this->shader_index = 3;
+	this->shader_index = 4;
 }
 
 
@@ -300,10 +300,14 @@ bool Mesh::Initialize(float size)
 	if (!this->texture_shader.Initialize("texture_shader.vert", "texture_shader.frag"))
 		return false;
 
+	if (!this->spotlight_shader.Initialize("spotlight_shader.vert", "spotlight_shader.frag"))
+		return false;
+
 	this->shaders.push_back(&this->shader);
 	this->shaders.push_back(&this->solid_color);
 	this->shaders.push_back(&this->stripes_model_space);
 	this->shaders.push_back(&this->texture_shader);
+	this->shaders.push_back(&this->spotlight_shader);
 
 	if (this->GLReturnedError("Background::Initialize - on exit"))
 		return false;
@@ -317,6 +321,7 @@ void Mesh::TakeDown()
 	this->shader.TakeDown();
 	this->solid_color.TakeDown();
 	this->texture_shader.TakeDown();
+	this->spotlight_shader.TakeDown();
 	super::TakeDown();
 }
 
@@ -346,6 +351,8 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 
 	if(shader_index == 3)
 		this->texture_shader.CustomSetup(lights.GetPosition(0));
+	if(shader_index == 4)
+		this->spotlight_shader.CustomSetup(lights);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

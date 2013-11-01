@@ -183,6 +183,7 @@ void DisplayFunc()
 	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
 	mat4 view = window.camera.GetView();
 	window.lights.cameraMatrix = view;
+	window.lights.normalMatrix = mat3(inverse(transpose(view)));
 	mat4 temp;
 	
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
@@ -293,9 +294,12 @@ int main(int argc, char * argv[])
 	if(!window.camera.Initialize()) {
 		return 0;
 	}
-	Light light;
+	Light light, spotlight;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
 	window.lights.Add(light);
+	spotlight.SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
+	window.lights.Add(spotlight);
 
 	glutMainLoop();
 }
