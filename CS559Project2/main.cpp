@@ -36,8 +36,8 @@ GLuint whiteTexHandle;
 
 void InitFBO() {	
 	// Generate and bind the framebuffer
-    glGenFramebuffersEXT(1, &fboHandle);
-	glBindRenderbufferEXT(GL_FRAMEBUFFER, fboHandle);
+    glGenFramebuffers(1, &fboHandle);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 
     // Create the texture object
     GLuint renderTex;
@@ -73,7 +73,7 @@ void InitFBO() {
         }
 
     // Unbind the framebuffer, and revert to default framebuffer
-    glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void InitWhiteTex() {
@@ -236,7 +236,7 @@ void DisplayFunc()
 	 glBindTexture(GL_TEXTURE_2D, 0);
      glEnable(GL_TEXTURE_2D);
 	//bind FBO
-	glBindFramebufferEXT(GL_FRAMEBUFFER, fboHandle);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 	
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -313,10 +313,10 @@ void DisplayFunc()
 	if(window.draw_planes) {
 		window.drawPlanes();
 	}
-	//glFlush();
+	glFlush();
 	
 	//Unbind FBO
-	glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -347,7 +347,7 @@ void DisplayFunc()
 	view = translate(view, vec3(-50.0f, -30.0f, 0.0f));
 	
 	window.rendertexture.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
-	glutSwapBuffers();
+	glFlush();
 }
 
 void TimerFunc(int value)
