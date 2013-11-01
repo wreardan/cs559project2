@@ -1,6 +1,7 @@
 /*
-Code taken from GLSL 4.0 Cookboook for Spotlight, Chapter 3
-https://github.com/daw42/glslcookbook/blob/master/chapter03/shader/spot.fs
+Code taken from GLSL 4.0 Cookboook for Wire shader, Chapter 6
+Also based on Spotlight shader
+https://github.com/daw42/glslcookbook/blob/master/chapter06/shader/shadewire.fs
 */
 
 #version 400

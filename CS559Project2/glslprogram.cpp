@@ -1,3 +1,4 @@
+//https://github.com/daw42/glslcookbook/blob/master/ingredients/glslprogram.cpp
 #include "glslprogram.h"
 
 #include <GL/glew.h>

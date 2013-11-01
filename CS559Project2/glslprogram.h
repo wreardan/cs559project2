@@ -1,3 +1,4 @@
+//https://github.com/daw42/glslcookbook/blob/master/ingredients/glslprogram.h
 #ifndef GLSLPROGRAM_H
 #define GLSLPROGRAM_H
 
