@@ -30,6 +30,7 @@ public:
 	Shader shader;
 	Shader solid_color;
 	Shader stripes_model_space;
+	RenderTextureShader render_texture;
 	TextureShader texture_shader;
 	std::vector<Shader *> shaders;
 	ILContainer texture;

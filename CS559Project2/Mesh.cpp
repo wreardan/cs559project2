@@ -300,10 +300,14 @@ bool Mesh::Initialize(float size)
 	if (!this->texture_shader.Initialize("texture_shader.vert", "texture_shader.frag"))
 		return false;
 
+	if (!this->render_texture.Initialize("rendertotex.vert", "rendertotex.frag"))
+		return false;
+
 	this->shaders.push_back(&this->shader);
 	this->shaders.push_back(&this->solid_color);
 	this->shaders.push_back(&this->stripes_model_space);
 	this->shaders.push_back(&this->texture_shader);
+	this->shaders.push_back(&this->render_texture);
 
 	if (this->GLReturnedError("Background::Initialize - on exit"))
 		return false;
@@ -331,7 +335,8 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 		return;
 
 	if(texture.il_handle !=  BAD_IL_VALUE) {
-		texture.Bind();
+		printf("Binding texture\n");
+		texture.Bind(3); //pass this sampler # into texture shaders
 	}
 
 	glEnable(GL_DEPTH_TEST);
@@ -344,8 +349,11 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
+	//printf("Shader Index: %i\n", shader_index);
 	if(shader_index == 3)
-		this->texture_shader.CustomSetup(lights.GetPosition(0));
+		this->texture_shader.CustomSetup(3, lights.GetPosition(0));
+	if(shader_index == 4)
+		this->render_texture.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

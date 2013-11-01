@@ -9,6 +9,7 @@
 #include "Mars.h"
 #include "Light.h"
 #include "Starfield.h"
+#include "RenderTexture.h"
 
 class Window
 {
@@ -35,6 +36,7 @@ public:
 	Camera camera;
 	Lights lights;
 	Starfield starfield;
+	RenderTexture rendertexture;
 	bool draw_planes;		//should we draw x,y,z axis or not?
 	void drawPlanes();
 };

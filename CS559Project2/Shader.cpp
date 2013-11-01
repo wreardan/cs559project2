@@ -227,6 +227,46 @@ bool Shader::GLReturnedError(char * s)
 	return return_error;
 }
 
+RenderTextureShader::RenderTextureShader() : super()
+{
+	this->render_texture_handle = BAD_GL_VALUE;
+	this->amb_handle = BAD_GL_VALUE;
+	this->diff_handle = BAD_GL_VALUE;
+	this->spec_handle = BAD_GL_VALUE;
+	this->light_pos_handle = BAD_GL_VALUE;
+	this->shininess_handle = BAD_GL_VALUE;
+}
+
+bool RenderTextureShader::Initialize(char * vertex_shader_file, char * fragment_shader_file) {
+	if (!super::Initialize(vertex_shader_file, fragment_shader_file))
+		return false;
+
+	this->Use();
+	this->render_texture_handle = glGetUniformLocation(this->program_id, (const GLchar *) "RenderTex");
+	this->amb_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Ka");
+	this->diff_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Kd");
+	this->spec_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Ks");
+	this->light_pos_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Light.Position");
+	this->light_intensity_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Light.Intensity");
+	this->shininess_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Shininess");
+	
+	this->GLReturnedError("RenderTextureShader::Initialize");
+
+	glUseProgram(0);
+	return true;
+}
+
+void RenderTextureShader::CustomSetup(GLuint render_text, glm::vec4 light_pos, glm::vec3 light_intensity, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shininess) {
+	glUniform1i(this->render_texture_handle, render_text);
+	glUniform4f(this->program_id, light_pos.x, light_pos.y, light_pos.z, light_pos.w);
+	glUniform3f(this->program_id, light_intensity.x, light_intensity.y, light_intensity.z);
+	glUniform3f(this->program_id, amb.x, amb.y, amb.z);
+	glUniform3f(this->program_id, diff.x, diff.y, diff.z);
+	glUniform3f(this->program_id, spec.x, spec.y, spec.z);
+	glUniform1f(this->program_id, shininess);
+	this->GLReturnedError("RenderTextureShader::CustomSetup");
+}
+
 BackgroundShader::BackgroundShader() : super()
 {
 	this->color_array_handle = BAD_GL_VALUE;
@@ -269,10 +309,10 @@ bool TextureShader::Initialize(char * vertex_shader_file, char * fragment_shader
 	return true;
 }
 
-void TextureShader::CustomSetup(vec4 & light_position)
+void TextureShader::CustomSetup(GLuint text, vec4 & light_position)
 {
 	this->light_position = light_position;
-	//glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
+	glUniform1i(this->texture_sampler, text);
 	glUniform3fv(this->light_position_handle, 1, value_ptr(light_position));
 	this->GLReturnedError("TextureShader::CustomSetup - after light_position");
 }

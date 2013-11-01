@@ -66,6 +66,9 @@
     <ClCompile Include="Starfield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -113,6 +116,9 @@
     <ClInclude Include="Starfield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="background_gradient.frag">
@@ -153,6 +159,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="spotlight_shader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="rendertotex.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="rendertotex.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

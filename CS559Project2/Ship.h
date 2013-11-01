@@ -1,5 +1,6 @@
 #pragma once
 #include "Sphere.h"
+#include "Cylinder.h"
 #include <glm/glm.hpp>
 
 using namespace glm;
@@ -8,6 +9,7 @@ class Ship
 {
 protected:
 	Sphere sphere;
+	Cylinder cylinder;
 	float wing_angle;
 	bool draw_normals;
 public:

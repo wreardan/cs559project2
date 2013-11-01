@@ -28,6 +28,63 @@ using namespace std;
 using namespace glm;
 
 Window window;
+GLuint fboHandle; // The handle to the FBO
+GLuint renderTex;
+GLuint depthBuf;
+GLuint whiteTexHandle;
+
+
+void InitFBO() {	
+	// Generate and bind the framebuffer
+    glGenFramebuffersEXT(1, &fboHandle);
+	glBindRenderbufferEXT(GL_FRAMEBUFFER, fboHandle);
+
+    // Create the texture object
+    GLuint renderTex;
+    glGenTextures(1, &renderTex);
+    glActiveTexture(GL_TEXTURE0);  // Use texture unit 0
+    glBindTexture(GL_TEXTURE_2D, renderTex);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,512,512,0,GL_RGBA,GL_UNSIGNED_BYTE,NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Bind the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTex, 0);
+
+    // Create the depth buffer
+    GLuint depthBuf;
+    glGenRenderbuffers(1, &depthBuf);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthBuf);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+
+    // Bind the depth buffer to the FBO
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                              GL_RENDERBUFFER, depthBuf);
+
+    // Set the targets for the fragment output variables
+    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, drawBuffers);
+
+        GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if( result == GL_FRAMEBUFFER_COMPLETE) {
+                cout << "Framebuffer is complete" << endl;
+        } else {
+                cout << "Framebuffer error: " << result << endl;
+        }
+
+    // Unbind the framebuffer, and revert to default framebuffer
+    glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+}
+
+void InitWhiteTex() {
+	// One pixel white texture
+	GLubyte whiteTex[] = { 255, 255, 255, 255 };
+	glActiveTexture(GL_TEXTURE1);
+	glGenTextures(1, &whiteTexHandle);
+	glBindTexture(GL_TEXTURE_2D, whiteTexHandle);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA,
+	GL_UNSIGNED_BYTE, whiteTex);
+}
 
 void DisplayInstructions()
 {
@@ -64,6 +121,7 @@ void CloseFunc()
 	window.ship.TakeDown();
 	window.mars.TakeDown();
 	window.starfield.TakeDown();
+	window.rendertexture.TakeDown();
 }
 
 void ReshapeFunc(int w, int h)
@@ -95,6 +153,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		window.top.StepShader();
 		window.mars.StepShader();
 		window.ship.StepShader();
+		window.rendertexture.StepShader();
 		break;
 		
 	case 'N':
@@ -174,10 +233,17 @@ void DisplayFunc()
 {
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
 
+	 glBindTexture(GL_TEXTURE_2D, 0);
+     glEnable(GL_TEXTURE_2D);
+	//bind FBO
+	glBindFramebufferEXT(GL_FRAMEBUFFER, fboHandle);
+	
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, window.size.x, window.size.y);
+	
+	glViewport(0, 0, 512, 512);
+	
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
 	window.camera.Update(time);
@@ -244,9 +310,44 @@ void DisplayFunc()
 	}
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DisplayInstructions();
-	if(window.draw_planes)
+	if(window.draw_planes) {
 		window.drawPlanes();
-	glFlush();
+	}
+	//glFlush();
+	
+	//Unbind FBO
+	glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+
+	glEnable(GL_CULL_FACE);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glViewport(0, 0, window.size.x, window.size.y);
+	
+	window.background.Draw(window.size);
+	time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
+	window.camera.Update(time);
+	projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
+	view = window.camera.GetView();
+	window.lights.cameraMatrix = view;
+	temp = mat4(1.0f);
+	
+	if(window.camera.scalar < 12.0f) {
+		window.camera.type = Camera::normal;
+		window.camera.scalar = 12.0f;
+		window.camera.rotation_speed = 10.0f;
+		window.camera.Initialize();
+	}
+
+	window.starfield.Update();
+	window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+	
+	//view = rotate(view, 180.0f, vec3(0, 0, 0));
+	view = scale(view, vec3(0.10f, 0.10f, 0.10f));
+	view = translate(view, vec3(-50.0f, -30.0f, 0.0f));
+	
+	window.rendertexture.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
+	glutSwapBuffers();
 }
 
 void TimerFunc(int value)
@@ -305,6 +406,13 @@ int main(int argc, char * argv[])
 	if(!window.starfield.Initialize()) {
 		return 0;
 	}
+	if(!window.rendertexture.Initialize()) {
+		return 0;
+	}
+
+	InitFBO();
+	InitWhiteTex();
+
 	Light light;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
 	window.lights.Add(light);

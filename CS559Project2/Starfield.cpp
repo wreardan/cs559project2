@@ -65,9 +65,6 @@ void Starfield::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lig
 	if (this->GLReturnedError("Mesh::Draw - on entry"))
 		return;
 
-	if(texture.il_handle !=  BAD_IL_VALUE) {
-		texture.Bind();
-	}
 
 	glEnable(GL_DEPTH_TEST);
 	mat4 model = glm::mat4(1.0f);
@@ -78,9 +75,6 @@ void Starfield::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lig
 	this->shaders[1]->Use(); //set shader to pure white for stars
 	this->GLReturnedError("Mesh::Draw - after use");
 	this->shaders[1]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
-
-	if(shader_index == 3)
-		this->texture_shader.CustomSetup(lights.GetPosition(0));
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

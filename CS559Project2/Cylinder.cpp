@@ -5,7 +5,7 @@
 using namespace std;
 
 void Cylinder::BuildPrimitive(float radius, unsigned int columns, unsigned int rows) {
-	float const S = 1.0f/(float)(columns-1);
+	/*float const S = 1.0f/(float)(columns-1);
 	unsigned int s;
 	int index = 0;
 	for(s = 0; s < columns; s++) { 
@@ -18,7 +18,7 @@ void Cylinder::BuildPrimitive(float radius, unsigned int columns, unsigned int r
 			this->vertices[index].position = vertex;
 			index++;
 		}
-	}
+	}*/
 }
 
 Cylinder::Cylinder()

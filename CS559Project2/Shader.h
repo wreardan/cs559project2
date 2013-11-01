@@ -45,6 +45,24 @@ protected:
 	bool GLReturnedError(char * s);
 };
 
+class RenderTextureShader : public Shader
+{
+public: 
+	RenderTextureShader();
+	bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
+	void CustomSetup(GLuint render_text, glm::vec4 light_pos, glm::vec3 light_intensity, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shininess);
+protected:
+	GLuint render_texture_handle;
+	GLuint light_pos_handle;
+	GLuint light_intensity_handle;
+	GLuint amb_handle;
+	GLuint diff_handle;
+	GLuint spec_handle;
+	GLuint shininess_handle;
+private:
+	typedef Shader super;
+};
+
 class BackgroundShader : public Shader
 {
 public:
@@ -65,7 +83,7 @@ class TextureShader : public Shader
 public:
 	TextureShader();
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
-	virtual void CustomSetup(glm::vec4 & light_position);
+	virtual void CustomSetup(GLuint text, glm::vec4 & light_position);
 
 protected:
 	GLuint texture_sampler;

@@ -90,6 +90,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mars.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mars.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Ship.h" />
@@ -121,6 +123,8 @@
     <None Include="background_gradient.frag" />
     <None Include="background_gradient.vert" />
     <None Include="ClassDiagram.cd" />
+    <None Include="rendertotex.vert" />
+    <None Include="rendertotex.frag" />
     <None Include="solid_shader.frag" />
     <None Include="solid_shader.vert" />
     <None Include="spotlight_shader.frag" />

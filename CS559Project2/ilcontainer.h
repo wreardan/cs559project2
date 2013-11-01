@@ -32,6 +32,7 @@ public:
 	~ILContainer();
 	
 	bool Initialize(const char * file_name);
+	bool Initialize();
 	void Bind(GLuint texture_unit = 0);
 
 	ILint width;
