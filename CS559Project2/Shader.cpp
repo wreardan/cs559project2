@@ -327,3 +327,15 @@ void SpotlightShader::CustomSetup(Lights & lights)
 
 	this->GLReturnedError("SpotlightShader::CustomSetup - after spotlight_position_handle,spotlight_direction_handle");
 }
+
+
+SpotlightWireframeShader::SpotlightWireframeShader()
+{
+
+}
+
+bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file)
+{
+	
+	return true;
+}

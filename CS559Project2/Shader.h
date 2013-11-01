@@ -104,3 +104,12 @@ private:
 	typedef Shader super;
 };
 
+class SpotlightWireframeShader : public SpotlightShader
+{
+public:
+	SpotlightWireframeShader();
+	bool Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file);
+
+private:
+	typedef Shader super;
+};
