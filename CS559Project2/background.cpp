@@ -16,11 +16,11 @@ using namespace glm;
 
 Background::Background() : Object()
 {
-	vec4 lighter_color(this->MakeColor(0, 80, 0));
+	vec4 lighter_color(this->MakeColor(0, 0, 0));
 	vec4 darker_color = vec4(vec3(lighter_color) / 8.0f, 1.0f);
 	this->colors[0] = darker_color;
-	this->colors[1] = lighter_color * vec4(1.0f, 0.5f, 1.0f, 1.0f);
-	this->colors[2] = lighter_color * vec4(1.0f, 3.0f, 1.0f, 1.0f);
+	this->colors[1] = lighter_color * vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	this->colors[2] = lighter_color * vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	this->colors[3] = lighter_color;
 }
 

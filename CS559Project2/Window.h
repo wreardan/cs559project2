@@ -8,6 +8,7 @@
 #include "Ship.h"
 #include "Mars.h"
 #include "Light.h"
+#include "Starfield.h"
 
 class Window
 {
@@ -33,6 +34,7 @@ public:
 	Mars mars;
 	Camera camera;
 	Lights lights;
+	Starfield starfield;
 	bool draw_planes;		//should we draw x,y,z axis or not?
 	void drawPlanes();
 };

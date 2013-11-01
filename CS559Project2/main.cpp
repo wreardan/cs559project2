@@ -63,6 +63,7 @@ void CloseFunc()
 	window.top.TakeDown();
 	window.ship.TakeDown();
 	window.mars.TakeDown();
+	window.starfield.TakeDown();
 }
 
 void ReshapeFunc(int w, int h)
@@ -174,7 +175,7 @@ void DisplayFunc()
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
 
 	glEnable(GL_CULL_FACE);
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, window.size.x, window.size.y);
 	window.background.Draw(window.size);
@@ -196,6 +197,8 @@ void DisplayFunc()
 		construction and lighting correctness. With or without a starfield.*/
 		window.camera.type = Camera::normal;
 		window.camera.scalar = 2.0f;
+		window.starfield.Update();
+		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.camera.rotation_speed = 20.0f;
 		window.ship.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
@@ -207,6 +210,8 @@ void DisplayFunc()
 			window.camera.rotation_speed = 10.0f;
 			window.camera.Initialize();
 		}
+		window.starfield.Update();
+		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
@@ -215,6 +220,8 @@ void DisplayFunc()
 		turn with your motion.*/
 		window.camera.type = Camera::chase;
 		window.camera.rotation_speed = 10.0f;
+		window.starfield.Update();
+		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
@@ -227,6 +234,8 @@ void DisplayFunc()
 		temp = translate(mat4(1.0f), vec3(0.0f, 0.65f, -6.0f));
 		temp = rotate(temp, -90.0f, vec3(1.0f, 0.0f, 0.0f));
 		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+		window.starfield.Update();
+		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
@@ -292,6 +301,9 @@ int main(int argc, char * argv[])
 	if(!window.mars.Initialize((float)window.slices, argv[1], "mars.jpg"))
 		return 0;
 	if(!window.camera.Initialize()) {
+		return 0;
+	}
+	if(!window.starfield.Initialize()) {
 		return 0;
 	}
 	Light light, spotlight;
