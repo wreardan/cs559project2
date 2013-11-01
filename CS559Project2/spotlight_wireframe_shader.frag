@@ -27,6 +27,15 @@ uniform vec3 Ka;            // Ambient reflectivity
 uniform vec3 Ks;            // Specular reflectivity
 uniform float Shininess;    // Specular shininess factor
 
+uniform struct LineInfo {
+	float Width;
+	vec4 Color;
+} Line;
+
+in vec3 GPosition;
+in vec3 GNormal;
+noperspective in vec3 GEdgeDistance;
+
 uniform sampler2D s_texture;
 
 layout( location = 0 ) out vec4 FragColor;
@@ -73,6 +82,21 @@ vec3 ads( )
 
 void main() {
     vec4 t_color = texture2D(s_texture, texture_coord);
+	vec4 lit_color = vec4(adss() + ads(), 1.0) * t_color;
 
-	FragColor = vec4(adss() + ads(), 1.0) * t_color; 
+	// Find the smallest distance
+    float d = min( GEdgeDistance.x, GEdgeDistance.y );
+    d = min( d, GEdgeDistance.z );
+
+    float mixVal;
+    if( d < Line.Width - 1 ) {
+        mixVal = 1.0;
+    } else if( d > Line.Width + 1 ) {
+        mixVal = 0.0;
+    } else {
+        float x = d - (Line.Width - 1);
+        mixVal = exp2(-2.0 * (x*x));
+    }
+
+	FragColor = mix(lit_color, Line.Color, mixVal); 
 }

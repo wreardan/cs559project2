@@ -336,6 +336,93 @@ SpotlightWireframeShader::SpotlightWireframeShader()
 
 bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file)
 {
+	if( ! prog.compileShaderFromFile(vertex_shader_file, GLSLShader::VERTEX)) {
+		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	if( ! prog.compileShaderFromFile(fragment_shader_file, GLSLShader::FRAGMENT)) {
+		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		return false;
+	}
+
 	
+	if( ! prog.compileShaderFromFile(geometry_shader_file, GLSLShader::GEOMETRY)) {
+		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	if( ! prog.link() ) {
+		cerr << "SpotlightWireframeShader::Initialize:  Program failed to Link: " << prog.log().c_str() << endl;
+		return false;
+	}
+	
+	if( ! prog.validate() ) {
+		cerr << "SpotlightWireframeShader::Initialize:  Program failed to Validate: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	prog.use();
+
 	return true;
+}
+
+bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
+{
+	assert(false);
+	return false;
+}
+
+void SpotlightWireframeShader::CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm)
+{
+	//do nothing
+}
+
+void SpotlightWireframeShader::CustomSetup(const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights)
+{
+	prog.use();
+
+	prog.setUniform("modelview_matrix", modelview);
+	prog.setUniform("normal_matrix", normal_matrix);
+	prog.setUniform("mvp", mvp);	//Found
+
+	float w2 = size.x / 2.0f;
+	float h2 = size.y / 2.0f;
+	mat4 viewport_matrix = mat4( vec4(w2,0.0f,0.0f,0.0f),
+		vec4(0.0f,h2,0.0f,0.0f),
+		vec4(0.0f,0.0f,1.0f,0.0f),
+		vec4(w2+0, h2+0, 0.0f, 1.0f));
+	prog.setUniform("ViewportMatrix", viewport_matrix);
+
+	//prog.setUniform("Kd", vec3(0.9f, 0.5f, 0.3f));
+	//prog.setUniform("Ks", vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f));
+	//prog.setUniform("Ka", vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f));
+
+	prog.setUniform("Shininess", 100.0f);	//Found
+
+	prog.setUniform("s_texture", 0);	//Found
+	
+	prog.setUniform("Line.Width", 0.75f);
+	prog.setUniform("Line.Color", vec4(0.5f,0.0f,0.5f,1.0f));
+
+	//prog.setUniform("Spot.intesity", vec3(0.9f,0.9f,0.9f));
+
+	//prog.setUniform("Spot.exponent", 30.0f);
+
+	prog.setUniform("Spot.cutoff", 5.0f);	//Found
+	
+	prog.setUniform("Spot.position", lights.GetRawPosition(1));	//Found
+	prog.setUniform("Spot.direction", lights.GetRawDirection(1));	//Found
+	prog.setUniform("light_position", vec3(lights.GetPosition(0)));	//Found
+}
+
+void SpotlightWireframeShader::TakeDown()
+{
+	
+}
+
+void SpotlightWireframeShader::Use()
+{
+	prog.use();
 }

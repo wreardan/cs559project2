@@ -20,7 +20,7 @@ void Ship::BuildPrimitive() {
 	sphere.BuildMesh(20, 20);
 	sphere.BuildPrimitive(2.0f, 20, 20);
 	sphere.CalculateNormals(20, 20);
-	sphere.shader_index = 3;
+	sphere.shader_index = 5;
 }
 
 void Ship::EnableNormals(bool dn) {
