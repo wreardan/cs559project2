@@ -9,16 +9,16 @@ https://github.com/daw42/glslcookbook/blob/master/chapter06/shader/shadewire.gs
 layout( triangles ) in;
 layout( triangle_strip, max_vertices = 3 ) out;
 
-out vec3 normal;
-out vec3 position;
-flat out vec3 color;
-out vec2 texture;
+out vec3 Gposition;
+out vec3 Gnormal;
+flat out vec3 Gcolor;
+out vec2 Gtexture;
 noperspective out vec3 GEdgeDistance;
 
-in vec3 normal_in[];
-in vec3 position_in[];
-in vec2 texture_in[];
-flat in vec3 color_in[];
+in vec3 Vposition[];
+in vec3 Vnormal[];
+flat in vec3 Vcolor[];
+in vec2 Vtexture[];
 
 uniform mat4 ViewportMatrix;  // Viewport matrix
 
@@ -39,26 +39,26 @@ void main()
     float hc = abs( b * sin( alpha ) );
 
     GEdgeDistance = vec3( ha, 0, 0 );
-    normal = normal_in[0];
-    position = position_in[0];
-	color = color_in[0];
-	texture = texture_in[0];
+    Gposition = Vposition[0];
+    Gnormal = Vnormal[0];
+	Gcolor = Vcolor[0];
+	Gtexture = Vtexture[0];
     gl_Position = gl_in[0].gl_Position;
     EmitVertex();
 
     GEdgeDistance = vec3( 0, hb, 0 );
-    normal = normal_in[1];
-    position = position_in[1];
-	color = color_in[1];
-	texture = texture_in[1];
+    Gposition = Vposition[1];
+    Gnormal = Vnormal[1];
+	Gcolor = Vcolor[1];
+	Gtexture = Vtexture[1];
     gl_Position = gl_in[1].gl_Position;
     EmitVertex();
 
     GEdgeDistance = vec3( 0, 0, hc );
-    normal = normal_in[2];
-    position = position_in[2];
-	color = color_in[2];
-	texture = texture_in[2];
+    Gposition = Vposition[2];
+    Gnormal = Vnormal[2];
+	Gcolor = Vcolor[2];
+	Gtexture = Vtexture[2];
     gl_Position = gl_in[2].gl_Position;
     EmitVertex();
     EndPrimitive();
