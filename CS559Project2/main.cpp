@@ -101,23 +101,24 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 'S':
 	case 's':
 		window.top.StepShader();
-		window.mars.StepShader();
+		window.mars.StepObjectShader();
 		window.ship.StepShader();
 		window.rendertexture.StepShader();
 		break;
-		
+	case 'Q':
+	case 'q':
+		window.rendertexture.StepPostEffect();
+		break;
 	case 'N':
 	case 'n':
 		window.top.EnableNormals(window.normals = !window.normals);
 		window.mars.EnableNormals(window.normals);
 		window.ship.EnableNormals(window.normals);
-		break;
-		
+		break;	
 	case 'W':
 	case 'w':
 		window.wireframe = !window.wireframe;
 		break;
-
 	case 'o':
 	case 'O':
 		window.draw_planes = !window.draw_planes;
@@ -162,11 +163,11 @@ void SpecialFunc(int c, int x, int y)
 
 	case GLUT_KEY_F1:
 		window.mode++;
-		if(window.mode > 3)	//change to add more modes
+		if(window.mode > 4)	//change to add more modes
 			window.mode = 0;
 		if(window.mode == 4) {
-			window.camera.scalar = 10000.0f;
-			window.camera.Initialize();
+			//window.camera.scalar = 10000.0f;
+			//window.camera.Initialize();
 		}
 		break;
 
@@ -197,7 +198,7 @@ void RenderToTexture(float current_time) {
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
 	window.camera.Update(time);
-	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
+	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 5000.0f);
 	mat4 view = window.camera.GetView();
 	window.lights.cameraMatrix = view;
 	window.lights.normalMatrix = mat3(inverse(transpose(view)));
@@ -211,9 +212,12 @@ void RenderToTexture(float current_time) {
 	case 0:
 		/*Just your newly improved spaceship slowly turning so we can admire your mesh
 		construction and lighting correctness. With or without a starfield.*/
-		window.camera.type = Camera::normal;
-		window.camera.scalar = 2.0f;
-		window.starfield.Update();
+		if(window.camera.scalar > 1000.0f) {
+			window.camera.type = Camera::normal;
+			window.camera.scalar = 2.0f;
+			window.camera.Initialize();
+		}
+		window.starfield.Update(false);
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.camera.rotation_speed = 20.0f;
 		window.ship.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
@@ -226,7 +230,7 @@ void RenderToTexture(float current_time) {
 			window.camera.rotation_speed = 10.0f;
 			window.camera.Initialize();
 		}
-		window.starfield.Update();
+		window.starfield.Update(false);
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
@@ -236,7 +240,7 @@ void RenderToTexture(float current_time) {
 		turn with your motion.*/
 		window.camera.type = Camera::chase;
 		window.camera.rotation_speed = 10.0f;
-		window.starfield.Update();
+		window.starfield.Update(false);
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
@@ -250,14 +254,16 @@ void RenderToTexture(float current_time) {
 		temp = translate(mat4(1.0f), vec3(0.0f, 0.65f, -6.0f));
 		temp = rotate(temp, -90.0f, vec3(1.0f, 0.0f, 0.0f));
 		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
-		window.starfield.Update();
+		window.starfield.Update(false);
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 4:
+		/*Just the starfield slowly turning when viewed from outside the “universe”. That is, the
+		virtual camera is placed outside a ball of turning stars.*/
 		window.camera.type = Camera::normal;
-		window.camera.rotation_speed = 10.0f;
-		window.starfield.Update();
+		window.camera.scalar = 1200.0f;
+		window.starfield.Update(true);
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
@@ -294,7 +300,7 @@ void RenderScene(float current_time) {
 	view = scale(view, vec3(0.145f, 0.11f, 0.10f));
 	view = translate(view, vec3(-50.0f, -50.0f, 200.0f));
 	
-	window.rendertexture.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
+	window.rendertexture.Draw(2, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
 	glFlush();
 }
 

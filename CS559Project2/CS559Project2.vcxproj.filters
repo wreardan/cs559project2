@@ -194,6 +194,24 @@
     <None Include="rendertotex.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="post_normal.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_normal.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_one.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_one.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_two.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_two.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mars.txt">

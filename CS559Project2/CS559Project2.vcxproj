@@ -129,6 +129,12 @@
     <None Include="background_gradient.frag" />
     <None Include="background_gradient.vert" />
     <None Include="ClassDiagram.cd" />
+    <None Include="post_normal.frag" />
+    <None Include="post_normal.vert" />
+    <None Include="post_one.frag" />
+    <None Include="post_one.vert" />
+    <None Include="post_two.frag" />
+    <None Include="post_two.vert" />
     <None Include="rendertotex.vert" />
     <None Include="rendertotex.frag" />
     <None Include="solid_shader.frag" />
