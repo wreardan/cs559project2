@@ -21,6 +21,8 @@ public:
 	virtual void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, Lights & lights, const float time = 0);
 	void CalculateNormals(unsigned int sectors, unsigned int rings);
 	void StepShader();
+	void StepObjectShader();
+	void StepPostProcess();
 	void StepBackShader();
 	void TakeDown();
 	void LoadTexture(char * texture_filename);
@@ -30,11 +32,13 @@ public:
 	int shader_index;
 	Shader shader;
 	Shader solid_color;
-	Shader stripes_model_space;
 	RenderTextureShader render_texture;
 	TextureShader texture_shader;
 	SpotlightShader spotlight_shader;
 	SpotlightWireframeShader spotlight_wireframe_shader;
+	RenderTextureShader post_normal;
+	RenderTextureShader post_one;
+	RenderTextureShader post_two;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
 

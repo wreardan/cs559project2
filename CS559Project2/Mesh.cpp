@@ -16,7 +16,7 @@ Mesh::Mesh(void) : Object()
 	vec4 darker_color = vec4(vec3(lighter_color) * 2.0f / 3.0f, 1.0f);
 	this->colors[0] = darker_color;
 	this->colors[1] = lighter_color;
-	this->shader_index = 6;
+	this->shader_index = 0;
 }
 
 
@@ -27,6 +27,14 @@ Mesh::~Mesh(void)
 void Mesh::StepShader()
 {
 	this->shader_index = ++this->shader_index % this->shaders.size();
+}
+
+void Mesh::StepObjectShader() 
+{
+	this->shader_index = ++this->shader_index % this->shaders.size();
+	while(this->shader_index >= 5) {
+		this->shader_index = ++this->shader_index % this->shaders.size();
+	}
 }
 
 void Mesh::StepBackShader()
@@ -294,27 +302,38 @@ bool Mesh::Initialize(float size)
 	if (!this->solid_color.Initialize("solid_shader.vert", "solid_shader.frag"))
 		return false;
 
-	if (!this->stripes_model_space.Initialize("stripe_model_space.vert", "stripe_model_space.frag"))
-		return false;
-
 	if (!this->texture_shader.Initialize("texture_shader.vert", "texture_shader.frag"))
 		return false;
 
 	if (!this->render_texture.Initialize("rendertotex.vert", "rendertotex.frag"))
 		return false;
+
 	if (!this->spotlight_shader.Initialize("spotlight_shader.vert", "spotlight_shader.frag"))
 		return false;
 
 	if (!this->spotlight_wireframe_shader.Initialize("spotlight_wireframe_shader.vert", "spotlight_wireframe_shader.frag", "spotlight_wireframe_shader.geo"))
 		return false;
+	
+	if (!this->post_normal.Initialize("post_normal.vert", "post_normal.frag"))
+		return false;
+	
+	if (!this->post_one.Initialize("post_one.vert", "post_one.frag"))
+		return false;
+	
+	if (!this->post_two.Initialize("post_two.vert", "post_two.frag"))
+		return false;
 
 	this->shaders.push_back(&this->shader);
 	this->shaders.push_back(&this->solid_color);
-	this->shaders.push_back(&this->stripes_model_space);
 	this->shaders.push_back(&this->texture_shader);
-	this->shaders.push_back(&this->render_texture);
 	this->shaders.push_back(&this->spotlight_shader);
 	this->shaders.push_back(&this->spotlight_wireframe_shader);
+	
+	//post processing starts here - index 5
+	this->shaders.push_back(&this->render_texture);
+	this->shaders.push_back(&this->post_normal);
+	this->shaders.push_back(&this->post_one);
+	this->shaders.push_back(&this->post_two);
 
 	if (this->GLReturnedError("Background::Initialize - on exit"))
 		return false;
@@ -329,6 +348,10 @@ void Mesh::TakeDown()
 	this->solid_color.TakeDown();
 	this->texture_shader.TakeDown();
 	this->spotlight_shader.TakeDown();
+	this->render_texture.TakeDown();
+	this->post_normal.TakeDown();
+	this->post_one.TakeDown();
+	this->post_two.TakeDown();
 	super::TakeDown();
 }
 
@@ -357,14 +380,20 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	this->shaders[this->shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
 	//printf("Shader Index: %i\n", shader_index);
-	if(shader_index == 3)
+	if(shader_index == 2)
 		this->texture_shader.CustomSetup(3, lights.GetPosition(0));
-	if(shader_index == 4)
-		this->render_texture.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
-	if(shader_index == 5)
+	if(shader_index == 3)
 		this->spotlight_shader.CustomSetup(3, lights);
-	if(shader_index == 6)
+	if(shader_index == 4)
 		this->spotlight_wireframe_shader.CustomSetup(3, time, size, projection, view, mvp, nm, lights);
+	if(shader_index == 5)
+		this->render_texture.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 6)
+		this->post_normal.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 7)
+		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 8)
+		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

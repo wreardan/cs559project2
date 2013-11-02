@@ -28,11 +28,11 @@ void RenderTexture::Draw(const mat4 & projection, mat4 view, const ivec2 & size,
 	mat4 mvp = projection * view * model;
 	mat3 nm = inverse(transpose(mat3(view)));
 
-	this->shaders[4]->Use();
+	this->shaders[6]->Use();
 	this->GLReturnedError("Mesh::Draw - after use");
-	this->shaders[4]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
+	this->shaders[6]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
-	this->render_texture.CustomSetup(2, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	this->post_normal.CustomSetup(2, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

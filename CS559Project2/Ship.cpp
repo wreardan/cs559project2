@@ -14,13 +14,16 @@ Ship::~Ship(void)
 void Ship::StepShader()
 {
 	sphere.shader_index = ++sphere.shader_index % sphere.shaders.size();
+	while(this->sphere.shader_index >= 5) {
+		this->sphere.shader_index = ++this->sphere.shader_index % this->sphere.shaders.size();
+	}
 }
 
 void Ship::BuildPrimitive() {
 	sphere.BuildMesh(20, 20);
 	sphere.BuildPrimitive(2.0f, 20, 20);
 	sphere.CalculateNormals(20, 20);
-	sphere.shader_index = 5;
+	sphere.shader_index = 1;
 }
 
 void Ship::EnableNormals(bool dn) {

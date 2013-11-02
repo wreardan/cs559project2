@@ -101,7 +101,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 'S':
 	case 's':
 		window.top.StepShader();
-		window.mars.StepShader();
+		window.mars.StepObjectShader();
 		window.ship.StepShader();
 		window.rendertexture.StepShader();
 		break;
