@@ -16,6 +16,7 @@ uniform mat4 modelview_matrix;
 uniform mat3 normal_matrix;
 uniform mat4 mvp;
 
+//Outputs to Geometry Shader
 flat out vec3 Vcolor;
 out vec3 Vposition;
 out vec3 Vnormal;

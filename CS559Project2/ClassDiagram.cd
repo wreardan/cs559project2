@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Mars" Collapsed="true">
-    <Position X="2.75" Y="4.75" Width="1.5" />
+    <Position X="0.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAABAAAAAAACAAAAAAAAAACAAAA=</HashCode>
       <FileName>Mars.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Mesh" Collapsed="true">
-    <Position X="3.75" Y="1.75" Width="1.5" />
+    <Position X="2.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BASEAABgAAEAAwBCAABDAOAAiAEYBgCAARAAAUAAIAA=</HashCode>
+      <HashCode>BASEAABgAAEAAwBCAABDguAAiAEYAgCAARAAAUAAIAA=</HashCode>
       <FileName>Mesh.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Sphere" Collapsed="true">
-    <Position X="2.75" Y="3.25" Width="1.5" />
+    <Position X="2.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BABAAAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAIIAA=</HashCode>
       <FileName>Sphere.h</FileName>
@@ -29,65 +29,65 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Shader" Collapsed="true">
-    <Position X="8" Y="2" Width="1.5" />
+    <Position X="6.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QICAAAAAAABBgYAAAAABAAABAAAMBAAAABAAQAAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ILContainer" Collapsed="true">
-    <Position X="9.75" Y="0.5" Width="1.5" />
+    <Position X="3.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAgMQQAYAAACAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>ilcontainer.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TextureShader" Collapsed="true">
-    <Position X="6.75" Y="3.25" Width="1.5" />
+    <Position X="5.25" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACACBAAQAIAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BackgroundShader" Collapsed="true">
-    <Position X="9" Y="3.25" Width="1.5" />
+    <Position X="7" Y="3" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAADAAQAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Window" Collapsed="true">
-    <Position X="9.75" Y="1.25" Width="1.5" />
+    <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAIAAgAABBCAAIABAAiAAQABAAAAiIAICgCAIAI=</HashCode>
+      <HashCode>AIAAAAIAAgAABBCBAIABAAiAAQIBAAAAiIAICgCAIAI=</HashCode>
       <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VertexAttributesPCNT" Collapsed="true">
-    <Position X="8" Y="1.25" Width="1.5" />
+    <Position X="0.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAIAgAAEAAAACAAAAAAAAAAAA=</HashCode>
       <FileName>vertexattributes.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ship" Collapsed="true">
-    <Position X="6.25" Y="1.25" Width="1.5" />
+    <Position X="1.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BACAAAAAAEAABwBAIAAAAAAACQCAAAAAAAAAAAIAAAQ=</HashCode>
       <FileName>Ship.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Cylinder" Collapsed="true">
-    <Position X="5" Y="3.25" Width="1.5" />
+    <Position X="0.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>JABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Cylinder.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Camera" Collapsed="true">
-    <Position X="6.25" Y="0.5" Width="1.5" />
+    <Position X="4.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQKAJAIAAAAAQAAQAAAIgAAAAAJAAAAQAABAggAAAA=</HashCode>
+      <HashCode>AAQKAJAIAAAAAQAAQAAAIgAAAAQJAAAAQAABAggAAAA=</HashCode>
       <FileName>Camera.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -98,12 +98,53 @@
       <FileName>top.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Globals" Collapsed="true">
-    <Position X="8" Y="0.5" Width="1.5" />
+  <Class Name="SpotlightWireframeShader" Collapsed="true">
+    <Position X="4.5" Y="4.25" Width="2.25" />
+    <InheritanceLine Type="Shader" ManuallyRouted="true">
+      <Path>
+        <Point X="7.25" Y="2.312" />
+        <Point X="7.25" Y="2.625" />
+        <Point X="6.922" Y="2.625" />
+        <Point X="6.922" Y="3.95" />
+        <Point X="5.625" Y="3.95" />
+        <Point X="5.625" Y="4.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAICAAAQAAAAAAAAAAAAAAAAAAAAAAAICECAIAI=</HashCode>
-      <FileName>Globals.h</FileName>
+      <HashCode>AACAAAAAAABAAwAAAAAAAAAAAAAMAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Starfield" Collapsed="true">
+    <Position X="2.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAABEAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Starfield.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpotlightShader" Collapsed="true">
+    <Position X="7.25" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="Shader" ManuallyRouted="true">
+      <Path>
+        <Point X="7.25" Y="2.312" />
+        <Point X="7.25" Y="2.625" />
+        <Point X="6.919" Y="2.625" />
+        <Point X="6.919" Y="3.95" />
+        <Point X="8" Y="3.95" />
+        <Point X="8" Y="4.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQCAABECQAIAAOAAAAAAgABAAAAAAAFAAAAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GLSLShader::GLSLShaderType" Collapsed="true">
+    <Position X="5.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAiAAAEBAAA=</HashCode>
+      <FileName>glslprogram.h</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

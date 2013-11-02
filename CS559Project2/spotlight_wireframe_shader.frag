@@ -37,6 +37,7 @@ uniform sampler2D s_texture;
 
 layout( location = 0 ) out vec4 FragColor;
 
+//Phong with Spotlight
 vec3 adss( )
 {
 	vec3 n = Gnormal;
@@ -61,6 +62,7 @@ vec3 adss( )
 	return vec3(0.0);
 }
 
+//Phong illumination
 vec3 ads( )
 {
   vec3 n = Gnormal;
@@ -79,7 +81,7 @@ vec3 ads( )
 
 void main() {
 
-	// Find the smallest distance
+	// Find the smallest edge distance
     float d = min( GEdgeDistance.x, GEdgeDistance.y );
     d = min( d, GEdgeDistance.z );
 
@@ -92,8 +94,11 @@ void main() {
         float x = d - (Line.Width - 1);
         mixVal = exp2(-2.0 * (x*x));
     }
+
+	//calculate the color value with ADS, 
     vec4 t_Gcolor = texture2D(s_texture, Gtexture);
 	vec4 lit_Gcolor = vec4(adss() + ads(), 1.0) * t_Gcolor;
 
+	//Mix color with Line value
 	FragColor = mix(lit_Gcolor, Line.Color, mixVal); 
 }
