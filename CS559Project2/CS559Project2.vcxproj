@@ -85,6 +85,7 @@
     <ClCompile Include="background.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="glslprogram.cpp" />
     <ClCompile Include="ilcontainer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="glslprogram.h" />
     <ClInclude Include="ilcontainer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mars.h" />
@@ -129,6 +131,9 @@
     <None Include="solid_shader.vert" />
     <None Include="spotlight_shader.frag" />
     <None Include="spotlight_shader.vert" />
+    <None Include="spotlight_wireframe_shader.frag" />
+    <None Include="spotlight_wireframe_shader.geo" />
+    <None Include="spotlight_wireframe_shader.vert" />
     <None Include="stripe_model_space.frag" />
     <None Include="stripe_model_space.vert" />
     <None Include="texture_shader.frag" />

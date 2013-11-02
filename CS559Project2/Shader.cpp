@@ -330,8 +330,30 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 
 	this->Use();
 	this->texture_sampler = glGetUniformLocation(this->program_id, (const GLchar *) "s_texture");
-	this->light_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "light_position");
-	this->GLReturnedError("TextureShader::Initialize - after light_position_handle");
+
+	spotlight_intensity_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.intesity");
+	glUniform3fv(this->spotlight_intensity_handle, 1, value_ptr(vec3(0.9f,0.9f,0.9f)));
+
+	spotlight_exponent_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.exponent");
+	glUniform1f(this->spotlight_exponent_handle, 30.0f);
+
+	spotlight_cutoff_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.cutoff");
+	glUniform1f(this->spotlight_cutoff_handle, 5.0f);
+
+	kd_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Kd");
+	glUniform3fv(this->kd_handle, 1, value_ptr(vec3(0.9f, 0.5f, 0.3f)));
+	ks_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Ks");
+	glUniform3fv(this->ks_handle, 1, value_ptr(vec3(0.95f, 0.95f, 0.95f)));
+	ka_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Ka");
+	glUniform3fv(this->ka_handle, 1, value_ptr(vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f)));
+	shininess_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Shininess");
+	glUniform1f(this->shininess_handle, 100.0f);
+
+	spotlight_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.position");
+	spotlight_direction_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.direction");
+	light_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "light_position");
+
+	this->GLReturnedError("SpotlightShader::Initialize - after light_position_handle");
 	glUseProgram(0);
 //	assert(this->color_array_handle != BAD_GL_VALUE);
 	return true;
@@ -339,7 +361,108 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 
 void SpotlightShader::CustomSetup(Lights & lights)
 {
-	//glUniform4fv(this->texture_sampler, 4, (GLfloat *) texture_sampler);
-	glUniform4fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(1)));
-	this->GLReturnedError("TextureShader::CustomSetup - after light_position");
+	glUniform4fv(this->spotlight_position_handle, 1, value_ptr(lights.GetRawPosition(1)));
+	glUniform3fv(this->spotlight_direction_handle, 1, value_ptr(lights.GetRawDirection(1)));
+	glUniform3fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(0)));
+
+	this->GLReturnedError("SpotlightShader::CustomSetup - after spotlight_position_handle,spotlight_direction_handle");
+}
+
+
+SpotlightWireframeShader::SpotlightWireframeShader()
+{
+
+}
+
+bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file)
+{
+	if( ! prog.compileShaderFromFile(vertex_shader_file, GLSLShader::VERTEX)) {
+		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	if( ! prog.compileShaderFromFile(fragment_shader_file, GLSLShader::FRAGMENT)) {
+		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	
+	if( ! prog.compileShaderFromFile(geometry_shader_file, GLSLShader::GEOMETRY)) {
+		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	if( ! prog.link() ) {
+		cerr << "SpotlightWireframeShader::Initialize:  Program failed to Link: " << prog.log().c_str() << endl;
+		return false;
+	}
+	
+	if( ! prog.validate() ) {
+		cerr << "SpotlightWireframeShader::Initialize:  Program failed to Validate: " << prog.log().c_str() << endl;
+		return false;
+	}
+
+	prog.use();
+
+	return true;
+}
+
+bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * fragment_shader_file)
+{
+	assert(false);
+	return false;
+}
+
+void SpotlightWireframeShader::CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm)
+{
+	//do nothing
+}
+
+void SpotlightWireframeShader::CustomSetup(const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights)
+{
+	prog.use();
+
+	prog.setUniform("modelview_matrix", modelview);
+	prog.setUniform("normal_matrix", normal_matrix);
+	prog.setUniform("mvp", mvp);	//Found
+
+	float w2 = size.x / 2.0f;
+	float h2 = size.y / 2.0f;
+	mat4 viewport_matrix = mat4( vec4(w2,0.0f,0.0f,0.0f),
+		vec4(0.0f,h2,0.0f,0.0f),
+		vec4(0.0f,0.0f,1.0f,0.0f),
+		vec4(w2+0, h2+0, 0.0f, 1.0f));
+	prog.setUniform("ViewportMatrix", viewport_matrix);
+
+	//prog.setUniform("Kd", vec3(0.9f, 0.5f, 0.3f));
+	//prog.setUniform("Ks", vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f));
+	//prog.setUniform("Ka", vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f));
+
+	prog.setUniform("Shininess", 100.0f);	//Found
+
+	prog.setUniform("s_texture", 0);	//Found
+	
+	prog.setUniform("Line.Width", 0.5f);
+	prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));
+
+	//prog.setUniform("Spot.intesity", vec3(0.9f,0.9f,0.9f));
+
+	//prog.setUniform("Spot.exponent", 30.0f);
+
+	prog.setUniform("Spot.cutoff", 5.0f);	//Found
+	
+	prog.setUniform("Spot.position", lights.GetRawPosition(1));	//Found
+	prog.setUniform("Spot.direction", lights.GetRawDirection(1));	//Found
+	prog.setUniform("light_position", vec3(lights.GetPosition(0)));	//Found
+}
+
+void SpotlightWireframeShader::TakeDown()
+{
+	
+}
+
+void SpotlightWireframeShader::Use()
+{
+	prog.use();
 }

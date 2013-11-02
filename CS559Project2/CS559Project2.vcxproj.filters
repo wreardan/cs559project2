@@ -66,7 +66,7 @@
     <ClCompile Include="Starfield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderTexture.cpp">
+    <ClCompile Include="glslprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,7 +116,7 @@
     <ClInclude Include="Starfield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderTexture.h">
+    <ClInclude Include="glslprogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -161,10 +161,13 @@
     <None Include="spotlight_shader.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="rendertotex.frag">
+    <None Include="spotlight_wireframe_shader.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="rendertotex.vert">
+    <None Include="spotlight_wireframe_shader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="spotlight_wireframe_shader.geo">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

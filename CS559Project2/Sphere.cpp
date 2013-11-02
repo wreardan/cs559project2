@@ -22,7 +22,7 @@ void Sphere::BuildPrimitive(float radius, unsigned int columns, unsigned int row
 				col_g =  0;
 				col_r = 1;
 			} else {
-				col_g = 1;
+				col_g = 1; <=== background gradient color when we first started...
 				col_r = 0;
 			}*/
 			circlePos = vec3(x * radius, y * radius, z * radius);

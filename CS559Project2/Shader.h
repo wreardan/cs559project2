@@ -23,10 +23,10 @@ class Shader
 public:
 	Shader();
 	void TakeDown();
-	void Use();
+	virtual void Use();
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
 	virtual void CustomSetup();
-	void CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm);
+	virtual void CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm);
 
 	GLuint modelview_matrix_handle;
 	GLuint projection_matrix_handle;
@@ -94,6 +94,7 @@ private:
 	typedef Shader super;
 };
 
+#include "glslprogram.h"
 
 class SpotlightShader : public Shader
 {
@@ -106,7 +107,37 @@ protected:
 	GLuint texture_sampler;
 	GLuint light_position_handle;
 
+	GLuint spotlight_intensity_handle;
+	GLuint spotlight_exponent_handle;
+	GLuint spotlight_cutoff_handle;
+
+	GLuint spotlight_position_handle;
+	GLuint spotlight_direction_handle;
+	
+	GLuint kd_handle;
+	GLuint ks_handle;
+	GLuint ka_handle;
+	GLuint shininess_handle;
+
 private:
 	typedef Shader super;
 };
 
+class SpotlightWireframeShader : public Shader
+{
+public:
+	SpotlightWireframeShader();
+	bool Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file);
+	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
+	virtual void CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm);
+	virtual void CustomSetup(const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights);
+	void TakeDown();
+	virtual void Use();
+
+protected:
+	GLSLProgram prog;
+
+private:
+	typedef Shader super;
+};

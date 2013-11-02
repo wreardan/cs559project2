@@ -10,6 +10,7 @@
 #include "Light.h"
 #include "Starfield.h"
 #include "RenderTexture.h"
+#include "Cylinder.h"
 
 class Window
 {

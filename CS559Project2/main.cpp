@@ -145,10 +145,6 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		window.camera.SetCameraType((window.camera.GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
 		break;
 	case 'S':
-		window.top.StepShader();
-		window.mars.StepBackShader();
-		window.ship.StepShader();
-		break;
 	case 's':
 		window.top.StepShader();
 		window.mars.StepShader();
@@ -212,8 +208,12 @@ void SpecialFunc(int c, int x, int y)
 
 	case GLUT_KEY_F1:
 		window.mode++;
-		if(window.mode > 3)	//change to add more modes
+		if(window.mode > 4)	//change to add more modes
 			window.mode = 0;
+		if(window.mode == 4) {
+			window.camera.scalar = 10000.0f;
+			window.camera.Initialize();
+		}
 		break;
 
 	case GLUT_KEY_LEFT:
@@ -247,6 +247,7 @@ void RenderToTexture(float current_time) {
 	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
 	mat4 view = window.camera.GetView();
 	window.lights.cameraMatrix = view;
+	window.lights.normalMatrix = mat3(inverse(transpose(view)));
 	mat4 temp;
 	
 	// glPolygonMode is NOT modern OpenGL but will be allowed in Projects 2 and 3
@@ -299,6 +300,12 @@ void RenderToTexture(float current_time) {
 		window.starfield.Update();
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		break;
+	case 4:
+		window.camera.type = Camera::normal;
+		window.camera.rotation_speed = 10.0f;
+		window.starfield.Update();
+		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
 		cerr << "DisplayFunc() unsupported display mode: " << window.mode << endl;
@@ -411,6 +418,7 @@ int main(int argc, char * argv[])
 		return 0;
 	}
 	if(!window.rendertexture.Initialize()) {
+	Light light, spotlight;
 		return 0;
 	}
 
@@ -420,6 +428,9 @@ int main(int argc, char * argv[])
 	Light light;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
 	window.lights.Add(light);
+	spotlight.SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
+	window.lights.Add(spotlight);
 
 	glutMainLoop();
 }

@@ -32,6 +32,8 @@ public:
 	Shader stripes_model_space;
 	RenderTextureShader render_texture;
 	TextureShader texture_shader;
+	SpotlightShader spotlight_shader;
+	SpotlightWireframeShader spotlight_wireframe_shader;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
 
