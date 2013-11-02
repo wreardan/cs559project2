@@ -418,19 +418,17 @@ int main(int argc, char * argv[])
 		return 0;
 	}
 	if(!window.rendertexture.Initialize()) {
-	Light light, spotlight;
 		return 0;
 	}
-
-	InitFBO();
-	InitWhiteTex();
-
-	Light light;
+	Light light, spotlight;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
 	window.lights.Add(light);
 	spotlight.SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
 	window.lights.Add(spotlight);
+	
+	InitFBO();
+	InitWhiteTex();
 
 	glutMainLoop();
 }
