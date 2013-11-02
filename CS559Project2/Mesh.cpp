@@ -211,7 +211,7 @@ void Mesh::BuildMesh(unsigned int columns, unsigned int rows)
 
 			vec3 color = vec3(1.0f, 0.4f, 0.0f);
 		
-			vec2 tex = vec2(float(s) / (columns-1), float(r) / (rows-1));
+			vec2 tex = vec2((columns - 1) - float(s) / (columns-1), float(r) / (rows-1)); //aligning with GL's idea of what (0, 0) is
 
 			this->vertices.push_back(VertexAttributesPCNT(vertex, color, normal, tex));
 		}
@@ -335,7 +335,6 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 		return;
 
 	if(texture.il_handle !=  BAD_IL_VALUE) {
-		printf("Binding texture\n");
 		texture.Bind(3); //pass this sampler # into texture shaders
 	}
 

@@ -44,7 +44,7 @@ void InitFBO() {
     glGenTextures(1, &renderTex);
     glActiveTexture(GL_TEXTURE0);  // Use texture unit 0
     glBindTexture(GL_TEXTURE_2D, renderTex);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,512,512,0,GL_RGBA,GL_UNSIGNED_BYTE,NULL);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA, 1024, 768, 0, GL_RGBA,GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -55,7 +55,7 @@ void InitFBO() {
     GLuint depthBuf;
     glGenRenderbuffers(1, &depthBuf);
     glBindRenderbuffer(GL_RENDERBUFFER, depthBuf);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
 
     // Bind the depth buffer to the FBO
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
@@ -229,20 +229,17 @@ void SpecialFunc(int c, int x, int y)
 	}
 }
 
-void DisplayFunc()
-{
-	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
-
-	 glBindTexture(GL_TEXTURE_2D, 0);
-     glEnable(GL_TEXTURE_2D);
-	//bind FBO
+void RenderToTexture(float current_time) {
 	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 	
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
 	
-	glViewport(0, 0, 512, 512);
+	glViewport(0, 0, window.size.x, window.size.y);
 	
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
@@ -308,46 +305,53 @@ void DisplayFunc()
 		window.mode = 0;
 		break;
 	}
+	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
 	DisplayInstructions();
+	
 	if(window.draw_planes) {
 		window.drawPlanes();
 	}
-	glFlush();
 	
 	//Unbind FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 
+void RenderScene(float current_time) {
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glViewport(0, 0, window.size.x, window.size.y);
 	
-	window.background.Draw(window.size);
-	time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
-	window.camera.Update(time);
-	projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
-	view = window.camera.GetView();
-	window.lights.cameraMatrix = view;
-	temp = mat4(1.0f);
-	
-	if(window.camera.scalar < 12.0f) {
-		window.camera.type = Camera::normal;
-		window.camera.scalar = 12.0f;
-		window.camera.rotation_speed = 10.0f;
-		window.camera.Initialize();
-	}
+	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
+	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
+	vec3 facing = vec3(0.0f, 0.0f, 0.0f);
+	vec3 up = vec3(0.0f, 1.0f, 0.0f);
+	vec3 position = vec3(0.0f, 0.0f, -4.0f);
+	mat4 view = lookAt(position, facing, up);
 
-	window.starfield.Update();
-	window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-	
+
 	//view = rotate(view, 180.0f, vec3(0, 0, 0));
-	view = scale(view, vec3(0.10f, 0.10f, 0.10f));
-	view = translate(view, vec3(-50.0f, -30.0f, 0.0f));
+	view = scale(view, vec3(0.145f, 0.11f, 0.10f));
+	view = translate(view, vec3(-50.0f, -50.0f, 200.0f));
 	
 	window.rendertexture.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
 	glFlush();
+}
+
+void DisplayFunc()
+{
+	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
+
+	 glBindTexture(GL_TEXTURE_2D, 0);
+     glEnable(GL_TEXTURE_2D);
+	//bind FBO
+	
+	RenderToTexture(current_time);
+	RenderScene(current_time);
+	
 }
 
 void TimerFunc(int value)

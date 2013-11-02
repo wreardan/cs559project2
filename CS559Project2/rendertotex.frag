@@ -38,7 +38,7 @@ vec3 phongModel( vec3 pos, vec3 norm ) {
 }
 
 void main() {
-    vec4 texColor = texture( RenderTex, TexCoord );
-    FragColor = vec4( 1.0, 0.0, 0.0, 1.0 ) *
-                      texColor;
+    vec4 texColor = texture( RenderTex, TexCoord);
+	texColor = texColor * fract(sin(dot(TexCoord.xy, vec2(12.9898,78.233))) * 43758.5453) * 4;
+    FragColor = texColor;
 }
