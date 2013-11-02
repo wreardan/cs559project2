@@ -359,11 +359,12 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 	return true;
 }
 
-void SpotlightShader::CustomSetup(Lights & lights)
+void SpotlightShader::CustomSetup(int texture_id, Lights & lights)
 {
 	glUniform4fv(this->spotlight_position_handle, 1, value_ptr(lights.GetRawPosition(1)));
 	glUniform3fv(this->spotlight_direction_handle, 1, value_ptr(lights.GetRawDirection(1)));
 	glUniform3fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(0)));
+	glUniform1i(this->texture_sampler, texture_id);
 
 	this->GLReturnedError("SpotlightShader::CustomSetup - after spotlight_position_handle,spotlight_direction_handle");
 }
@@ -418,7 +419,7 @@ void SpotlightWireframeShader::CommonSetup(const float time, const GLint * size,
 	//do nothing
 }
 
-void SpotlightWireframeShader::CustomSetup(const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
+void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
 		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights)
 {
 	prog.use();
@@ -441,7 +442,7 @@ void SpotlightWireframeShader::CustomSetup(const float time, const glm::ivec2 & 
 
 	prog.setUniform("Shininess", 100.0f);	//Found
 
-	prog.setUniform("s_texture", 0);	//Found
+	prog.setUniform("s_texture", texture_id);	//Found
 	
 	prog.setUniform("Line.Width", 0.5f);
 	prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));

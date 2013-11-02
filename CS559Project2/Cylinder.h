@@ -6,7 +6,7 @@ class Cylinder :
 public:
 	Cylinder();
 	~Cylinder(void);
-	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows, float height);
+	void BuildPrimitive(float radius, int columns, int rows, float height);
 
 protected:
 	typedef Mesh super;

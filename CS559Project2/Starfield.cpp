@@ -10,9 +10,9 @@ using namespace std;
 
 bool Starfield::Initialize()
 {
-	srand (time(NULL));
+	srand ((unsigned int)time(NULL));
 	const float scalar = 0.025f;	//scalar for mars depth data
-	vec2 size = vec2(100, 100);
+	ivec2 size = ivec2(100, 100);
 	//Create Mesh
 	this->BuildMesh(size.x, size.y);
 	//Wrap Into Sphere
@@ -41,7 +41,7 @@ bool Starfield::Initialize()
 }
 
 void Starfield::Update() {
-	srand (time(NULL));
+	srand ((unsigned int)time(NULL));
 	int index = 0;
 	for(int y = 0; y < 100; y++) {
 		for(int x = 0; x < 100; x++) {

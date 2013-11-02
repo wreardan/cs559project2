@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void Sphere::BuildPrimitive(float radius, unsigned int columns, unsigned int rows) {
+void Sphere::BuildPrimitive(float radius, int columns, int rows) {
 	float const R = 1.0f / (float)(rows - 1);
 	float const S = 1.0f / (float)(columns - 1);
 	int index;
@@ -13,9 +13,9 @@ void Sphere::BuildPrimitive(float radius, unsigned int columns, unsigned int row
 	index = 0;
 	for (int r = 0; r < rows; ++r) {
 		for (int c = 0; c < columns; ++c) {
-			float const x = cos(2 * M_PI * c * S) * sin( M_PI * r * R );
-			float const y = sin( -M_PI_2 + M_PI * r * R );
-			float const z = sin(2*M_PI * c * S) * sin( M_PI * r * R );
+			float const x = (float)(cos(2 * M_PI * c * S) * sin( M_PI * r * R ));
+			float const y = (float)(sin( -M_PI_2 + M_PI * r * R ));
+			float const z = (float)(sin(2*M_PI * c * S) * sin( M_PI * r * R ));
 			/*float col_g;	GAHHHHHHHHHHHHHHHHHHHHHHHH
 			float col_r;
 			if (r != 0) {
@@ -33,7 +33,7 @@ void Sphere::BuildPrimitive(float radius, unsigned int columns, unsigned int row
 	}
 }
 
-void Sphere::CalculateNormals(unsigned int columns, unsigned int rows)
+void Sphere::CalculateNormals(int columns, int rows)
 {
 	super::CalculateNormals(columns, rows);
 

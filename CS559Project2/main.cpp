@@ -208,7 +208,7 @@ void SpecialFunc(int c, int x, int y)
 
 	case GLUT_KEY_F1:
 		window.mode++;
-		if(window.mode > 4)	//change to add more modes
+		if(window.mode > 3)	//change to add more modes
 			window.mode = 0;
 		if(window.mode == 4) {
 			window.camera.scalar = 10000.0f;

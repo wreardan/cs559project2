@@ -50,7 +50,7 @@ void Mesh::BuildNormalVisualizationGeometry(int index)
 {
 	const float normal_scalar = 0.125f;
 	index+=3;
-	if(index >= vertices.size())
+	if(index >= (int)vertices.size())
 		return;
 	for (int j = 1; j <= 3; ++j)
 	{
@@ -193,17 +193,17 @@ vec3 Mesh::GetIndexDownRight(int index, int columns, int r, int s, int rows){
 	return this->vertices[index].position;
 }
 
-void Mesh::BuildMesh(unsigned int columns, unsigned int rows)
+void Mesh::BuildMesh(int columns, int rows)
 {
 	// Create planar mesh
-	unsigned int r, s;
+	int r, s;
 
 	int index = 0;
 	for(r = 0; r < rows; r++) {
 		for(s = 0; s < columns; s++) {
-			float const x = s;
-			float const y = r;
-			float const z = 0;
+			int x = s;
+			int y = r;
+			int z = 0;
 
 			vec3 vertex = vec3(x, y , z);
 
@@ -247,7 +247,7 @@ void Mesh::BuildMesh(unsigned int columns, unsigned int rows)
 	}
 }
 
-void Mesh::BuildPrimitive(float radius, unsigned int columns, unsigned int rows) {
+void Mesh::BuildPrimitive(float radius, int columns, int rows) {
 }
 
 bool Mesh::Initialize(float size)
@@ -362,9 +362,9 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	if(shader_index == 4)
 		this->render_texture.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 5)
-		this->spotlight_shader.CustomSetup(lights);
+		this->spotlight_shader.CustomSetup(3, lights);
 	if(shader_index == 6)
-		this->spotlight_wireframe_shader.CustomSetup(time, size, projection, view, mvp, nm, lights);
+		this->spotlight_wireframe_shader.CustomSetup(3, time, size, projection, view, mvp, nm, lights);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

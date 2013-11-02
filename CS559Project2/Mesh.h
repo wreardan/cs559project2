@@ -23,8 +23,8 @@ public:
 	void StepBackShader();
 	void TakeDown();
 	void LoadTexture(char * texture_filename);
-	void BuildMesh(unsigned int columns, unsigned int rows);
-	void BuildPrimitive(float radius, unsigned int columns, unsigned int rows);
+	void BuildMesh(int columns, int rows);
+	void BuildPrimitive(float radius, int columns, int rows);
 	
 	int shader_index;
 	Shader shader;
