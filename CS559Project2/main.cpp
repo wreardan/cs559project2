@@ -306,7 +306,7 @@ void DisplayFunc()
 {
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
 
-	 glBindTexture(GL_TEXTURE_2D, 0);
+	 glBindTexture(GL_TEXTURE_2D, 1);
      glEnable(GL_TEXTURE_2D);
 	//bind FBO
 	

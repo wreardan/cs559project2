@@ -16,7 +16,7 @@ Framebuffer::~Framebuffer(void)
 
 void Framebuffer::Use()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+	glBindFramebuffer(GL_FRAMEBUFFER, renderFBO);
 }
 
 void Framebuffer::Disable()
@@ -25,48 +25,53 @@ void Framebuffer::Disable()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-
-
 bool Framebuffer::Initialize(int width, int height)
 {
-	// Generate and bind the framebuffer
-    glGenFramebuffers(1, &fboHandle);
-    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+	GLuint depthBuf, posTex, normTex, colorTex;
 
-    // Create the texture object
-    renderTex;
-    glGenTextures(1, &renderTex);
-    glActiveTexture(GL_TEXTURE0);  // Use texture unit 0
-    glBindTexture(GL_TEXTURE_2D, renderTex);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA, width, height, 0, GL_RGBA,GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // Create and bind the FBO
+	glGenFramebuffers(1, &renderFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, renderFBO);
 
-    // Bind the texture to the FBO
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTex, 0);
-
-    // Create the depth buffer
-    depthBuf;
+    // The depth buffer
     glGenRenderbuffers(1, &depthBuf);
     glBindRenderbuffer(GL_RENDERBUFFER, depthBuf);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 
-    // Bind the depth buffer to the FBO
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                              GL_RENDERBUFFER, depthBuf);
+    // The position buffer
+    glActiveTexture(GL_TEXTURE0);   // Use texture unit 0
+    glGenTextures(1, &posTex);
+    glBindTexture(GL_TEXTURE_2D, posTex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    // Set the targets for the fragment output variables
-    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, drawBuffers);
+    // The normal buffer
+    glActiveTexture(GL_TEXTURE1);
+    glGenTextures(1, &normTex);
+    glBindTexture(GL_TEXTURE_2D, normTex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        if( result == GL_FRAMEBUFFER_COMPLETE) {
-                cout << "Framebuffer is complete" << endl;
-        } else {
-                cout << "Framebuffer error: " << result << endl;
-        }
+    // The color buffer
+    glActiveTexture(GL_TEXTURE2);
+    glGenTextures(1, &colorTex);
+    glBindTexture(GL_TEXTURE_2D, colorTex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    // Unbind the framebuffer, and revert to default framebuffer
+    // Attach the images to the framebuffer
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuf);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, posTex, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normTex, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, colorTex, 0);
+
+    GLenum drawBuffers[] = {GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+                        GL_COLOR_ATTACHMENT2};
+    glDrawBuffers(4, drawBuffers);
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return true;
