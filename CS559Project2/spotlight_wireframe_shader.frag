@@ -45,7 +45,7 @@ vec3 adsWithSpotlight( )
     float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
     vec3 ambient = Spot.intensity * Ka;
 
-    if( angle < cutoff ) {
+    if( angle < Spot.cutoff ) {
         float spotFactor = pow( dot(-s, spotDir), Spot.exponent );
         vec3 v = normalize(vec3(-Gposition));
         vec3 h = normalize( v + s );
@@ -116,6 +116,6 @@ void main() {
 	vec4 lit_color = vec4(ads(), 1.0) * t_color * vec4(Gcolor, 1.0);
 	vec4 lit_color2 = vec4(adsWithSpotlight() * Gcolor, 1.0);
 
-	FragColor = lit_color + lit_color2;
-	//FragColor = mix(lit_color, Line.Color, mixVal); 
+	//FragColor = lit_color + lit_color2;
+	FragColor = mix(lit_color + lit_color2, Line.Color, mixVal); 
 }

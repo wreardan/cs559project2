@@ -451,7 +451,7 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 
 	prog.setUniform("Spot.exponent", 1000.0f);
 
-	prog.setUniform("Spot.cutoff", 5.0f);	//Found
+	prog.setUniform("Spot.cutoff", 60.0f);	//Found
 	
 	prog.setUniform("Spot.position", lights.GetRawPosition(1));	//Found
 	prog.setUniform("Spot.direction", lights.GetRawDirection(1));	//Found
