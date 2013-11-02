@@ -12,7 +12,7 @@ flat in vec3 Gcolor;
 in vec2 Gtexture;
 
 struct SpotLightInfo {
-    vec4 Gposition;   // Gposition in eye coords
+    vec4 position;   // Gposition in eye coords
     vec3 intensity;
     vec3 direction;  // Direction of the spotlight in eye coords.
     float exponent;  // Angular attenuation exponent
@@ -38,28 +38,28 @@ noperspective in vec3 GEdgeDistance;
 
 uniform sampler2D s_texture;
 
-layout( location = 0 ) out vec4 FragGcolor;
+layout( location = 0 ) out vec4 FragColor;
 
 vec3 adss( )
 {
-  vec3 n = Gnormal;
+	vec3 n = Gnormal;
 
-  if (!gl_FrontFacing)
+	if (!gl_FrontFacing)
 	n = -n;
 
-  vec3 s = normalize(vec3(Spot.Gposition) - Gposition);
+	vec3 s = normalize(vec3(Spot.position) - Gposition);
 
-    vec3 spotDir = normalize( Spot.direction);
-    float angle = acos( dot(-s, spotDir) );
-    float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
+	vec3 spotDir = normalize( Spot.direction);
+	float angle = acos( dot(-s, spotDir) );
+	float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
 
-    if( angle < cutoff ) {
+	if( angle < cutoff ) {
 
-	  vec3 v = normalize(-Gposition);
-	  vec3 r = reflect(-s, n);
-	  float s_dot_n = max(dot(s, n), 0.0);
+		vec3 v = normalize(-Gposition);
+		vec3 r = reflect(-s, n);
+		float s_dot_n = max(dot(s, n), 0.0);
 
-	  return Gcolor * s_dot_n + (s_dot_n > 0 ? Gcolor * pow(max(dot(r, v), 0.0), Shininess) : vec3(0.0));
+		return Gcolor * s_dot_n + (s_dot_n > 0 ? Gcolor * pow(max(dot(r, v), 0.0), Shininess) : vec3(0.0));
 	}
 	return vec3(0.0);
 }
@@ -98,5 +98,5 @@ void main() {
         mixVal = exp2(-2.0 * (x*x));
     }
 
-	FragGcolor = mix(lit_Gcolor, Line.Color, mixVal); 
+	FragColor = mix(lit_Gcolor, Line.Color, mixVal); 
 }

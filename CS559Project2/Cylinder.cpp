@@ -4,18 +4,21 @@
 
 using namespace std;
 
-void Cylinder::BuildPrimitive(float radius, unsigned int columns, unsigned int rows) {
-	float const S = 1.0f/(float)(columns-1);
-	unsigned int s;
-	int index = 0;
-	for(s = 0; s < columns; s++) { 
-		for(int h = -1; h < 2; h+=2) {
-			float const y = h * 30;
-			float const x = cos(2*M_PI * s * S);
-			float const z = sin(2*M_PI_2 * s * S);
+void Cylinder::BuildPrimitive(float radius, unsigned int columns, unsigned int rows, float height) {
+	float const R = 1.0f / (float)(rows - 1);
+	float const S = 1.0f / (float)(columns - 1);
+	int index;
+	vec3 circlePos = vec3(0, 0, 0);
 
-			vec3 vertex = vec3(x * radius, y * radius, z * radius);
-			this->vertices[index].position = vertex;
+	index = 0;
+	for (int r = 0; r < rows; ++r) {
+		for (int c = 0; c < columns; ++c) {
+			float const x = cos(2 * M_PI * c * S);
+			float const y = r * R * height;
+			float const z = sin(2*M_PI * c * S);
+			circlePos = vec3(x * radius, y * radius, z * radius);
+			this->vertices[index].position = circlePos;
+			this->vertices[index].color = vec3(1.0f, 0.0f, 0.0f);
 			index++;
 		}
 	}

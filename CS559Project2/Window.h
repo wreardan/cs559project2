@@ -9,6 +9,7 @@
 #include "Mars.h"
 #include "Light.h"
 #include "Starfield.h"
+#include "Cylinder.h"
 
 class Window
 {

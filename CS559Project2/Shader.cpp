@@ -403,8 +403,8 @@ void SpotlightWireframeShader::CustomSetup(const float time, const glm::ivec2 & 
 
 	prog.setUniform("s_texture", 0);	//Found
 	
-	prog.setUniform("Line.Width", 0.75f);
-	prog.setUniform("Line.Color", vec4(0.5f,0.0f,0.5f,1.0f));
+	prog.setUniform("Line.Width", 0.5f);
+	prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));
 
 	//prog.setUniform("Spot.intesity", vec3(0.9f,0.9f,0.9f));
 

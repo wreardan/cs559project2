@@ -87,10 +87,6 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		window.camera.SetCameraType((window.camera.GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
 		break;
 	case 'S':
-		window.top.StepShader();
-		window.mars.StepBackShader();
-		window.ship.StepShader();
-		break;
 	case 's':
 		window.top.StepShader();
 		window.mars.StepShader();
@@ -153,7 +149,7 @@ void SpecialFunc(int c, int x, int y)
 
 	case GLUT_KEY_F1:
 		window.mode++;
-		if(window.mode > 3)	//change to add more modes
+		if(window.mode > 4)	//change to add more modes
 			window.mode = 0;
 		break;
 
@@ -237,6 +233,13 @@ void DisplayFunc()
 		window.starfield.Update();
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		break;
+	case 4:
+		window.camera.type = Camera::normal;
+		window.camera.scalar = 200.0f;
+		window.camera.rotation_speed = 10.0f;
+		window.starfield.Update();
+		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
 		cerr << "DisplayFunc() unsupported display mode: " << window.mode << endl;
