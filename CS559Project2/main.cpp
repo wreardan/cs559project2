@@ -28,53 +28,7 @@ using namespace std;
 using namespace glm;
 
 Window window;
-GLuint fboHandle; // The handle to the FBO
-GLuint renderTex;
-GLuint depthBuf;
 GLuint whiteTexHandle;
-
-
-void InitFBO() {	
-	// Generate and bind the framebuffer
-    glGenFramebuffers(1, &fboHandle);
-    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
-
-    // Create the texture object
-    GLuint renderTex;
-    glGenTextures(1, &renderTex);
-    glActiveTexture(GL_TEXTURE0);  // Use texture unit 0
-    glBindTexture(GL_TEXTURE_2D, renderTex);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA, 1024, 768, 0, GL_RGBA,GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Bind the texture to the FBO
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTex, 0);
-
-    // Create the depth buffer
-    GLuint depthBuf;
-    glGenRenderbuffers(1, &depthBuf);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthBuf);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
-
-    // Bind the depth buffer to the FBO
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                              GL_RENDERBUFFER, depthBuf);
-
-    // Set the targets for the fragment output variables
-    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, drawBuffers);
-
-        GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        if( result == GL_FRAMEBUFFER_COMPLETE) {
-                cout << "Framebuffer is complete" << endl;
-        } else {
-                cout << "Framebuffer error: " << result << endl;
-        }
-
-    // Unbind the framebuffer, and revert to default framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
 
 void InitWhiteTex() {
 	// One pixel white texture
@@ -230,7 +184,7 @@ void SpecialFunc(int c, int x, int y)
 }
 
 void RenderToTexture(float current_time) {
-	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+	window.frame_buffer.Use();
 	
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -322,7 +276,7 @@ void RenderToTexture(float current_time) {
 	}
 	
 	//Unbind FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	window.frame_buffer.Disable();
 }
 
 void RenderScene(float current_time) {
@@ -427,7 +381,7 @@ int main(int argc, char * argv[])
 	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
 	window.lights.Add(spotlight);
 	
-	InitFBO();
+	window.frame_buffer.Initialize(1024, 768);
 	InitWhiteTex();
 
 	glutMainLoop();
