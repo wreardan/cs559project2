@@ -10,6 +10,7 @@ in vec3 Gposition;
 in vec3 Gnormal;
 flat in vec3 Gcolor;
 in vec2 Gtexture;
+noperspective in vec3 GEdgeDistance;
 
 struct SpotLightInfo {
     vec4 position;   // Gposition in eye coords
@@ -31,10 +32,6 @@ uniform struct LineInfo {
 	float Width;
 	vec4 Color;
 } Line;
-
-//in vec3 GGposition;
-//in vec3 GGnormal;
-noperspective in vec3 GEdgeDistance;
 
 uniform sampler2D s_texture;
 
@@ -81,8 +78,6 @@ vec3 ads( )
 }
 
 void main() {
-    vec4 t_Gcolor = texture2D(s_texture, Gtexture);
-	vec4 lit_Gcolor = vec4(adss() + ads(), 1.0) * t_Gcolor;
 
 	// Find the smallest distance
     float d = min( GEdgeDistance.x, GEdgeDistance.y );
@@ -97,6 +92,8 @@ void main() {
         float x = d - (Line.Width - 1);
         mixVal = exp2(-2.0 * (x*x));
     }
+    vec4 t_Gcolor = texture2D(s_texture, Gtexture);
+	vec4 lit_Gcolor = vec4(adss() + ads(), 1.0) * t_Gcolor;
 
 	FragColor = mix(lit_Gcolor, Line.Color, mixVal); 
 }

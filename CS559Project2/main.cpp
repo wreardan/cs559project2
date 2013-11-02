@@ -151,6 +151,10 @@ void SpecialFunc(int c, int x, int y)
 		window.mode++;
 		if(window.mode > 4)	//change to add more modes
 			window.mode = 0;
+		if(window.mode == 4) {
+			window.camera.scalar = 10000.0f;
+			window.camera.Initialize();
+		}
 		break;
 
 	case GLUT_KEY_LEFT:
@@ -236,7 +240,6 @@ void DisplayFunc()
 		break;
 	case 4:
 		window.camera.type = Camera::normal;
-		window.camera.scalar = 200.0f;
 		window.camera.rotation_speed = 10.0f;
 		window.starfield.Update();
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);

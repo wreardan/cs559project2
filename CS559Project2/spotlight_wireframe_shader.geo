@@ -1,6 +1,6 @@
 /*
 Spotlight Wireframe Geometry Shader
-Code inspired by
+Code liberally lifted from
 https://github.com/daw42/glslcookbook/blob/master/chapter06/shader/shadewire.gs
 */
 

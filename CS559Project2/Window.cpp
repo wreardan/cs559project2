@@ -8,7 +8,7 @@ Window::Window()
 	this->slices = 20;
 	this->interval = 1000 / 120;
 	this->window_handle = -1;
-	mode = 4;
+	mode = 2;
 }
 Window::~Window()
 {
