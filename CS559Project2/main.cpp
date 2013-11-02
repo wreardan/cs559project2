@@ -184,7 +184,6 @@ void SpecialFunc(int c, int x, int y)
 }
 
 void RenderToTexture(float current_time) {
-	window.frame_buffer.Use();
 	
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -274,9 +273,6 @@ void RenderToTexture(float current_time) {
 	if(window.draw_planes) {
 		window.drawPlanes();
 	}
-	
-	//Unbind FBO
-	window.frame_buffer.Disable();
 }
 
 void RenderScene(float current_time) {
@@ -306,11 +302,14 @@ void DisplayFunc()
 {
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
 
-	 glBindTexture(GL_TEXTURE_2D, 1);
-     glEnable(GL_TEXTURE_2D);
-	//bind FBO
-	
+	glBindTexture(GL_TEXTURE_2D, 1);
+    glEnable(GL_TEXTURE_2D);
+	window.frame_buffer.Use();	//bind FBO
+
 	RenderToTexture(current_time);
+
+	window.frame_buffer.Disable();	//Unbind FBO
+
 	RenderScene(current_time);
 	
 }

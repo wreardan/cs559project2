@@ -25,6 +25,8 @@ void Framebuffer::Disable()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+//Borrowed heavily from GLSL cookbook
+//https://github.com/daw42/glslcookbook/blob/master/chapter04/scenerendertotex.cpp
 bool Framebuffer::Initialize(int width, int height)
 {
 	GLuint depthBuf, posTex, normTex, colorTex;

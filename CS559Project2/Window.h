@@ -40,6 +40,8 @@ public:
 	Starfield starfield;
 	RenderTexture rendertexture;
 	Framebuffer frame_buffer;
+
+	Framebuffer shadow_map;
 	bool draw_planes;		//should we draw x,y,z axis or not?
 	void drawPlanes();
 };

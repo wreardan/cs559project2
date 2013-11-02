@@ -86,6 +86,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="frustum.cpp" />
     <ClCompile Include="glslprogram.cpp" />
     <ClCompile Include="ilcontainer.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="frustum.h" />
     <ClInclude Include="glslprogram.h" />
     <ClInclude Include="ilcontainer.h" />
     <ClInclude Include="Light.h" />
