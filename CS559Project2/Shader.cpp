@@ -383,13 +383,13 @@ bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * frag
 	}
 
 	if( ! prog.compileShaderFromFile(fragment_shader_file, GLSLShader::FRAGMENT)) {
-		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		cerr << "SpotlightWireframeShader::Initialize:  FRAGMENT Shader failed to compile: " << prog.log().c_str() << endl;
 		return false;
 	}
 
 	
 	if( ! prog.compileShaderFromFile(geometry_shader_file, GLSLShader::GEOMETRY)) {
-		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
+		cerr << "SpotlightWireframeShader::Initialize:  GEOMETRY Shader failed to compile: " << prog.log().c_str() << endl;
 		return false;
 	}
 
@@ -436,20 +436,20 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 		vec4(w2+0, h2+0, 0.0f, 1.0f));
 	prog.setUniform("ViewportMatrix", viewport_matrix);
 
-	//prog.setUniform("Kd", vec3(0.9f, 0.5f, 0.3f));
-	//prog.setUniform("Ks", vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f));
-	//prog.setUniform("Ka", vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f));
-
-	prog.setUniform("Shininess", 100.0f);	//Found
+	prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);
+    prog.setUniform("Ks", 0.95f, 0.95f, 0.95f);
+    //prog.setUniform("Ka", 0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f);
+    prog.setUniform("Ka", 0.0f, 0.0f, 0.0f);
+    prog.setUniform("Shininess", 100.0f);
 
 	prog.setUniform("s_texture", texture_id);	//Found
 	
 	prog.setUniform("Line.Width", 0.5f);
 	prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));
 
-	//prog.setUniform("Spot.intesity", vec3(0.9f,0.9f,0.9f));
+	prog.setUniform("Spot.intensity", vec3(1.0f,1.0f,1.0f));
 
-	//prog.setUniform("Spot.exponent", 30.0f);
+	prog.setUniform("Spot.exponent", 1000.0f);
 
 	prog.setUniform("Spot.cutoff", 5.0f);	//Found
 	

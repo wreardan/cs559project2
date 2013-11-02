@@ -14,7 +14,7 @@ noperspective in vec3 GEdgeDistance;
 
 struct SpotLightInfo {
     vec4 position;   // Gposition in eye coords
-    vec3 intensity;
+    vec3 intensity;  // Amb., Diff., and Specular intensity
     vec3 direction;  // Direction of the spotlight in eye coords.
     float exponent;  // Angular attenuation exponent
     float cutoff;    // Cutoff angle (between 0 and 90)
@@ -37,32 +37,47 @@ uniform sampler2D s_texture;
 
 layout( location = 0 ) out vec4 FragColor;
 
-//Phong with Spotlight
-vec3 adss( )
+vec3 adsWithSpotlight( )
 {
-	vec3 n = Gnormal;
+    vec3 s = normalize( vec3( Spot.position) - Gposition );
+    vec3 spotDir = normalize( Spot.direction);
+    float angle = acos( dot(-s, spotDir) );
+    float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
+    vec3 ambient = Spot.intensity * Ka;
 
-	if (!gl_FrontFacing)
-	n = -n;
+    if( angle < cutoff ) {
+        float spotFactor = pow( dot(-s, spotDir), Spot.exponent );
+        vec3 v = normalize(vec3(-Gposition));
+        vec3 h = normalize( v + s );
 
-	vec3 s = normalize(vec3(Spot.position) - Gposition);
-
-	vec3 spotDir = normalize( Spot.direction);
-	float angle = acos( dot(-s, spotDir) );
-	float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
-
-	if( angle < cutoff ) {
-
-		vec3 v = normalize(-Gposition);
-		vec3 r = reflect(-s, n);
-		float s_dot_n = max(dot(s, n), 0.0);
-
-		return Gcolor * s_dot_n + (s_dot_n > 0 ? Gcolor * pow(max(dot(r, v), 0.0), Shininess) : vec3(0.0));
-	}
-	return vec3(0.0);
+        return
+            ambient +
+            spotFactor * Spot.intensity * (
+              Kd * max( dot(s, Gnormal), 0.0 ) +
+              Ks * pow( max( dot(h,Gnormal), 0.0 ), Shininess )
+           );
+    } else {
+        return ambient;
+    }
 }
 
-//Phong illumination
+/*
+vec3 ads( vec3 pos, vec3 norm ) {
+    vec3 s = normalize(vec3(Light.Position) - pos);
+    vec3 v = normalize(-pos.xyz);
+    vec3 r = reflect( -s, norm );
+    vec3 ambient = Light.Intensity * Material.Ka;
+    float sDotN = max( dot(s,norm), 0.0 );
+    vec3 diffuse = Light.Intensity * Material.Kd * sDotN;
+    vec3 spec = vec3(0.0);
+    if( sDotN > 0.0 )
+        spec = Light.Intensity * Material.Ks *
+               pow( max( dot(r,v), 0.0 ), Material.Shininess );
+
+    return ambient + diffuse + spec;
+}
+*/
+
 vec3 ads( )
 {
   vec3 n = Gnormal;
@@ -96,9 +111,11 @@ void main() {
     }
 
 	//calculate the color value with ADS, 
-    vec4 t_Gcolor = texture2D(s_texture, Gtexture);
-	vec4 lit_Gcolor = vec4(adss() + ads(), 1.0) * t_Gcolor;
+    vec4 t_color = texture2D(s_texture, Gtexture);
 
-	//Mix color with Line value
-	FragColor = mix(lit_Gcolor, Line.Color, mixVal); 
+	vec4 lit_color = vec4(ads(), 1.0) * t_color * vec4(Gcolor, 1.0);
+	vec4 lit_color2 = vec4(adsWithSpotlight() * Gcolor, 1.0);
+
+	FragColor = lit_color + lit_color2;
+	//FragColor = mix(lit_color, Line.Color, mixVal); 
 }
