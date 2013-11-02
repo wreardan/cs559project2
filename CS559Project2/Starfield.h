@@ -10,7 +10,7 @@ public:
 	Starfield();
 	~Starfield(void);
 	bool Initialize();
-	void Update();
+	void Update(bool strength);
 	void Draw(const glm::mat4 & projection, glm::mat4 modelview, const glm::ivec2 & size, Lights & lights, const float time);
 
 protected:

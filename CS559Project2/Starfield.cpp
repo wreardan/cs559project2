@@ -40,20 +40,26 @@ bool Starfield::Initialize()
 	return true;
 }
 
-void Starfield::Update() {
+void Starfield::Update(bool strength) {
+
 	srand ((unsigned int)time(NULL));
-	int index = 0;
+	int index = 0;	
+	float color_strength;
+	if (!strength) { 
+		color_strength = 0.5f;
+	} else {
+		color_strength = 0.8f;
+	}
 	for(int y = 0; y < 100; y++) {
 		for(int x = 0; x < 100; x++) {
-			float r = 0.5f / (rand() % 10 + 1);
-			float g = 0.5f / (rand() % 10 + 1);
-			float b = 0.5f / (rand() % 10 + 1);
+			float r = color_strength / (rand() % 10 + 1);
+			float g = color_strength / (rand() % 10 + 1);
+			float b = color_strength / (rand() % 10 + 1);
 			vertices[index].color = vec3(1.0f - r, 1.0f - g, 1.0f - b);
 			index++;
 		}
 	}
-	/*this->PostGLInitialize(&this->vertex_array_handle, 
-		&this->vertex_coordinate_handle, this->vertices.size() * sizeof(VertexAttributesPCNT), &this->vertices[0])*/
+
 	glBindVertexArray(this->vertex_array_handle);
 	glBindBuffer(GL_ARRAY_BUFFER, this->vertex_coordinate_handle);
 	glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(VertexAttributesPCNT), &this->vertices[0], GL_STATIC_DRAW);
