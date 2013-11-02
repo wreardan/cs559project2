@@ -105,19 +105,20 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		window.ship.StepShader();
 		window.rendertexture.StepShader();
 		break;
-		
+	case 'Q':
+	case 'q':
+		window.rendertexture.StepPostEffect();
+		break;
 	case 'N':
 	case 'n':
 		window.top.EnableNormals(window.normals = !window.normals);
 		window.mars.EnableNormals(window.normals);
 		window.ship.EnableNormals(window.normals);
-		break;
-		
+		break;	
 	case 'W':
 	case 'w':
 		window.wireframe = !window.wireframe;
 		break;
-
 	case 'o':
 	case 'O':
 		window.draw_planes = !window.draw_planes;
@@ -298,7 +299,7 @@ void RenderScene(float current_time) {
 	view = scale(view, vec3(0.145f, 0.11f, 0.10f));
 	view = translate(view, vec3(-50.0f, -50.0f, 200.0f));
 	
-	window.rendertexture.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
+	window.rendertexture.Draw(2, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
 	glFlush();
 }
 
