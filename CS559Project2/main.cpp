@@ -186,6 +186,12 @@ void SpecialFunc(int c, int x, int y)
 	}
 }
 
+void UpdateScene(float current_time) {
+	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
+	window.camera.Update(time);
+}
+
+
 void RenderToTexture(float current_time) {
 	
 	glEnable(GL_CULL_FACE);
@@ -199,7 +205,6 @@ void RenderToTexture(float current_time) {
 	
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
-	window.camera.Update(time);
 	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 5000.0f);
 	mat4 view = window.camera.GetView();
 	window.lights.cameraMatrix = view;
@@ -284,6 +289,8 @@ void RenderToTexture(float current_time) {
 }
 
 void RenderScene(float current_time) {
+	UpdateScene(current_time);
+
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -310,6 +317,16 @@ void DisplayFunc()
 {
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
 
+	//Render scene from Light's perspective
+	glBindTexture(GL_TEXTURE_2D, 4);
+	glEnable(GL_TEXTURE_2D);
+	window.shadow_map.Use();	//bind FBO
+
+	RenderToTexture(current_time);
+
+	window.shadow_map.Disable();	//Unbind FBO
+
+	//Render scene normally to texture for post-processing
 	glBindTexture(GL_TEXTURE_2D, 1);
     glEnable(GL_TEXTURE_2D);
 	window.frame_buffer.Use();	//bind FBO
@@ -318,6 +335,7 @@ void DisplayFunc()
 
 	window.frame_buffer.Disable();	//Unbind FBO
 
+	//Finally, render texture to screen using post-processing shaders
 	RenderScene(current_time);
 	
 }
@@ -389,6 +407,7 @@ int main(int argc, char * argv[])
 	window.lights.Add(spotlight);
 	
 	window.frame_buffer.Initialize(1024, 768);
+	window.shadow_map.Initialize(1024, 768);
 	InitWhiteTex();
 
 	glutMainLoop();
