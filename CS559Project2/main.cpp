@@ -355,7 +355,7 @@ void RenderScene(float current_time) {
 	view = scale(view, vec3(0.145f, 0.11f, 0.10f));
 	view = translate(view, vec3(-50.0f, -50.0f, 200.0f));
 	
-	window.rendertexture.Draw(2, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
+	window.rendertexture.Draw(4, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
 	glFlush();
 }
 
@@ -481,7 +481,7 @@ int main(int argc, char * argv[])
 	
 	window.light_frustum = new Frustum(Projection::PERSPECTIVE);
 	window.light_frustum->orient(vec3(light.position), vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
-	window.light_frustum->setPerspective(50.0f, 1.0f, 1.0f, 25.0f);
+	window.light_frustum->setPerspective(50.0f, 1.0f, 1.0f, 1000.0f);
 	window.lightPV = shadowBias * window.light_frustum->getProjectionMatrix() * window.light_frustum->getViewMatrix();
 	
 	light.lightPV = window.lightPV;
