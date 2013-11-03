@@ -36,7 +36,7 @@ void Mesh::StepObjectShader()
 	this->shader_index = ++this->shader_index % this->shaders.size();
 	while(this->shader_index >= 6) {
 		this->shader_index = ++this->shader_index % this->shaders.size();
-	} 
+	}
 }
 
 void Mesh::StepBackShader()
@@ -325,6 +325,12 @@ bool Mesh::Initialize(float size)
 	if (!this->post_two.Initialize("post_two.vert", "post_two.frag"))
 		return false;
 
+	if (!this->post_three.Initialize("post_three.vert", "post_three.frag"))
+		return false;
+	
+	if (!this->post_four.Initialize("post_four.vert", "post_four.frag"))
+		return false;
+
 	if (!this->spotlight_wireframe_shadows_shader.Initialize("spotlight_wireframe_shadows_shader.vert", "spotlight_wireframe_shadows_shader.frag", "spotlight_wireframe_shadows_shader.geo"))
 		return false;
 
@@ -339,8 +345,10 @@ bool Mesh::Initialize(float size)
 	this->shaders.push_back(&this->post_normal);
 	this->shaders.push_back(&this->post_one);
 	this->shaders.push_back(&this->post_two);
+	this->shaders.push_back(&this->post_three);
+	this->shaders.push_back(&this->post_four);
 
-	//advanced shaders - index 9
+	//advanced shaders - index 11
 	this->shaders.push_back(&this->spotlight_wireframe_shadows_shader);
 
 
@@ -361,6 +369,8 @@ void Mesh::TakeDown()
 	this->post_normal.TakeDown();
 	this->post_one.TakeDown();
 	this->post_two.TakeDown();
+	this->post_three.TakeDown();
+	this->post_four.TakeDown();
 	super::TakeDown();
 }
 
@@ -403,8 +413,13 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	if(shader_index == 7)
 		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 8)
-		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_two.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 9)
+		this->post_three.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 10)
+		this->post_four.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 11)
 		this->spotlight_wireframe_shadows_shader.CustomSetup(3, 4, time, size, projection, view, mvp, nm, lights, wireframe_mode, shadow_matrix, shadow_pass_type);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");

@@ -39,6 +39,8 @@ public:
 	RenderTextureShader post_normal;
 	RenderTextureShader post_one;
 	RenderTextureShader post_two;
+	RenderTextureShader post_three;
+	RenderTextureShader post_four;
 	SpotlightWireframeShadowsShader spotlight_wireframe_shadows_shader;
 	std::vector<Shader *> shaders;
 	ILContainer texture;

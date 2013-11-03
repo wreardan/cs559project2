@@ -39,12 +39,23 @@ vec3 phongModel( vec3 pos, vec3 norm ) {
 
 void main() {
     vec4 texColor = texture( RenderTex, TexCoord);
-	vec3 c = texColor.xyz;
-	c = pow(c, vec3(0.6, 0.6, 0.6));
-	c = c * 8;
-	c = floor(c);
-	c = c / 8;
-	c = pow(c, vec3(1.0/0.6));
-	texColor = vec4(c.x, c.y, c.z, 1.0);
+
+	texColor += texture(RenderTex, TexCoord + 0.001);
+	texColor += texture(RenderTex, TexCoord + 0.003);
+	texColor += texture(RenderTex, TexCoord + 0.005);
+	texColor += texture(RenderTex, TexCoord + 0.007);
+	texColor += texture(RenderTex, TexCoord + 0.009);
+	texColor += texture(RenderTex, TexCoord + 0.011);
+
+	texColor += texture(RenderTex, TexCoord - 0.001);
+	texColor += texture(RenderTex, TexCoord - 0.003);
+	texColor += texture(RenderTex, TexCoord - 0.005);
+	texColor += texture(RenderTex, TexCoord - 0.007);
+	texColor += texture(RenderTex, TexCoord - 0.009);
+	texColor += texture(RenderTex, TexCoord - 0.011);
+
+	texColor.rgb = vec3((texColor.r + texColor.g + texColor.b) / 3.0);
+	texColor = texColor / 9.5;
+	
     FragColor = texColor;
 }
