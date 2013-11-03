@@ -66,6 +66,13 @@ void Camera::Update(float time) {
 		rotAngle = deltaTime * rotation_speed * 1.0f;
 		viewMatrix = rotate(viewMatrix, rotAngle, vec3(0.0f, 1.0f, 0.0f));
 		break;
+	case Type::ship:
+		position = vec3(rotx * roty * rotz * vec4(0.0f, 0.0f, -scalar, 1.0f));
+		facing = vec3(rotx * roty * rotz * vec4(0.0f, 15.0f, 0.0f, 1.0f));
+		up = vec3(rotx * roty * rotz * vec4(0.0f, 0.0f, -1.0f, 1.0f));
+		viewMatrix = lookAt(position, facing, up);
+		break;
+		break;
 	default:
 		assert(false);
 		break;
