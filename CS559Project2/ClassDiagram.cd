@@ -10,7 +10,7 @@
   <Class Name="Mesh" Collapsed="true">
     <Position X="2.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BASEAABgAAEAAwBCAABDguAAiAEYAgCAARAAAUAAIAA=</HashCode>
+      <HashCode>BASEggBgAAEAAwBCAABDhuAAiAEYAgCAQRACAUABIAA=</HashCode>
       <FileName>Mesh.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -59,7 +59,7 @@
   <Class Name="Window" Collapsed="true">
     <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAIAAgAABBCBAIABAAiAAQIBAAAAiIAICgCAIAI=</HashCode>
+      <HashCode>AJAAAAIAAgAABBCBAIABAAiAAQIDAAAAiIAICgCAIAM=</HashCode>
       <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -73,7 +73,7 @@
   <Class Name="Ship" Collapsed="true">
     <Position X="1.25" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BACAAAAAAEAABwBAIAAAAAAACQCAAAAAAAAAAAIAAAQ=</HashCode>
+      <HashCode>BACAAAAAAEAABwBAIAAAAAAACQCABAAAAAAAAAIAAAQ=</HashCode>
       <FileName>Ship.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -87,7 +87,7 @@
   <Class Name="Camera" Collapsed="true">
     <Position X="4.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQKAJAIAAAAAQAAQAAAIgAAAAQJAAAAQAABAggAAAA=</HashCode>
+      <HashCode>AAQKAJAIAAAAAQAAUAAAIgAAAAQJAAAAQAABAggAAAA=</HashCode>
       <FileName>Camera.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -116,7 +116,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Starfield" Collapsed="true">
-    <Position X="2.5" Y="5.25" Width="1.5" />
+    <Position X="2.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAABEAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Starfield.h</FileName>
@@ -137,6 +137,20 @@
     <TypeIdentifier>
       <HashCode>AAAAAAQCAABECQAIAAOAAAAAAgABAAAAAAAFAAAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Frustum" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KBAIAEAgAAAC0gAAAAAAAAAQgAABACAggQACAkgQFAA=</HashCode>
+      <FileName>frustum.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framebuffer" Collapsed="true">
+    <Position X="8.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAEAAQBAAAAABBAIAAAEAAAAAAAgAAAAEAA=</HashCode>
+      <FileName>Framebuffer.h</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="GLSLShader::GLSLShaderType" Collapsed="true">

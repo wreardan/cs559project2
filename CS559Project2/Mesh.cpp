@@ -18,7 +18,7 @@ Mesh::Mesh(void) : Object()
 	this->colors[1] = lighter_color;
 	wireframe_mode = 3;
 	shadow_pass_type = 0;
-	this->shader_index = 4;
+	this->shader_index = 11;
 }
 
 
@@ -418,7 +418,7 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 		this->post_three.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 10)
 		this->post_four.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
-		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+//		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 11)
 		this->spotlight_wireframe_shadows_shader.CustomSetup(3, 4, time, size, projection, view, mvp, nm, lights, wireframe_mode, shadow_matrix, shadow_pass_type);
 
