@@ -16,7 +16,7 @@ Mesh::Mesh(void) : Object()
 	vec4 darker_color = vec4(vec3(lighter_color) * 2.0f / 3.0f, 1.0f);
 	this->colors[0] = darker_color;
 	this->colors[1] = lighter_color;
-	this->shader_index = 0;
+	this->shader_index = 4;
 }
 
 
