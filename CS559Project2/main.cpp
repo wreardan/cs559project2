@@ -98,12 +98,14 @@ void KeyboardFunc(unsigned char c, int x, int y)
 	case 'v':
 		window.camera.SetCameraType((window.camera.GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
 		break;
+	case 'Z':
+	case 'z':
+		window.ship.StepShader();
+		break;
 	case 'S':
 	case 's':
 		window.top.StepShader();
 		window.mars.StepObjectShader();
-		window.ship.StepShader();
-		window.rendertexture.StepShader();
 		break;
 	case 'Q':
 	case 'q':
@@ -352,7 +354,7 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
 	window.instructions.push_back("F1 - Change Display Mode");
 	window.instructions.push_back("W - Wireframe Mode");
-	window.instructions.push_back("S - Cycle Shaders");
+	window.instructions.push_back("S - Cycle Planet Shader, Q - Cycle Post Effect, Z - Cycle Ship Shader");
 	window.instructions.push_back("P - Pause");
 	window.instructions.push_back("V - Change Camera Mode");
 
