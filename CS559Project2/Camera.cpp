@@ -40,6 +40,11 @@ void Camera::SetCameraType(Camera::Type type) {
 mat4 Camera::GetView() {
 	return viewMatrix;
 }
+void Camera::SetView(glm::mat4 viewMatrix)
+{
+	this->viewMatrix = viewMatrix;
+}
+
 
 void Camera::Update(float time) {
 

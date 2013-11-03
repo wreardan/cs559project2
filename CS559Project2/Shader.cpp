@@ -420,7 +420,7 @@ void SpotlightWireframeShader::CommonSetup(const float time, const GLint * size,
 }
 
 void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
-		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights)
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode)
 {
 	prog.use();
 
@@ -444,8 +444,25 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 
 	prog.setUniform("s_texture", texture_id);	//Found
 	
-	prog.setUniform("Line.Width", -1.0f);
-	prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));
+	switch(wireframe_mode)
+	{
+	case 1:
+		prog.setUniform("Line.Width", 0.5f);
+		prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));
+		break;
+	case 2:
+		prog.setUniform("Line.Width", 2.0f);
+		prog.setUniform("Line.Color", vec4(0.5f,0.0f,0.5f,1.0f));
+		break;
+	case 3:
+		prog.setUniform("Line.Width", 0.1f);
+		prog.setUniform("Line.Color", vec4(0.1f,0.1f,0.1f,1.0f));
+		break;
+	case 0:
+	default:
+		prog.setUniform("Line.Width", -1.0f);
+		prog.setUniform("Line.Color", vec4(0.0f,0.0f,1.0f,1.0f));
+	}
 
 	prog.setUniform("Spot.intensity", vec3(1.0f,1.0f,1.0f));
 
@@ -463,7 +480,35 @@ void SpotlightWireframeShader::TakeDown()
 	
 }
 
+
 void SpotlightWireframeShader::Use()
 {
 	prog.use();
+}
+
+bool SpotlightWireframeShadowsShader::Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file)
+{
+	super::Initialize(vertex_shader_file, fragment_shader_file, geometry_shader_file);
+
+	pass1Index = glGetSubroutineIndex( prog.getHandle(), GL_FRAGMENT_SHADER, "recordDepth");
+    pass2Index = glGetSubroutineIndex( prog.getHandle(), GL_FRAGMENT_SHADER, "shadeWithShadow");
+
+	return true;
+}
+
+void SpotlightWireframeShadowsShader::CustomSetup(int texture_id, int shadow_texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
+	const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode, glm::mat4 shadow_matrix, int shadow_pass_type)
+{
+	super::CustomSetup(texture_id, time, size, projection, modelview, mvp, normal_matrix, lights, wireframe_mode);
+
+	prog.setUniform("ShadowMatrix", shadow_matrix);
+	prog.setUniform("shadow_map_texture", shadow_texture_id);
+
+	if(shadow_pass_type == 0)
+		shadow_pass_type = pass1Index;
+	else
+		shadow_pass_type = pass2Index;
+
+	glUniformSubroutinesuiv( GL_FRAGMENT_SHADER, 1, &pass1Index);
+	//prog.setUniform("RenderPassType", shadow_pass_type);
 }

@@ -9,11 +9,14 @@ public:
 	unsigned int intermediateFBO;
 	unsigned int intermediateTex;
 
+	int width, height;
+
 
 	Framebuffer(void);
 	~Framebuffer(void);
 
 	bool Initialize(int width, int height);
+	bool InitializeShadowMap(int width, int height);
 	void Use();
 	void Disable();
 	

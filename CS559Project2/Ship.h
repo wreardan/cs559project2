@@ -7,12 +7,13 @@ using namespace glm;
 
 class Ship
 {
-protected:
+public:
 	Sphere sphere;
 	Cylinder cylinder;
 	float wing_angle;
 	bool draw_normals;
-public:
+
+
 	Ship(void);
 	~Ship(void);
 	void BuildPrimitive();

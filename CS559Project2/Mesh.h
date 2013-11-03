@@ -39,8 +39,11 @@ public:
 	RenderTextureShader post_normal;
 	RenderTextureShader post_one;
 	RenderTextureShader post_two;
+	SpotlightWireframeShadowsShader spotlight_wireframe_shadows_shader;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
+	int wireframe_mode;
+	unsigned int shadow_pass_type;
 
 protected:
 	

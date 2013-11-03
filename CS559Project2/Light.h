@@ -9,6 +9,7 @@ protected:
 public:
 	glm::vec4 position;
 	glm::vec3 direction;
+	glm::mat4 lightPV;
 
 	Light(void);
 	void SetPosition(glm::vec4 & position);

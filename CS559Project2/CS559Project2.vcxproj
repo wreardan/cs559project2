@@ -144,6 +144,9 @@
     <None Include="spotlight_wireframe_shader.frag" />
     <None Include="spotlight_wireframe_shader.geo" />
     <None Include="spotlight_wireframe_shader.vert" />
+    <None Include="spotlight_wireframe_shadows_shader.frag" />
+    <None Include="spotlight_wireframe_shadows_shader.geo" />
+    <None Include="spotlight_wireframe_shadows_shader.vert" />
     <None Include="stripe_model_space.frag" />
     <None Include="stripe_model_space.vert" />
     <None Include="texture_shader.frag" />
