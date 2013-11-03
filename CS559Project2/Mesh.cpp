@@ -323,6 +323,12 @@ bool Mesh::Initialize(float size)
 	if (!this->post_two.Initialize("post_two.vert", "post_two.frag"))
 		return false;
 
+	if (!this->post_three.Initialize("post_three.vert", "post_three.frag"))
+		return false;
+	
+	if (!this->post_four.Initialize("post_four.vert", "post_four.frag"))
+		return false;
+
 	this->shaders.push_back(&this->shader);
 	this->shaders.push_back(&this->solid_color);
 	this->shaders.push_back(&this->texture_shader);
@@ -334,6 +340,8 @@ bool Mesh::Initialize(float size)
 	this->shaders.push_back(&this->post_normal);
 	this->shaders.push_back(&this->post_one);
 	this->shaders.push_back(&this->post_two);
+	this->shaders.push_back(&this->post_three);
+	this->shaders.push_back(&this->post_four);
 
 	if (this->GLReturnedError("Background::Initialize - on exit"))
 		return false;
@@ -352,6 +360,8 @@ void Mesh::TakeDown()
 	this->post_normal.TakeDown();
 	this->post_one.TakeDown();
 	this->post_two.TakeDown();
+	this->post_three.TakeDown();
+	this->post_four.TakeDown();
 	super::TakeDown();
 }
 
@@ -393,7 +403,11 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	if(shader_index == 7)
 		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 8)
-		this->post_one.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_two.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 9)
+		this->post_three.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	if(shader_index == 10)
+		this->post_four.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

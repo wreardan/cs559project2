@@ -39,6 +39,8 @@ public:
 	RenderTextureShader post_normal;
 	RenderTextureShader post_one;
 	RenderTextureShader post_two;
+	RenderTextureShader post_three;
+	RenderTextureShader post_four;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
 

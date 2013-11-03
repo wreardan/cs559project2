@@ -212,6 +212,18 @@
     <None Include="post_two.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="post_three.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_three.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_four.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="post_four.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mars.txt">
