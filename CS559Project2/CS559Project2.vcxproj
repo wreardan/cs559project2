@@ -86,7 +86,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
-    <ClCompile Include="frustum.cpp" />
     <ClCompile Include="glslprogram.cpp" />
     <ClCompile Include="ilcontainer.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -108,7 +107,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Framebuffer.h" />
-    <ClInclude Include="frustum.h" />
     <ClInclude Include="glslprogram.h" />
     <ClInclude Include="ilcontainer.h" />
     <ClInclude Include="Light.h" />
@@ -148,9 +146,6 @@
     <None Include="spotlight_wireframe_shader.frag" />
     <None Include="spotlight_wireframe_shader.geo" />
     <None Include="spotlight_wireframe_shader.vert" />
-    <None Include="spotlight_wireframe_shadows_shader.frag" />
-    <None Include="spotlight_wireframe_shadows_shader.geo" />
-    <None Include="spotlight_wireframe_shadows_shader.vert" />
     <None Include="stripe_model_space.frag" />
     <None Include="stripe_model_space.vert" />
     <None Include="texture_shader.frag" />

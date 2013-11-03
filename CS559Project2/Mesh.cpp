@@ -18,7 +18,7 @@ Mesh::Mesh(void) : Object()
 	this->colors[1] = lighter_color;
 	wireframe_mode = 3;
 	shadow_pass_type = 0;
-	this->shader_index = 11;
+	this->shader_index = 4;
 }
 
 
@@ -331,9 +331,6 @@ bool Mesh::Initialize(float size)
 	if (!this->post_four.Initialize("post_four.vert", "post_four.frag"))
 		return false;
 
-	if (!this->spotlight_wireframe_shadows_shader.Initialize("spotlight_wireframe_shadows_shader.vert", "spotlight_wireframe_shadows_shader.frag", "spotlight_wireframe_shadows_shader.geo"))
-		return false;
-
 	this->shaders.push_back(&this->shader);
 	this->shaders.push_back(&this->solid_color);
 	this->shaders.push_back(&this->texture_shader);
@@ -349,7 +346,6 @@ bool Mesh::Initialize(float size)
 	this->shaders.push_back(&this->post_four);
 
 	//advanced shaders - index 11
-	this->shaders.push_back(&this->spotlight_wireframe_shadows_shader);
 
 
 	if (this->GLReturnedError("Background::Initialize - on exit"))
@@ -418,8 +414,6 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 		this->post_three.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 10)
 		this->post_four.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
-	if(shader_index == 11)
-		this->spotlight_wireframe_shadows_shader.CustomSetup(3, 3, time, size, projection, view, mvp, nm, lights, wireframe_mode, shadow_matrix, shadow_pass_type);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

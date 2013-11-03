@@ -12,7 +12,6 @@ Window::Window()
 }
 Window::~Window()
 {
-	delete light_frustum;
 }
 
 //Draw X, Y, Z Plane Lines

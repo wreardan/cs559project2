@@ -75,9 +75,6 @@
     <ClCompile Include="Framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="frustum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -132,9 +129,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framebuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="frustum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -222,15 +216,6 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="post_four.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="spotlight_wireframe_shadows_shader.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="spotlight_wireframe_shadows_shader.geo">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="spotlight_wireframe_shadows_shader.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

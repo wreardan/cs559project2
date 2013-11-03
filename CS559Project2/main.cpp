@@ -355,35 +355,13 @@ void RenderScene(float current_time) {
 	view = scale(view, vec3(0.145f, 0.11f, 0.10f));
 	view = translate(view, vec3(-50.0f, -50.0f, 200.0f));
 	
-	window.rendertexture.Draw(4, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
+	window.rendertexture.Draw(2, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
 	glFlush();
 }
 
 void DisplayFunc()
 {
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
-
-	//Render scene from Light's perspective
-
-	window.mars.shadow_pass_type = 0;
-	window.ship.sphere.shadow_pass_type = 0;
-
-	glBindTexture(GL_TEXTURE_2D, 4);
-	glEnable(GL_TEXTURE_2D);
-	window.shadow_map.Use();	//bind FBO
-    //glClear(GL_DEPTH_BUFFER_BIT);
-    //glViewport(0,0,window.shadow_map.width,window.shadow_map.height);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-	glEnable(GL_DEPTH_TEST);
-
-	RenderToTexture(current_time, window.light_frustum->getProjectionMatrix(), window.light_frustum->getViewMatrix());
-	glFlush();
-	glFinish();
-
-	//spitOutDepthBuffer(1024, 768);	//draws depth buffer texture to file depth_buffer.png
-
-	window.shadow_map.Disable();	//Unbind FBO
 
 	//Render scene normally to texture for post-processing
 	
@@ -478,13 +456,6 @@ int main(int argc, char * argv[])
 
 	Light light, spotlight;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
-	
-	window.light_frustum = new Frustum(Projection::PERSPECTIVE);
-	window.light_frustum->orient(vec3(light.position), vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
-	window.light_frustum->setPerspective(50.0f, 1.0f, 1.0f, 1000.0f);
-	window.lightPV = shadowBias * window.light_frustum->getProjectionMatrix() * window.light_frustum->getViewMatrix();
-	
-	light.lightPV = window.lightPV;
 
 	window.lights.Add(light);
 
@@ -493,7 +464,6 @@ int main(int argc, char * argv[])
 	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
 	window.lights.Add(spotlight);
 
-	window.shadow_map.InitializeShadowMap(1024, 768);
 	window.frame_buffer.Initialize(1024, 768);
 	InitWhiteTex();
 
