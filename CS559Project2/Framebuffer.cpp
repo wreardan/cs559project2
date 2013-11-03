@@ -90,7 +90,7 @@ bool Framebuffer::InitializeShadowMap(int width, int height)
 
     GLfloat border[] = {1.0f, 0.0f,0.0f,0.0f };
     // The depth buffer texture
-    GLuint depthTex;
+	GLuint & depthTex = this->depthBuf;
     glGenTextures(1, &depthTex);
     glBindTexture(GL_TEXTURE_2D, depthTex);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width,

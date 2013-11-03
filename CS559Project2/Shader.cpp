@@ -455,8 +455,8 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 		prog.setUniform("Line.Color", vec4(0.5f,0.0f,0.5f,1.0f));
 		break;
 	case 3:
-		prog.setUniform("Line.Width", 0.1f);
-		prog.setUniform("Line.Color", vec4(0.1f,0.1f,0.1f,1.0f));
+		prog.setUniform("Line.Width", 0.2f);
+		prog.setUniform("Line.Color", vec4(0.2f,0.2f,0.2f,1.0f));
 		break;
 	case 0:
 	default:
