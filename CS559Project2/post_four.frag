@@ -42,8 +42,8 @@ void main() {
     float wave_pos = cos((fract( global_pos ) - 0.5)*3.14);
     vec4 texColor = texture2D(RenderTex, TexCoord );
 
-	texColor.r = texture2D(RenderTex, TexCoord + 0.004).r;
-    texColor.g = texture2D(RenderTex, TexCoord).g;
+	texColor.r = texture2D(RenderTex, TexCoord).r;
+    texColor.g = texture2D(RenderTex, TexCoord + 0.004).g;
     texColor.b = texture2D(RenderTex, TexCoord - 0.004).b;
 
     FragColor = mix(vec4(0,0,0,0), texColor, wave_pos);
