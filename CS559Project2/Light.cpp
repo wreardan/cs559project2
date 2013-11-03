@@ -6,6 +6,7 @@ using namespace glm;
 Light::Light(void)
 {
 	this->direction = vec3(1.0f, 0.0f, 0.0f);
+	this->lightPV = mat4(1.0f);
 }
 
 

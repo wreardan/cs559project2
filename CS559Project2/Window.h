@@ -12,6 +12,7 @@
 #include "RenderTexture.h"
 #include "Cylinder.h"
 #include "Framebuffer.h"
+#include "frustum.h"
 
 class Window
 {
@@ -42,6 +43,9 @@ public:
 	Framebuffer frame_buffer;
 
 	Framebuffer shadow_map;
+	Frustum *light_frustum;
+	glm::mat4 lightPV;
+
 	bool draw_planes;		//should we draw x,y,z axis or not?
 	void drawPlanes();
 };

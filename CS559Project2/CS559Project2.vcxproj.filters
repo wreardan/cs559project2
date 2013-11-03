@@ -224,6 +224,15 @@
     <None Include="post_four.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="spotlight_wireframe_shadows_shader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="spotlight_wireframe_shadows_shader.geo">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="spotlight_wireframe_shadows_shader.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mars.txt">

@@ -118,6 +118,11 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		window.ship.EnableNormals(window.normals);
 		break;	
 	case 'W':
+		window.mars.wireframe_mode++;
+		if(window.mars.wireframe_mode > 3)
+			window.mars.wireframe_mode = 0;
+		window.ship.sphere.wireframe_mode = window.mars.wireframe_mode;
+		break;
 	case 'w':
 		window.wireframe = !window.wireframe;
 		break;
@@ -187,22 +192,58 @@ void UpdateScene(float current_time) {
 	window.camera.Update(time);
 }
 
+//https://github.com/daw42/glslcookbook/blob/master/chapter07/sceneshadowmap.cpp
+void spitOutDepthBuffer(int width, int height) {
+    int size = width * height;
+    float * buffer = new float[size];
+    unsigned char * imgBuffer = new unsigned char[size * 4];
 
-void RenderToTexture(float current_time) {
-	
-	glEnable(GL_CULL_FACE);
+    glGetTexImage(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT,GL_FLOAT,buffer);
+
+    for( int i = 0; i < height; i++ )
+        for( int j = 0; j < width; j++ )
+        {
+            int imgIdx = 4 * ((i*width) + j);
+            int bufIdx = ((height - i - 1) * width) + j;
+
+            // This is just to make a more visible image.  Scale so that
+            // the range (minVal, 1.0) maps to (0.0, 1.0).  This probably should
+            // be tweaked for different light configurations.
+            float minVal = 0.88f;
+            float scale = (buffer[bufIdx] - minVal) / (1.0f - minVal);
+            unsigned char val = (unsigned char)(scale * 255);
+            imgBuffer[imgIdx] = val;
+            imgBuffer[imgIdx+1] = val;
+            imgBuffer[imgIdx+2] = val;
+            imgBuffer[imgIdx+3] = 0xff;
+        }
+
+//    QImage img(imgBuffer, shadowMapWidth, shadowMapHeight, QImage::Format_RGB32);
+//    img.save("depth.png", "PNG");
+//http://bobobobo.wordpress.com/2009/03/02/how-to-use-openil-to-generate-and-save-an-image/
+	ILuint imageID = ilGenImage();
+	ilBindImage(imageID);
+	ilTexImage(width, height, 1, 4, IL_RGBA, IL_UNSIGNED_BYTE, imgBuffer);
+	ilEnable(IL_FILE_OVERWRITE);
+	ilSave( IL_PNG, "depth_buffer.png" ) ;
+
+    delete [] buffer;
+    delete [] imgBuffer;
+    exit(1);
+}
+
+
+void RenderToTexture(float current_time, mat4 projection, mat4 view) {
+//	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
 	
 	glViewport(0, 0, window.size.x, window.size.y);
 	
 	window.background.Draw(window.size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
-	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 5000.0f);
-	mat4 view = window.camera.GetView();
 	window.lights.cameraMatrix = view;
 	window.lights.normalMatrix = mat3(inverse(transpose(view)));
 	mat4 temp;
@@ -323,20 +364,44 @@ void DisplayFunc()
 	float current_time = float(glutGet(GLUT_ELAPSED_TIME)) / 1000.0f;
 
 	//Render scene from Light's perspective
+
+	window.mars.shadow_pass_type = 0;
+	window.ship.sphere.shadow_pass_type = 0;
+
 	glBindTexture(GL_TEXTURE_2D, 4);
 	glEnable(GL_TEXTURE_2D);
 	window.shadow_map.Use();	//bind FBO
+    //glClear(GL_DEPTH_BUFFER_BIT);
+    //glViewport(0,0,window.shadow_map.width,window.shadow_map.height);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+	glEnable(GL_DEPTH_TEST);
 
-	RenderToTexture(current_time);
+	RenderToTexture(current_time, window.light_frustum->getProjectionMatrix(), window.light_frustum->getViewMatrix());
+	glFlush();
+	glFinish();
+
+	//spitOutDepthBuffer(1024, 768);	//draws depth buffer texture to file depth_buffer.png
 
 	window.shadow_map.Disable();	//Unbind FBO
 
 	//Render scene normally to texture for post-processing
+	
+	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 5000.0f);
+	mat4 view = window.camera.GetView();
+
+	window.mars.shadow_pass_type = 1;
+	window.ship.sphere.shadow_pass_type = 1;
+
 	glBindTexture(GL_TEXTURE_2D, 1);
     glEnable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
 	window.frame_buffer.Use();	//bind FBO
 
-	RenderToTexture(current_time);
+	RenderToTexture(current_time, projection, view);
 
 	window.frame_buffer.Disable();	//Unbind FBO
 
@@ -376,10 +441,9 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("CS 559 Project 2");
 	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
 	window.instructions.push_back("F1 - Change Display Mode");
-	window.instructions.push_back("W - Wireframe Mode");
-	window.instructions.push_back("S - Cycle Planet Shader, Q - Cycle Post Effect, Z - Cycle Ship Shader");
+	window.instructions.push_back("w - Wireframe Mode, W - advanced Wireframe mode (selected Shaders)");
+	window.instructions.push_back("S - Cycle Planet Shader, Q - Cycle Post-Processing Effect, Z - Cycle Ship Shader");
 	window.instructions.push_back("P - Pause");
-	window.instructions.push_back("V - Change Camera Mode");
 
 	if (glewInit() != GLEW_OK)
 	{
@@ -404,15 +468,33 @@ int main(int argc, char * argv[])
 	if(!window.rendertexture.Initialize()) {
 		return 0;
 	}
+
+	//https://github.com/daw42/glslcookbook/blob/master/chapter07/sceneshadowmap.cpp
+	mat4 shadowBias = mat4( vec4(0.5f,0.0f,0.0f,0.0f),
+                        vec4(0.0f,0.5f,0.0f,0.0f),
+                        vec4(0.0f,0.0f,0.5f,0.0f),
+                        vec4(0.5f,0.5f,0.5f,1.0f)
+                        );
+
 	Light light, spotlight;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));
+	
+	window.light_frustum = new Frustum(Projection::PERSPECTIVE);
+	window.light_frustum->orient(vec3(light.position), vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
+	window.light_frustum->setPerspective(50.0f, 1.0f, 1.0f, 25.0f);
+	window.lightPV = shadowBias * window.light_frustum->getProjectionMatrix() * window.light_frustum->getViewMatrix();
+	
+	light.lightPV = window.lightPV;
+
 	window.lights.Add(light);
+
+
 	spotlight.SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
 	window.lights.Add(spotlight);
-	
+
+	window.shadow_map.InitializeShadowMap(1024, 768);
 	window.frame_buffer.Initialize(1024, 768);
-	window.shadow_map.Initialize(1024, 768);
 	InitWhiteTex();
 
 	glutMainLoop();

@@ -127,11 +127,11 @@ class SpotlightWireframeShader : public Shader
 {
 public:
 	SpotlightWireframeShader();
-	bool Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file);
+	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file);
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
 	virtual void CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm);
 	virtual void CustomSetup(int texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
-		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights);
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode);
 	void TakeDown();
 	virtual void Use();
 
@@ -141,3 +141,19 @@ protected:
 private:
 	typedef Shader super;
 };
+
+class SpotlightWireframeShadowsShader : public SpotlightWireframeShader
+{
+public:
+	virtual void CustomSetup(int texture_id, int shadow_texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode, glm::mat4 shadow_matrix, int shadow_pass_type);
+	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file);
+
+	
+	unsigned int pass1Index, pass2Index;
+
+protected:
+private:
+	typedef SpotlightWireframeShader super;
+};
+

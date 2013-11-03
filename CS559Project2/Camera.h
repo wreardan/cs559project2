@@ -31,6 +31,7 @@ public:
 	void SetCameraType(Camera::Type type);
 	Camera::Type GetCameraType();
 	glm::mat4 GetView();
+	void SetView(glm::mat4 viewMatrix);
 	bool Initialize();
 	void TakeDownCamera();
 	void Update(float time);
