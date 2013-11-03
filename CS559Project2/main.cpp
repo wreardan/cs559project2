@@ -100,7 +100,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		break;
 	case 'Z':
 	case 'z':
-		window.ship.StepShader();
+		//window.ship.StepShader();
 		break;
 	case 'S':
 	case 's':
@@ -172,10 +172,6 @@ void SpecialFunc(int c, int x, int y)
 		window.mode++;
 		if(window.mode > 4)	//change to add more modes
 			window.mode = 0;
-		if(window.mode == 4) {
-			//window.camera.scalar = 10000.0f;
-			//window.camera.Initialize();
-		}
 		break;
 
 	case GLUT_KEY_LEFT:
@@ -286,6 +282,10 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 		/*First person view flying over the surface of Mars. It is NOT necessary but would be bonus
 		to be able to steer (bonus hint). With or without steering, the starfield must “correctly”
 		turn with your motion.*/
+		if (window.camera.type != Camera::chase) {
+			window.camera.x_offset = 0.0f;
+			window.camera.up_down = 1.5f;
+		}
 		window.camera.type = Camera::chase;
 		window.camera.rotation_speed = 10.0f;
 		window.starfield.Update(false);
@@ -297,11 +297,16 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 		should follow along with your spaceship. It is NOT necessary to be able to alter the
 		position of the chase camera relative to the spaceship (bonus hint). Again, a “correctly”
 		turning starfield is required.*/
-		window.camera.type = Camera::chase;
+		if (window.camera.type != Camera::ship) {
+			window.camera.x_offset = 0.0f;
+		}
+		window.camera.type = Camera::ship;
 		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		temp = translate(mat4(1.0f), vec3(0.0f, 0.65f, -6.0f));
-		temp = rotate(temp, -90.0f, vec3(1.0f, 0.0f, 0.0f));
+		temp = translate(mat4(1.0f), vec3(0.0f, 0.30f, -3.0f));
+		temp = rotate(temp, -70.0f, vec3(1.0f, 0.0f, 0.0f));
 		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+		temp = scale(temp, vec3(0.25f, 0.25f, 0.25f));
+		//temp = rotate(temp, 67.0f, vec3(1.0f, 0.0f, 0.0f));
 		window.starfield.Update(false);
 		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);

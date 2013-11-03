@@ -18,7 +18,8 @@ public:
 //Public Variables
 	enum Type {
 		normal,
-		chase
+		chase, 
+		ship
 	};
 	float scalar;
 	float rotation_speed;
