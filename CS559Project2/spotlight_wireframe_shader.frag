@@ -21,12 +21,19 @@ struct SpotLightInfo {
 };
 uniform SpotLightInfo Spot;
 
-uniform vec3 light_position;
+struct LightInfo {
+	vec3 position;
+	vec3 Intensity;
+};
+uniform LightInfo Light;
 
-uniform vec3 Kd;            // Diffuse reflectivity
-uniform vec3 Ka;            // Ambient reflectivity
-uniform vec3 Ks;            // Specular reflectivity
-uniform float Shininess;    // Specular shininess factor
+struct MaterialInfo {
+	vec3 Kd;            // Diffuse reflectivity
+	vec3 Ka;            // Ambient reflectivity
+	vec3 Ks;            // Specular reflectivity
+	float Shininess;    // Specular shininess factor
+};
+uniform MaterialInfo Material;
 
 uniform struct LineInfo {
 	float Width;
@@ -43,7 +50,7 @@ vec3 adsWithSpotlight( )
     vec3 spotDir = normalize( Spot.direction);
     float angle = acos( dot(-s, spotDir) );
     float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
-    vec3 ambient = Spot.intensity * Ka;
+    vec3 ambient = Spot.intensity * Material.Ka;
 
     if( angle < Spot.cutoff ) {
         float spotFactor = pow( dot(-s, spotDir), Spot.exponent );
@@ -53,17 +60,17 @@ vec3 adsWithSpotlight( )
         return
             ambient +
             spotFactor * Spot.intensity * (
-              Kd * max( dot(s, Gnormal), 0.0 ) +
-              Ks * pow( max( dot(h,Gnormal), 0.0 ), Shininess )
+              Material.Kd * max( dot(s, Gnormal), 0.0 ) +
+              Material.Ks * pow( max( dot(h,Gnormal), 0.0 ), Material.Shininess )
            );
     } else {
         return ambient;
     }
 }
 
-/*
+
 vec3 ads( vec3 pos, vec3 norm ) {
-    vec3 s = normalize(vec3(Light.Position) - pos);
+    vec3 s = normalize(vec3(Light.position) - pos);
     vec3 v = normalize(-pos.xyz);
     vec3 r = reflect( -s, norm );
     vec3 ambient = Light.Intensity * Material.Ka;
@@ -76,23 +83,23 @@ vec3 ads( vec3 pos, vec3 norm ) {
 
     return ambient + diffuse + spec;
 }
-*/
 
-vec3 ads( )
+
+/*vec3 ads( )
 {
   vec3 n = Gnormal;
 
   if (!gl_FrontFacing)
 	n = -n;
 
-  vec3 s = normalize(light_position - Gposition);
+  vec3 s = normalize(Light.position - Gposition);
 
   vec3 v = normalize(-Gposition);
   vec3 r = reflect(-s, n);
   float s_dot_n = max(dot(s, n), 0.0);
 
-  return Gcolor * s_dot_n + (s_dot_n > 0 ? Gcolor * pow(max(dot(r, v), 0.0), Shininess) : vec3(0.0));
-}
+  return Gcolor * s_dot_n + (s_dot_n > 0 ? Gcolor * pow(max(dot(r, v), 0.0), Material.Shininess) : vec3(0.0));
+}*/
 
 void main() {
 
@@ -113,7 +120,7 @@ void main() {
 	//calculate the color value with ADS, 
     vec4 t_color = texture2D(s_texture, Gtexture);
 
-	vec4 lit_color = vec4(ads(), 1.0) * t_color * vec4(Gcolor, 1.0);
+	vec4 lit_color = vec4(ads(Gposition, Gnormal), 1.0) * t_color * vec4(Gcolor, 1.0);
 	vec4 lit_color2 = vec4(adsWithSpotlight() * Gcolor, 1.0);
 
 	//FragColor = lit_color + lit_color2;

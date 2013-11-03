@@ -27,7 +27,7 @@ void Sphere::BuildPrimitive(float radius, int columns, int rows) {
 			}*/
 			circlePos = vec3(x * radius, y * radius, z * radius);
 			this->vertices[index].position = circlePos;
-			this->vertices[index].color = vec3(1.0f, 0.0f, 0.0f);
+			this->vertices[index].color = vec3(1.0f, 0.1f, 0.1f);
 			index++;
 		}
 	}

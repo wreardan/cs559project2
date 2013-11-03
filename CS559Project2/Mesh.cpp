@@ -16,7 +16,7 @@ Mesh::Mesh(void) : Object()
 	vec4 darker_color = vec4(vec3(lighter_color) * 2.0f / 3.0f, 1.0f);
 	this->colors[0] = darker_color;
 	this->colors[1] = lighter_color;
-	wireframe_mode = 3;
+	wireframe_mode = 0;
 	shadow_pass_type = 0;
 	this->shader_index = 4;
 }
@@ -219,7 +219,7 @@ void Mesh::BuildMesh(int columns, int rows)
 
 			vec3 normal = vec3(0, 0, -1);
 
-			vec3 color = vec3(1.0f, 0.4f, 0.0f);
+			vec3 color = vec3(1.0f, 0.4f, 0.1f);
 		
 			vec2 tex = vec2((columns - 1) - float(s) / (columns-1), float(r) / (rows-1)); //aligning with GL's idea of what (0, 0) is
 

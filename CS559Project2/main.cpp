@@ -100,7 +100,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		break;
 	case 'Z':
 	case 'z':
-		//window.ship.StepShader();
+		window.ship.StepShader();
 		break;
 	case 'S':
 	case 's':
@@ -419,7 +419,7 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("CS 559 Project 2");
 	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
 	window.instructions.push_back("F1 - Change Display Mode");
-	window.instructions.push_back("w - Wireframe Mode, W - advanced Wireframe mode (selected Shaders)");
+	window.instructions.push_back("w - Legacy wireframe mode, W - Advanced Wireframe mode (selected Shaders)");
 	window.instructions.push_back("S - Cycle Planet Shader, Q - Cycle Post-Processing Effect, Z - Cycle Ship Shader");
 	window.instructions.push_back("P - Pause");
 

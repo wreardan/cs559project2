@@ -436,11 +436,11 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 		vec4(w2+0, h2+0, 0.0f, 1.0f));
 	prog.setUniform("ViewportMatrix", viewport_matrix);
 
-	prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);
-    prog.setUniform("Ks", 0.95f, 0.95f, 0.95f);
+	prog.setUniform("Material.Kd", 0.9f, 0.5f, 0.3f);
+    prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
     //prog.setUniform("Ka", 0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f);
-    prog.setUniform("Ka", 0.0f, 0.0f, 0.0f);
-    prog.setUniform("Shininess", 100.0f);
+    prog.setUniform("Material.Ka", 0.0f, 0.0f, 0.0f);
+    prog.setUniform("Material.Shininess", 100.0f);
 
 	prog.setUniform("s_texture", texture_id);	//Found
 	
@@ -472,7 +472,8 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 	
 	prog.setUniform("Spot.position", lights.GetRawPosition(1));	//Found
 	prog.setUniform("Spot.direction", lights.GetRawDirection(1));	//Found
-	prog.setUniform("light_position", vec3(lights.GetPosition(0)));	//Found
+	prog.setUniform("Light.position", vec3(lights.GetPosition(0)));	//Found
+	prog.setUniform("Light.Intensity", vec3(0.0f,0.5f,0.5f));	//Found
 }
 
 void SpotlightWireframeShader::TakeDown()
