@@ -6,7 +6,7 @@ Window::Window()
 	this->normals = this->wireframe = this->paused = false;
 	this->wireframe = false;
 	this->slices = 20;
-	this->interval = 1000 / 120;
+	this->interval = 1000 / 60;
 	this->window_handle = -1;
 	mode = 3;
 }

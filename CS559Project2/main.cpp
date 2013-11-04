@@ -282,6 +282,7 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 	case 0:
 		/*Just your newly improved spaceship slowly turning so we can admire your mesh
 		construction and lighting correctness. With or without a starfield.*/
+		window.ship.sphere.cutoff_angle = 0.0f;
 		if(window.camera.scalar > 1000.0f) {
 			window.camera.type = Camera::normal;
 			window.camera.scalar = 2.0f;

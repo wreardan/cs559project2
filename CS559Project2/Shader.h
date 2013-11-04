@@ -101,7 +101,7 @@ class SpotlightShader : public Shader
 public:
 	SpotlightShader();
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
-	virtual void CustomSetup(int texture_id, Lights & lights);
+	virtual void CustomSetup(int texture_id, Lights & lights, float cutoff_angle);
 
 protected:
 	GLuint texture_sampler;

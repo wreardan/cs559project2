@@ -335,19 +335,18 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 	glUniform3fv(this->spotlight_intensity_handle, 1, value_ptr(vec3(0.9f,0.9f,0.9f)));
 
 	spotlight_exponent_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.exponent");
-	glUniform1f(this->spotlight_exponent_handle, 30.0f);
+	glUniform1f(this->spotlight_exponent_handle, 100.0f);
 
 	spotlight_cutoff_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.cutoff");
-	glUniform1f(this->spotlight_cutoff_handle, 5.0f);
 
 	kd_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Kd");
 	glUniform3fv(this->kd_handle, 1, value_ptr(vec3(0.9f, 0.5f, 0.3f)));
 	ks_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Ks");
-	glUniform3fv(this->ks_handle, 1, value_ptr(vec3(0.95f, 0.95f, 0.95f)));
+	glUniform3fv(this->ks_handle, 1, value_ptr(vec3(0.1f, 0.1f, 0.1f)));
 	ka_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Ka");
 	glUniform3fv(this->ka_handle, 1, value_ptr(vec3(0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f)));
 	shininess_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Shininess");
-	glUniform1f(this->shininess_handle, 100.0f);
+	glUniform1f(this->shininess_handle, 1.0f);
 
 	spotlight_position_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.position");
 	spotlight_direction_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Spot.direction");
@@ -359,12 +358,13 @@ bool SpotlightShader::Initialize(char * vertex_shader_file, char * fragment_shad
 	return true;
 }
 
-void SpotlightShader::CustomSetup(int texture_id, Lights & lights)
+void SpotlightShader::CustomSetup(int texture_id, Lights & lights, float cutoff_angle)
 {
 	glUniform4fv(this->spotlight_position_handle, 1, value_ptr(lights.GetRawPosition(1)));
 	glUniform3fv(this->spotlight_direction_handle, 1, value_ptr(lights.GetRawDirection(1)));
 	glUniform3fv(this->light_position_handle, 1, value_ptr(lights.GetPosition(0)));
 	glUniform1i(this->texture_sampler, texture_id);
+	glUniform1f(this->spotlight_cutoff_handle, cutoff_angle);
 
 	this->GLReturnedError("SpotlightShader::CustomSetup - after spotlight_position_handle,spotlight_direction_handle");
 }
@@ -437,10 +437,10 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 	prog.setUniform("ViewportMatrix", viewport_matrix);
 
 	prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);
-    prog.setUniform("Ks", 0.95f, 0.95f, 0.95f);
+    prog.setUniform("Ks", 0.1f, 0.1f, 0.1f);
     //prog.setUniform("Ka", 0.9f * 0.3f, 0.5f * 0.3f, 0.3f * 0.3f);
     prog.setUniform("Ka", 0.0f, 0.0f, 0.0f);
-    prog.setUniform("Shininess", 100.0f);
+    prog.setUniform("Shininess", 10.0f);
 
 	prog.setUniform("s_texture", texture_id);	//Found
 	
@@ -466,9 +466,9 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 
 	prog.setUniform("Spot.intensity", vec3(1.0f,1.0f,1.0f));
 
-	prog.setUniform("Spot.exponent", 1000.0f);
+	prog.setUniform("Spot.exponent", 100.0f);
 
-	prog.setUniform("Spot.cutoff", 60.0f);	//Found
+	prog.setUniform("Spot.cutoff", 5.0f);	//Found
 	
 	prog.setUniform("Spot.position", lights.GetRawPosition(1));	//Found
 	prog.setUniform("Spot.direction", lights.GetRawDirection(1));	//Found

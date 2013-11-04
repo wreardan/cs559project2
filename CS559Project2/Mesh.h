@@ -45,6 +45,7 @@ public:
 	ILContainer texture;
 	int wireframe_mode;
 	unsigned int shadow_pass_type;
+	float cutoff_angle;
 
 protected:
 	

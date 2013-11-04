@@ -18,6 +18,7 @@ Mesh::Mesh(void) : Object()
 	this->colors[1] = lighter_color;
 	wireframe_mode = 0;
 	shadow_pass_type = 0;
+	cutoff_angle = 15.0f;
 	this->shader_index = 4;
 }
 
@@ -399,7 +400,7 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 	if(shader_index == 2)
 		this->texture_shader.CustomSetup(3, lights.GetPosition(0));
 	if(shader_index == 3)
-		this->spotlight_shader.CustomSetup(3, lights);
+		this->spotlight_shader.CustomSetup(3, lights, cutoff_angle);
 	if(shader_index == 4)
 		this->spotlight_wireframe_shader.CustomSetup(3, time, size, projection, view, mvp, nm, lights, wireframe_mode);
 	if(shader_index == 5)

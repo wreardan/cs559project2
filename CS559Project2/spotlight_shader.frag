@@ -69,12 +69,13 @@ vec3 adss( )
     float cutoff = radians( clamp( Spot.cutoff, 0.0, 90.0 ) );
 
     if( angle < cutoff ) {
+	  float spotFactor = pow( dot(-s, spotDir), Spot.exponent );
 
 	  vec3 v = normalize(-position);
 	  vec3 r = reflect(-s, n);
 	  float s_dot_n = max(dot(s, n), 0.0);
 
-	  return color * s_dot_n + (s_dot_n > 0 ? color * pow(max(dot(r, v), 0.0), Shininess) : vec3(0.0));
+	  return spotFactor * color * s_dot_n + (s_dot_n > 0 ? color * pow(max(dot(r, v), 0.0), Shininess) : vec3(0.0));
 	}
 	return vec3(0.0);
 }
@@ -98,7 +99,9 @@ vec3 ads( )
 void main() {
     vec4 t_color = texture2D(s_texture, texture_coord);
 
-//	FragColor = vec4(adsWithSpotlight(), 1.0) * t_color;
+//	FragColor = vec4(adsWithSpotlight() + ads(), 1.0) * t_color;
 //	FragColor = vec4(ads(), 1.0) * t_color; 
-	FragColor = vec4(adss() + ads(), 1.0) * t_color; 
+	vec4 lit_color = vec4(ads(), 1.0) * t_color * vec4(color, 1.0);
+	vec4 lit_color2 = vec4(adss() * color, 1.0);
+	FragColor = lit_color + lit_color2; 
 }
