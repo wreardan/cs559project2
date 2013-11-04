@@ -148,6 +148,30 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		
 	case 'X':
 	case 'x':
+	case 'U':
+	case 'u':
+		window.lights.lights[0].SetPosition(vec4(window.lights.lights[0].GetPosition().x, window.lights.lights[0].GetPosition().y + 1.0f, window.lights.lights[0].GetPosition().z, 1.0f));
+		break;
+	case 'J':
+	case 'j':
+		window.lights.lights[0].SetPosition(vec4(window.lights.lights[0].GetPosition().x, window.lights.lights[0].GetPosition().y - 1.0f, window.lights.lights[0].GetPosition().z, 1.0f));
+		break;
+	case 'H':
+	case 'h':
+		window.lights.lights[0].SetPosition(vec4(window.lights.lights[0].GetPosition().x - 1.0f, window.lights.lights[0].GetPosition().y, window.lights.lights[0].GetPosition().z, 1.0f));
+		break;
+	case 'K':
+	case 'k':
+		window.lights.lights[0].SetPosition(vec4(window.lights.lights[0].GetPosition().x + 1.0f, window.lights.lights[0].GetPosition().y, window.lights.lights[0].GetPosition().z, 1.0f));
+		break;
+	case 'T':
+	case 't':
+		window.lights.lights[0].SetPosition(vec4(window.lights.lights[0].GetPosition().x, window.lights.lights[0].GetPosition().y, window.lights.lights[0].GetPosition().z + 1.0f, 1.0f));
+		break;
+	case 'G':
+	case 'g':
+		window.lights.lights[0].SetPosition(vec4(window.lights.lights[0].GetPosition().x, window.lights.lights[0].GetPosition().y, window.lights.lights[0].GetPosition().z + 1.0f, 1.0f));
+		break;
 	case 27:
 		glutLeaveMainLoop();
 		return;
@@ -463,7 +487,6 @@ int main(int argc, char * argv[])
 	spotlight.SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
 	window.lights.Add(spotlight);
-
 	window.frame_buffer.Initialize(1024, 768);
 	InitWhiteTex();
 

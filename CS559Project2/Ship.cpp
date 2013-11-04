@@ -14,7 +14,7 @@ Ship::~Ship(void)
 void Ship::StepShader()
 {
 	sphere.shader_index = ++sphere.shader_index % sphere.shaders.size();
-	while(this->sphere.shader_index >= 5) {
+	while(this->sphere.shader_index >= 5 || this->sphere.shader_index == 1) { //skip post-process & flat
 		this->sphere.shader_index = ++this->sphere.shader_index % this->sphere.shaders.size();
 	}
 }

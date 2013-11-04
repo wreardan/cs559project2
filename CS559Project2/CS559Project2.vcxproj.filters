@@ -75,6 +75,9 @@
     <ClCompile Include="Framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="frustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -131,6 +134,9 @@
     <ClInclude Include="Framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="frustum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="background_gradient.frag">
@@ -143,12 +149,6 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="solid_shader.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="stripe_model_space.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="stripe_model_space.vert">
       <Filter>Shaders</Filter>
     </None>
     <None Include="top_shader.frag">

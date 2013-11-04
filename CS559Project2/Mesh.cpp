@@ -34,7 +34,7 @@ void Mesh::StepShader()
 void Mesh::StepObjectShader() 
 {
 	this->shader_index = ++this->shader_index % this->shaders.size();
-	while(this->shader_index >= 6) {
+	while(this->shader_index >= 5 || this->shader_index == 1) { //skip post-process and flat
 		this->shader_index = ++this->shader_index % this->shaders.size();
 	}
 }
