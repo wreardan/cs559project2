@@ -94,6 +94,14 @@ void KeyboardFunc(unsigned char c, int x, int y)
 
 	switch (c)
 	{
+	case '-':
+		if(window.ship.wing_angle > 0.0f)
+			window.ship.wing_angle-=5.0f;
+		break;
+	case '+':
+		if(window.ship.wing_angle < 50.0f)
+			window.ship.wing_angle+=5.0f;
+		break;
 	case 'V':
 	case 'v':
 		window.camera.SetCameraType((window.camera.GetCameraType() == Camera::Type::normal) ? Camera::Type::chase : Camera::Type::normal);
@@ -288,7 +296,7 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 		/*Just your newly improved spaceship slowly turning so we can admire your mesh
 		construction and lighting correctness. With or without a starfield.*/
 		window.ship.sphere.cutoff_angle = 0.0f;
-		if(window.camera.scalar > 1000.0f) {
+		if(window.camera.scalar > 2.0f) {
 			window.camera.type = Camera::normal;
 			window.camera.scalar = 2.0f;
 			window.camera.Initialize();
@@ -336,7 +344,7 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 		window.mars.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		temp = translate(mat4(1.0f), vec3(0.0f, 0.30f, -3.0f));
 		temp = rotate(temp, -70.0f, vec3(1.0f, 0.0f, 0.0f));
-		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+		//temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 		temp = scale(temp, vec3(0.25f, 0.25f, 0.25f));
 		//temp = rotate(temp, 67.0f, vec3(1.0f, 0.0f, 0.0f));
 		window.starfield.Update(false);
