@@ -263,10 +263,12 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
+
+	ivec2 win_size = ivec2(1024, 768);
+
+	glViewport(0, 0, win_size.x, win_size.y);
 	
-	glViewport(0, 0, window.size.x, window.size.y);
-	
-	window.background.Draw(window.size);
+	window.background.Draw(win_size);
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
 	window.lights.cameraMatrix = view;
 	window.lights.normalMatrix = mat3(inverse(transpose(view)));
@@ -286,9 +288,9 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 			window.camera.Initialize();
 		}
 		window.starfield.Update(false);
-		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.starfield.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		window.camera.rotation_speed = 20.0f;
-		window.ship.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 1:
 		/*Just Mars, slowly spinning as per the sample prototype I provide. With or without a starfield.*/
@@ -299,8 +301,8 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 			window.camera.Initialize();
 		}
 		window.starfield.Update(false);
-		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.starfield.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 2:
 		/*First person view flying over the surface of Mars. It is NOT necessary but would be bonus
@@ -313,8 +315,8 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 		window.camera.type = Camera::chase;
 		window.camera.rotation_speed = 10.0f;
 		window.starfield.Update(false);
-		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.starfield.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 3:
 		/*Third person view flying over the surface of Mars from a “chase camera.” The camera
@@ -325,15 +327,15 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 			window.camera.x_offset = 0.0f;
 		}
 		window.camera.type = Camera::ship;
-		window.mars.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.mars.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		temp = translate(mat4(1.0f), vec3(0.0f, 0.30f, -3.0f));
 		temp = rotate(temp, -70.0f, vec3(1.0f, 0.0f, 0.0f));
 		temp = rotate(temp, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 		temp = scale(temp, vec3(0.25f, 0.25f, 0.25f));
 		//temp = rotate(temp, 67.0f, vec3(1.0f, 0.0f, 0.0f));
 		window.starfield.Update(false);
-		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
-		window.ship.Draw(projection, temp, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.starfield.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.ship.Draw(projection, temp, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	case 4:
 		/*Just the starfield slowly turning when viewed from outside the “universe”. That is, the
@@ -341,7 +343,7 @@ void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 		window.camera.type = Camera::normal;
 		window.camera.scalar = 1200.0f;
 		window.starfield.Update(true);
-		window.starfield.Draw(projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
+		window.starfield.Draw(projection, view, win_size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);
 		break;
 	default:
 		cerr << "DisplayFunc() unsupported display mode: " << window.mode << endl;
@@ -368,7 +370,7 @@ void RenderScene(float current_time) {
 	glViewport(0, 0, window.size.x, window.size.y);
 	
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
-	mat4 projection = perspective(25.0f, window.window_aspect, 1.0f, 3000.0f);
+	mat4 projection = perspective(25.0f, (float)(1024/768), 1.0f, 3000.0f); //fixed value because of our texture viewport
 	vec3 facing = vec3(0.0f, 0.0f, 0.0f);
 	vec3 up = vec3(0.0f, 1.0f, 0.0f);
 	vec3 position = vec3(0.0f, 0.0f, -4.0f);
@@ -376,7 +378,7 @@ void RenderScene(float current_time) {
 
 
 	//view = rotate(view, 180.0f, vec3(0, 0, 0));
-	view = scale(view, vec3(0.145f, 0.11f, 0.10f));
+	view = scale(view, vec3(0.11f, 0.11f, 0.10f));
 	view = translate(view, vec3(-50.0f, -50.0f, 200.0f));
 	
 	window.rendertexture.Draw(2, projection, view, window.size, window.lights, (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused);	
@@ -426,6 +428,9 @@ int main(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
 	glutInitWindowSize(1024, 768);
+	window.size = vec2(1024, 768);
+	window.window_aspect = 1024 / 768;
+
 	glutInitWindowPosition(0, 0);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
 
@@ -487,7 +492,9 @@ int main(int argc, char * argv[])
 	spotlight.SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	spotlight.direction = vec3(0.0f, -0.1f, -1.0f);
 	window.lights.Add(spotlight);
-	window.frame_buffer.Initialize(1024, 768);
+
+	window.frame_buffer.Initialize(window.size.x, window.size.y);
+	
 	InitWhiteTex();
 
 	glutMainLoop();
