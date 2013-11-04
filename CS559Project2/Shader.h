@@ -131,7 +131,7 @@ public:
 	virtual bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
 	virtual void CommonSetup(const float time, const GLint * size, const GLfloat * projection, const GLfloat * modelview, const GLfloat * mvp, const GLfloat * nm);
 	virtual void CustomSetup(int texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
-		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode);
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode, float cut_off);
 	void TakeDown();
 	virtual void Use();
 

@@ -420,7 +420,7 @@ void SpotlightWireframeShader::CommonSetup(const float time, const GLint * size,
 }
 
 void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
-		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode)
+		const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode, const float cut_off)
 {
 	prog.use();
 
@@ -468,7 +468,7 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 
 	prog.setUniform("Spot.exponent", 100.0f);
 
-	prog.setUniform("Spot.cutoff", 5.0f);	//Found
+	prog.setUniform("Spot.cutoff", cut_off);	//Found
 	
 	prog.setUniform("Spot.position", lights.GetRawPosition(1));	//Found
 	prog.setUniform("Spot.direction", lights.GetRawDirection(1));	//Found
@@ -499,7 +499,7 @@ bool SpotlightWireframeShadowsShader::Initialize(char * vertex_shader_file, char
 void SpotlightWireframeShadowsShader::CustomSetup(int texture_id, int shadow_texture_id, const float time, const glm::ivec2 & size, const glm::mat4 & projection, const glm::mat4 & modelview,
 	const glm::mat4 & mvp, const glm::mat3 & normal_matrix, Lights & lights, int wireframe_mode, glm::mat4 shadow_matrix, int shadow_pass_type)
 {
-	super::CustomSetup(texture_id, time, size, projection, modelview, mvp, normal_matrix, lights, wireframe_mode);
+	super::CustomSetup(texture_id, time, size, projection, modelview, mvp, normal_matrix, lights, wireframe_mode, 5.0f);
 
 	prog.setUniform("ShadowMatrix", shadow_matrix);
 	prog.setUniform("shadow_map_texture", shadow_texture_id);

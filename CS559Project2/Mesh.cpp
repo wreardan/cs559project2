@@ -10,6 +10,11 @@ void Mesh::LoadTexture(char * texture_filename)
 	texture.Initialize(texture_filename);
 }
 
+void Mesh::LoadShipTexture(char * texture_filename)
+{
+	ship_texture.Initialize(texture_filename);
+}
+
 Mesh::Mesh(void) : Object()
 {
 	vec4 lighter_color(MakeColor(255, 69, 0, 1.0f));
@@ -311,7 +316,7 @@ bool Mesh::Initialize(float size)
 	if (!this->render_texture.Initialize("rendertotex.vert", "rendertotex.frag"))
 		return false;
 
-	if (!this->spotlight_shader.Initialize("spotlight_shader.vert", "spotlight_shader.frag"))
+	if (!this->spotlight_shader.Initialize("spotlight_wireframe_shader.vert", "spotlight_wireframe_shader.frag", "spotlight_wireframe_shader.geo"))
 		return false;
 
 	if (!this->spotlight_wireframe_shader.Initialize("spotlight_wireframe_shader.vert", "spotlight_wireframe_shader.frag", "spotlight_wireframe_shader.geo"))
@@ -385,6 +390,11 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 		texture.Bind(3); //pass this sampler # into texture shaders
 	}
 
+	if(ship_texture.il_handle !=  BAD_IL_VALUE) {
+		ship_texture.Bind(5); //pass this sampler # into texture shaders
+	}
+
+
 	glEnable(GL_DEPTH_TEST);
 	mat4 model = glm::mat4(1.0f);
 	//model = scale(model, vec3(10, 10, 10));
@@ -398,11 +408,11 @@ void Mesh::Draw(const mat4 & projection, mat4 view, const ivec2 & size, Lights &
 
 	//printf("Shader Index: %i\n", shader_index);
 	if(shader_index == 2)
-		this->texture_shader.CustomSetup(3, lights.GetPosition(0));
+		this->texture_shader.CustomSetup(5, lights.GetPosition(0));
 	if(shader_index == 3)
-		this->spotlight_shader.CustomSetup(3, lights, cutoff_angle);
+		this->spotlight_shader.CustomSetup(5, time, size, projection, view, mvp, nm, lights, wireframe_mode, 0.0f);
 	if(shader_index == 4)
-		this->spotlight_wireframe_shader.CustomSetup(3, time, size, projection, view, mvp, nm, lights, wireframe_mode);
+		this->spotlight_wireframe_shader.CustomSetup(3, time, size, projection, view, mvp, nm, lights, wireframe_mode, cutoff_angle);
 	if(shader_index == 5)
 		this->render_texture.CustomSetup(3, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	if(shader_index == 6)

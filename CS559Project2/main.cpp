@@ -100,12 +100,17 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		break;
 	case 'Z':
 	case 'z':
-		window.ship.StepShader();
+		//window.ship.StepShader();
 		break;
 	case 'S':
 	case 's':
 		window.top.StepShader();
-		window.mars.StepObjectShader();
+		if (window.mars.cutoff_angle == 0.0f) {
+			window.mars.cutoff_angle = 15.0f;
+		} else {
+			window.mars.cutoff_angle = 0.0f;
+		}
+		//window.mars.StepObjectShader();
 		break;
 	case 'Q':
 	case 'q':

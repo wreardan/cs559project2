@@ -23,7 +23,7 @@ void Ship::BuildPrimitive() {
 	sphere.BuildMesh(20, 20);
 	sphere.BuildPrimitive(2.0f, 20, 20);
 	sphere.CalculateNormals(20, 20);
-	sphere.shader_index = 0;
+	sphere.shader_index = 3;
 }
 
 void Ship::EnableNormals(bool dn) {
@@ -34,6 +34,7 @@ void Ship::EnableNormals(bool dn) {
 
 bool Ship::Initialize()
 {
+	sphere.LoadShipTexture("metal.jpg");
 	sphere.Initialize(100.0f);
 	wing_angle = 30.0f;
 	return true;

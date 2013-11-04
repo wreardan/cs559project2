@@ -26,6 +26,7 @@ public:
 	void StepBackShader();
 	void TakeDown();
 	void LoadTexture(char * texture_filename);
+	void LoadShipTexture(char * texture_filename);
 	void BuildMesh(int columns, int rows);
 	void BuildPrimitive(float radius, int columns, int rows);
 	
@@ -34,7 +35,7 @@ public:
 	Shader solid_color;
 	RenderTextureShader render_texture;
 	TextureShader texture_shader;
-	SpotlightShader spotlight_shader;
+	SpotlightWireframeShader spotlight_shader;
 	SpotlightWireframeShader spotlight_wireframe_shader;
 	RenderTextureShader post_normal;
 	RenderTextureShader post_one;
@@ -43,6 +44,7 @@ public:
 	RenderTextureShader post_four;
 	std::vector<Shader *> shaders;
 	ILContainer texture;
+	ILContainer ship_texture;
 	int wireframe_mode;
 	unsigned int shadow_pass_type;
 	float cutoff_angle;
