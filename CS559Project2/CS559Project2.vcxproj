@@ -125,6 +125,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.docx" />
     <None Include="..\README.md" />
     <None Include="background_gradient.frag" />
     <None Include="background_gradient.vert" />

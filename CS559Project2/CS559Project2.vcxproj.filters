@@ -224,6 +224,7 @@
     <None Include="phong.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\README.docx" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mars.txt">

@@ -367,6 +367,7 @@ void Mesh::TakeDown()
 	this->solid_color.TakeDown();
 	this->texture_shader.TakeDown();
 	this->spotlight_shader.TakeDown();
+	this->spotlight_wireframe_shader.TakeDown();
 	this->render_texture.TakeDown();
 	this->post_normal.TakeDown();
 	this->post_one.TakeDown();

@@ -10,7 +10,7 @@
   <Class Name="Mesh" Collapsed="true">
     <Position X="2.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BASEggBgAAEAAwBCAABDhuAAiAEYAgCAQRACAUABIAA=</HashCode>
+      <HashCode>BASEggBgAAEAgwBCAEFDhuAAiAGYAgCBQVACAUABICA=</HashCode>
       <FileName>Mesh.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -59,7 +59,7 @@
   <Class Name="Window" Collapsed="true">
     <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AJAAAAIAAgAABBCBAIABAAiAAQIDAAAAiIAICgCAIAM=</HashCode>
+      <HashCode>AJAAAAIAAgAABBCBAIABAAiAAQIDAAAAiIAICgCAIAI=</HashCode>
       <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -87,7 +87,7 @@
   <Class Name="Camera" Collapsed="true">
     <Position X="4.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQKAJAIAAAAAQAAUAAAIgAAAAQJAAAAQAABAggAAAA=</HashCode>
+      <HashCode>AAQKAJAIAAAAAQAAUAAAIgAAAAQJAAAQQAABAggAAAA=</HashCode>
       <FileName>Camera.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -149,8 +149,22 @@
   <Class Name="Framebuffer" Collapsed="true">
     <Position X="8.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAAAAAEAAQBAAAAABBAIAAAEAAAAAAAgAAAAEAA=</HashCode>
+      <HashCode>gAAAAAAAAAEAAQRAQAAABBAIAAAEAAAAABAgAAAAEAA=</HashCode>
       <FileName>Framebuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderTexture" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAwgAAAAAAAAAAAICAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RenderTexture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderTextureShader" Collapsed="true">
+    <Position X="9" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAQAgAAABAEQAAAAAAAAAAAgAAAAEAAAABEAAAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="GLSLShader::GLSLShaderType" Collapsed="true">

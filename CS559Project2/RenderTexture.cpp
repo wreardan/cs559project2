@@ -16,7 +16,7 @@ void RenderTexture::StepPostEffect() {
 bool RenderTexture::Initialize() {
 	this->BuildMesh(100, 100);
 	super::Initialize(10.0f);
-	curr_shader_index = 5;
+	curr_shader_index = 6;
 	return true;
 }
 

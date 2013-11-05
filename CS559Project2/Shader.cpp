@@ -216,6 +216,7 @@ stringstream Shader::GetShaderLog(GLuint shader_id)
 bool Shader::GLReturnedError(char * s)
 {
 	bool return_error = false;
+#ifdef _DEBUG
 	GLenum glerror;
 
 	while ((glerror = glGetError()) != GL_NO_ERROR)
@@ -223,6 +224,7 @@ bool Shader::GLReturnedError(char * s)
 		return_error = true;
 		cerr << s << ": " << gluErrorString(glerror) << endl;
 	}
+#endif
 
 	return return_error;
 }
@@ -477,7 +479,29 @@ void SpotlightWireframeShader::CustomSetup(int texture_id, const float time, con
 
 void SpotlightWireframeShader::TakeDown()
 {
-	
+
+	GLint temp;
+	GLsizei size;
+
+	if (this->prog.getHandle() == (GLuint) -1)
+		return;
+
+	glGetProgramiv(this->program_id, GL_ATTACHED_SHADERS, &temp);
+	if (temp > 0)
+	{
+		GLuint * shader_list = new GLuint[temp];
+		glGetAttachedShaders(this->program_id, temp, &size, shader_list);
+		for (GLsizei i = 0; i < size; i++)
+		{
+			glDetachShader(this->program_id, shader_list[i]);
+			// The shaders were marked for deletion
+			// immediately after they were created.
+		}
+		delete [] shader_list;
+	}
+
+	glDeleteProgram(this->program_id);
+	this->program_id = (GLuint) -1;	
 }
 
 
