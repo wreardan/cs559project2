@@ -377,33 +377,18 @@ SpotlightWireframeShader::SpotlightWireframeShader()
 
 bool SpotlightWireframeShader::Initialize(char * vertex_shader_file, char * fragment_shader_file, char * geometry_shader_file)
 {
-	if( ! prog.compileShaderFromFile(vertex_shader_file, GLSLShader::VERTEX)) {
-		cerr << "SpotlightWireframeShader::Initialize:  Vertex Shader failed to compile: " << prog.log().c_str() << endl;
-		return false;
+	try {
+		prog.compileShader(vertex_shader_file, GLSLShader::VERTEX);
+		prog.compileShader(fragment_shader_file, GLSLShader::FRAGMENT);
+		prog.compileShader(geometry_shader_file, GLSLShader::GEOMETRY);
+		prog.link();
+		prog.validate();
+		prog.use();
+	} catch ( GLSLProgramException & exception) {
+		cerr << "SpotlightWireframeShader::Initialize() error " << exception.what() << endl;
+	} catch (...) {
+		cerr << "SpotlightWireframeShader::Initialize() other error " << endl;
 	}
-
-	if( ! prog.compileShaderFromFile(fragment_shader_file, GLSLShader::FRAGMENT)) {
-		cerr << "SpotlightWireframeShader::Initialize:  FRAGMENT Shader failed to compile: " << prog.log().c_str() << endl;
-		return false;
-	}
-
-	
-	if( ! prog.compileShaderFromFile(geometry_shader_file, GLSLShader::GEOMETRY)) {
-		cerr << "SpotlightWireframeShader::Initialize:  GEOMETRY Shader failed to compile: " << prog.log().c_str() << endl;
-		return false;
-	}
-
-	if( ! prog.link() ) {
-		cerr << "SpotlightWireframeShader::Initialize:  Program failed to Link: " << prog.log().c_str() << endl;
-		return false;
-	}
-	
-	if( ! prog.validate() ) {
-		cerr << "SpotlightWireframeShader::Initialize:  Program failed to Validate: " << prog.log().c_str() << endl;
-		return false;
-	}
-
-	prog.use();
 
 	return true;
 }
