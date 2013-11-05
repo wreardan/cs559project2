@@ -5,6 +5,7 @@
 
 #include <string>
 using std::string;
+#include <map>
 
 #include <glm/glm.hpp>
 using glm::vec2;
@@ -26,6 +27,8 @@ private:
     int  handle;
     bool linked;
     string logString;
+
+	std::map<string, int> uniformLocations;
 
     int  getUniformLocation(const char * name );
     bool fileExists( const string & fileName );

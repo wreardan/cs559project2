@@ -335,9 +335,17 @@ bool GLSLProgram::validate()
     }
 }
 
+//https://github.com/wreardan/glslcookbook/blob/edition2/ingredients/glslprogram.cpp
 int GLSLProgram::getUniformLocation(const char * name )
 {
-    return glGetUniformLocation(handle, name);
+	std::map<string, int>::iterator pos;
+    pos = uniformLocations.find(name);
+        
+    if( pos == uniformLocations.end() ) {
+            uniformLocations[name] = glGetUniformLocation(handle, name);
+    }
+        
+    return uniformLocations[name];
 }
 
 bool GLSLProgram::fileExists( const string & fileName )
