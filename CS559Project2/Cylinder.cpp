@@ -23,8 +23,8 @@ void Cylinder::BuildPrimitive(float radius, int columns, int rows, float height)
 				float const z = (float)sin(2*M_PI * c * S);
 				circlePos = vec3(x * radius, y * radius, z * radius);
 				this->vertices[index].position = circlePos;
-				this->vertices[index].color = vec3(169.0f/256.0f, 186.0f/256.0f, 157.0f/256.0f);
 			}
+			this->vertices[index].color = vec3(169.0f/256.0f, 186.0f/256.0f, 157.0f/256.0f);
 			index++;
 		}
 	}

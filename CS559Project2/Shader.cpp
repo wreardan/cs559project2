@@ -245,12 +245,6 @@ bool RenderTextureShader::Initialize(char * vertex_shader_file, char * fragment_
 
 	this->Use();
 	this->render_texture_handle = glGetUniformLocation(this->program_id, (const GLchar *) "RenderTex");
-	this->amb_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Ka");
-	this->diff_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Kd");
-	this->spec_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Ks");
-	this->light_pos_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Light.Position");
-	this->light_intensity_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Light.Intensity");
-	this->shininess_handle = glGetUniformLocation(this->program_id, (const GLchar *) "Material.Shininess");
 	
 	this->GLReturnedError("RenderTextureShader::Initialize");
 
@@ -258,14 +252,8 @@ bool RenderTextureShader::Initialize(char * vertex_shader_file, char * fragment_
 	return true;
 }
 
-void RenderTextureShader::CustomSetup(GLuint render_text, glm::vec4 light_pos, glm::vec3 light_intensity, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shininess) {
+void RenderTextureShader::CustomSetup(GLuint render_text) {
 	glUniform1i(this->render_texture_handle, render_text);
-//	glUniform4f(this->program_id, light_pos.x, light_pos.y, light_pos.z, light_pos.w);
-//	glUniform3f(this->program_id, light_intensity.x, light_intensity.y, light_intensity.z);
-//	glUniform3f(this->program_id, amb.x, amb.y, amb.z);
-//	glUniform3f(this->program_id, diff.x, diff.y, diff.z);
-//	glUniform3f(this->program_id, spec.x, spec.y, spec.z);
-//	glUniform1f(this->program_id, shininess);
 	this->GLReturnedError("RenderTextureShader::CustomSetup");
 }
 

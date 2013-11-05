@@ -218,12 +218,6 @@
     <None Include="post_four.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="phong.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="phong.frag">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\README.docx" />
   </ItemGroup>
   <ItemGroup>

@@ -35,17 +35,17 @@ void RenderTexture::Draw(int texture_id, const mat4 & projection, mat4 view, con
 	this->shaders[curr_shader_index]->CommonSetup(time, value_ptr(size), value_ptr(projection), value_ptr(view), value_ptr(mvp), value_ptr(nm));
 
 	if(curr_shader_index == 5)
-		this->render_texture.CustomSetup(texture_id, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->render_texture.CustomSetup(texture_id);
 	if(curr_shader_index == 6)
-		this->post_normal.CustomSetup(texture_id, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_normal.CustomSetup(texture_id);
 	if(curr_shader_index == 7)
-		this->post_one.CustomSetup(texture_id, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_one.CustomSetup(texture_id);
 	if(curr_shader_index == 8)
-		this->post_two.CustomSetup(texture_id, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_two.CustomSetup(texture_id);
 	if(curr_shader_index == 9)
-		this->post_three.CustomSetup(texture_id, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_three.CustomSetup(texture_id);
 	if(curr_shader_index == 10)
-		this->post_four.CustomSetup(texture_id, lights.GetPosition(0), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
+		this->post_four.CustomSetup(texture_id);
 
 	this->GLReturnedError("Mesh::Draw - after common setup");
 	glBindVertexArray(this->vertex_array_handle);

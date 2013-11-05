@@ -50,7 +50,7 @@ class RenderTextureShader : public Shader
 public: 
 	RenderTextureShader();
 	bool Initialize(char * vertex_shader_file, char * fragment_shader_file);
-	void CustomSetup(GLuint render_text, glm::vec4 light_pos, glm::vec3 light_intensity, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shininess);
+	void CustomSetup(GLuint render_text);
 protected:
 	GLuint render_texture_handle;
 	GLuint light_pos_handle;

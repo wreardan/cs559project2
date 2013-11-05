@@ -1,18 +1,3 @@
-/*	A more sophisticated example of modern OpenGL
-	Perry Kivolowitz - UW - Madison - CS 559 demo
-
-	In this example program, I will build a solid
-	object comprised of two triangle fans. Note 
-	these are topologically triangle fans but the
-	OpenGL triangle fan functionality is not being
-	used. 
-
-	Created:	02/28/13
-	Updates:	03/05/13 - continued improvements
-				Added solid color shader for drawing normals
-				Switched to timer based redisplay.
-*/
-
 #include <iostream>
 #include <assert.h>
 #include <vector>
@@ -80,7 +65,6 @@ void CloseFunc()
 
 void ReshapeFunc(int w, int h)
 {
-	// Question for reader: Why is this 'if' statement here?
 	if (h > 0)
 	{
 		window.size = ivec2(w, h);
@@ -229,47 +213,6 @@ void UpdateScene(float current_time) {
 	float time = (window.paused ? window.time_last_pause_began : current_time) - window.total_time_paused;
 	window.camera.Update(time);
 }
-
-//https://github.com/daw42/glslcookbook/blob/master/chapter07/sceneshadowmap.cpp
-void spitOutDepthBuffer(int width, int height) {
-    int size = width * height;
-    float * buffer = new float[size];
-    unsigned char * imgBuffer = new unsigned char[size * 4];
-
-    glGetTexImage(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT,GL_FLOAT,buffer);
-
-    for( int i = 0; i < height; i++ )
-        for( int j = 0; j < width; j++ )
-        {
-            int imgIdx = 4 * ((i*width) + j);
-            int bufIdx = ((height - i - 1) * width) + j;
-
-            // This is just to make a more visible image.  Scale so that
-            // the range (minVal, 1.0) maps to (0.0, 1.0).  This probably should
-            // be tweaked for different light configurations.
-            float minVal = 0.88f;
-            float scale = (buffer[bufIdx] - minVal) / (1.0f - minVal);
-            unsigned char val = (unsigned char)(scale * 255);
-            imgBuffer[imgIdx] = val;
-            imgBuffer[imgIdx+1] = val;
-            imgBuffer[imgIdx+2] = val;
-            imgBuffer[imgIdx+3] = 0xff;
-        }
-
-//    QImage img(imgBuffer, shadowMapWidth, shadowMapHeight, QImage::Format_RGB32);
-//    img.save("depth.png", "PNG");
-//http://bobobobo.wordpress.com/2009/03/02/how-to-use-openil-to-generate-and-save-an-image/
-	ILuint imageID = ilGenImage();
-	ilBindImage(imageID);
-	ilTexImage(width, height, 1, 4, IL_RGBA, IL_UNSIGNED_BYTE, imgBuffer);
-	ilEnable(IL_FILE_OVERWRITE);
-	ilSave( IL_PNG, "depth_buffer.png" ) ;
-
-    delete [] buffer;
-    delete [] imgBuffer;
-    exit(1);
-}
-
 
 void RenderToTexture(float current_time, mat4 projection, mat4 view) {
 //	glEnable(GL_CULL_FACE);
@@ -463,8 +406,9 @@ int main(int argc, char * argv[])
 	window.instructions.push_back("CS 559 Project 2");
 	window.instructions.push_back("Wesley Reardan, Emanuel Rosu");
 	window.instructions.push_back("F1 - Change Display Mode");
-	window.instructions.push_back("w - Legacy wireframe mode, W - Advanced Wireframe mode (selected Shaders)");
-	window.instructions.push_back("S - Cycle Planet Shader, Q - Cycle Post-Processing Effect, Z - Cycle Ship Shader");
+	window.instructions.push_back("w - Legacy wireframe mode, W - Advanced Wireframe mode (Geometry Shader)");
+	window.instructions.push_back("S - Planet Spotlight On/Off, Q - Cycle Post-Processing Effect");
+	window.instructions.push_back("U/J/K/H, T/G - Move primary light source");
 	window.instructions.push_back("P - Pause");
 
 	if (glewInit() != GLEW_OK)
@@ -495,13 +439,6 @@ int main(int argc, char * argv[])
 	if(!window.rendertexture.Initialize()) {
 		return 0;
 	}
-
-	//https://github.com/daw42/glslcookbook/blob/master/chapter07/sceneshadowmap.cpp
-	mat4 shadowBias = mat4( vec4(0.5f,0.0f,0.0f,0.0f),
-                        vec4(0.0f,0.5f,0.0f,0.0f),
-                        vec4(0.0f,0.0f,0.5f,0.0f),
-                        vec4(0.5f,0.5f,0.5f,1.0f)
-                        );
 
 	Light light, spotlight;
 	light.SetPosition(vec4(0.0f, 0.0f, 50.0f, 1.0f));

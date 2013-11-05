@@ -41,6 +41,7 @@ bool Starfield::Initialize()
 }
 
 void Starfield::Update(bool strength) {
+	//sets new random color and stuffs it into the PCNT
 
 	srand ((unsigned int)time(NULL));
 	int index = 0;	

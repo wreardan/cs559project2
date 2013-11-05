@@ -130,8 +130,6 @@
     <None Include="background_gradient.frag" />
     <None Include="background_gradient.vert" />
     <None Include="ClassDiagram.cd" />
-    <None Include="phong.frag" />
-    <None Include="phong.vert" />
     <None Include="post_four.frag" />
     <None Include="post_four.vert" />
     <None Include="post_normal.frag" />
