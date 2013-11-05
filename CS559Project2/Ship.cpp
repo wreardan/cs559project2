@@ -65,8 +65,8 @@ void Ship::DrawChassis(const mat4 & projection, mat4 & view, const ivec2 & size,
 	cylinder.Draw(projection, temp, size, lights, time);
 
 	//Front sphere
-	temp = translate(view, vec3(0.0f, -19.0f, 0.0f));
-	sphere.Draw(projection, temp, size, lights, time);
+	/*temp = translate(view, vec3(0.0f, -19.0f, 0.0f));
+	sphere.Draw(projection, temp, size, lights, time);*/
 
 	view = translate(view, vec3(0.0f, -14.0f, 0.0f));
 }

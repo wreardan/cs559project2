@@ -135,6 +135,7 @@ void KeyboardFunc(unsigned char c, int x, int y)
 		if(window.mars.wireframe_mode > 3)
 			window.mars.wireframe_mode = 0;
 		window.ship.sphere.wireframe_mode = window.mars.wireframe_mode;
+		window.ship.cylinder.wireframe_mode = window.mars.wireframe_mode;
 		break;
 	case 'w':
 		window.wireframe = !window.wireframe;
@@ -478,7 +479,12 @@ int main(int argc, char * argv[])
 		return 0;
 	if(!window.ship.Initialize())
 		return 0;
-	if(!window.mars.Initialize((float)window.slices, argv[1], "mars.jpg"))
+	char *default_mars;
+	if(argc < 2)
+		default_mars = "mars.txt";
+	else
+		default_mars = argv[1];
+	if(!window.mars.Initialize((float)window.slices, default_mars, "mars.jpg"))
 		return 0;
 	if(!window.camera.Initialize()) {
 		return 0;
